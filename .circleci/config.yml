@@ -29,11 +29,6 @@ jobs:
             . ~/.bash_profile
       - run: gigalixir login -e "$GIGALIXIR_EMAIL" -y -p "$GIGALIXIR_PASSWORD"
       - run: gigalixir create --name $APP_NAME || gigalixir git:remote $APP_NAME
-      - run:
-          command: |
-            set -u
-            gigalixir config:set \
-              POOL_SIZE=$PROD__POOL_SIZE \
       - run: "git -c http.extraheader='GIGALIXIR-CLEAN: true' push gigalixir `git subtree split main`:refs/heads/master --force"
   keep_alive:
     docker:
