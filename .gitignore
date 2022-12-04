@@ -32,3 +32,12 @@ pair_dance-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Intellij
+.idea/
+pair_dance.iml
+
+# Secrets
+.envrc
+
+# vscode
+.vscode/

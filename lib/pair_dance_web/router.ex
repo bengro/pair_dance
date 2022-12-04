@@ -20,6 +20,14 @@ defmodule PairDanceWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/auth", PairDanceWeb do
+    pipe_through :browser
+
+    get "/logout", AuthController, :delete
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", PairDanceWeb do
   #   pipe_through :api
