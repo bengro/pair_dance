@@ -6,6 +6,7 @@ jobs:
   build_phoenix:
     docker:
       - image: circleci/elixir:1.13-node
+      - image: postgres:13-alpine
     steps:
       - checkout
       - run: mix local.hex --force
