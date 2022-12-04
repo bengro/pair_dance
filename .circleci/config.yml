@@ -53,11 +53,9 @@ workflows:
       not: << pipeline.parameters.run-schedule >>
     jobs:
       - build_phoenix
-      - build_web
       - deploy:
           requires:
             - build_phoenix
-            - build_web
   keep_alive:
     when: << pipeline.parameters.run-schedule >>
     jobs:
