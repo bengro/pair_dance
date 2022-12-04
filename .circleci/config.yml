@@ -5,7 +5,7 @@ orbs:
 jobs:
   build_phoenix:
     docker:
-      - image: circleci/elixir:1.14-node
+      - image: circleci/elixir:1.13-node
     steps:
       - checkout
       - run: mix local.hex --force
@@ -14,7 +14,7 @@ jobs:
       - run: mix test
   build_web:
     docker:
-      - image: circleci/elixir:1.14-node
+      - image: circleci/elixir:1.13-node
     working_directory: ~/pair.dance/lib/pair_dance_web/webapp
     steps:
       - checkout:
@@ -27,7 +27,7 @@ jobs:
       - run: npm run verify
   deploy:
     docker:
-      - image: circleci/elixir:1.14-node
+      - image: circleci/elixir:1.13-node
     environment:
       APP_NAME: pair_dance
     steps:
