@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: plenum_dev
+
+volumes:
+  data:
+    driver: local
