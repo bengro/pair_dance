@@ -1,0 +1,12 @@
+{
+  "name": "pair_dance",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "cd .. && mix assets.deploy && rm -f _build/esbuild*",
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC"
+}
