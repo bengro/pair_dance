@@ -13,19 +13,6 @@ jobs:
       - run: mix local.rebar --force
       - run: mix deps.get
       - run: mix test
-  build_web:
-    docker:
-      - image: circleci/elixir:1.13-node
-    working_directory: ~/pair.dance/lib/pair_dance_web/webapp
-    steps:
-      - checkout:
-          path: ~/pair_dance
-      - run: mix local.hex --force
-      - run:
-          command: mix deps.get
-          working_directory: ~/pair_dance
-      - node/install-packages
-      - run: npm run verify
   deploy:
     docker:
       - image: circleci/elixir:1.13-node
