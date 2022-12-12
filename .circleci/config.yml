@@ -1,5 +1,4 @@
-
-version: '2.1'
+version: "2.1"
 orbs:
   node: circleci/node@5.0.3
 jobs:
@@ -40,8 +39,8 @@ jobs:
       - run: ./keep-alive
 parameters:
   run-schedule:
-      type: boolean
-      default: false
+    type: boolean
+    default: false
 workflows:
   build:
     when:
@@ -51,6 +50,10 @@ workflows:
       - deploy:
           requires:
             - build_phoenix
+          filters:
+            branches:
+              only:
+                - main
   keep_alive:
     when: << pipeline.parameters.run-schedule >>
     jobs:
