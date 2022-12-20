@@ -64,21 +64,26 @@ defmodule PairDance.TeamsTest do
 
     @invalid_attrs %{name: nil}
 
+    defp create_member(attrs \\ %{}) do
+      team = team_fixture()
+      member = member_fixture(Enum.into(%{:team_id => team.id}, attrs))
+      member
+    end
+
     test "list_members/0 returns all members" do
-      member = member_fixture()
+      member = create_member()
       assert Teams.list_members() == [member]
     end
 
     test "get_member!/1 returns the member with given id" do
-      member = member_fixture()
+      member = create_member()
       assert Teams.get_member!(member.id) == member
     end
 
     test "create_member/1 with valid data creates a member" do
-      valid_attrs = %{name: "some name"}
-
-      assert {:ok, %Member{} = member} = Teams.create_member(valid_attrs)
-      assert member.name == "some name"
+      team = team_fixture()
+      assert {:ok, %Member{} = member} = Teams.create_member(%{name: "David B", team_id: team.id})
+      assert member.name == "David B"
     end
 
     test "create_member/1 with invalid data returns error changeset" do
@@ -86,27 +91,27 @@ defmodule PairDance.TeamsTest do
     end
 
     test "update_member/2 with valid data updates the member" do
-      member = member_fixture()
-      update_attrs = %{name: "some updated name"}
+      member = create_member()
+      update_attrs = %{name: "Tod L"}
 
       assert {:ok, %Member{} = member} = Teams.update_member(member, update_attrs)
-      assert member.name == "some updated name"
+      assert member.name == "Tod L"
     end
 
     test "update_member/2 with invalid data returns error changeset" do
-      member = member_fixture()
+      member = create_member()
       assert {:error, %Ecto.Changeset{}} = Teams.update_member(member, @invalid_attrs)
       assert member == Teams.get_member!(member.id)
     end
 
     test "delete_member/1 deletes the member" do
-      member = member_fixture()
+      member = create_member()
       assert {:ok, %Member{}} = Teams.delete_member(member)
       assert_raise Ecto.NoResultsError, fn -> Teams.get_member!(member.id) end
     end
 
     test "change_member/1 returns a member changeset" do
-      member = member_fixture()
+      member = create_member()
       assert %Ecto.Changeset{} = Teams.change_member(member)
     end
   end

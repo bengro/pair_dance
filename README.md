@@ -39,6 +39,11 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
+### Notes
+
+- Associations between tables [tutorial](https://alchemist.camp/episodes/ecto-beginner-basic-associations)
+- Set up seeds, e.g. like in [this project](https://github.com/space-rocket/Elixir-Phoenix-Foreign-Key-Example)
+
 ### Learn more about Phoenix
 
 - Official website: https://www.phoenixframework.org/

@@ -4,6 +4,7 @@ defmodule PairDance.Teams.Member do
 
   schema "members" do
     field :name, :string
+    belongs_to :team, PairDance.Teams.Team
 
     timestamps()
   end
@@ -11,7 +12,8 @@ defmodule PairDance.Teams.Member do
   @doc false
   def changeset(member, attrs) do
     member
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :team_id])
+    |> foreign_key_constraint(:team_id)
+    |> validate_required([:name, :team_id])
   end
 end

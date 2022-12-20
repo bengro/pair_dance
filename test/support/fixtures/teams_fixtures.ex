@@ -19,7 +19,7 @@ defmodule PairDance.TeamsFixtures do
   end
 
   @doc """
-  Generate a member.
+  Generate a member, assumes a valid team id is passed in.
   """
   def member_fixture(attrs \\ %{}) do
     {:ok, member} =

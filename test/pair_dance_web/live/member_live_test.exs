@@ -4,12 +4,12 @@ defmodule PairDanceWeb.MemberLiveTest do
   import Phoenix.LiveViewTest
   import PairDance.TeamsFixtures
 
-  @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
 
   defp create_member(_) do
-    member = member_fixture()
+    team = team_fixture()
+    member = member_fixture(%{:team_id => team.id, :name => "Alice"})
     %{member: member}
   end
 
@@ -35,9 +35,12 @@ defmodule PairDanceWeb.MemberLiveTest do
              |> form("#member-form", member: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
+      a_team = team_fixture()
+      valid_member = %{name: "some name", team_id: a_team.id}
+
       {:ok, _, html} =
         index_live
-        |> form("#member-form", member: @create_attrs)
+        |> form("#member-form", member: valid_member)
         |> render_submit()
         |> follow_redirect(conn, ~p"/members")
 

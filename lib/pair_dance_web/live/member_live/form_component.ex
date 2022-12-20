@@ -21,6 +21,7 @@ defmodule PairDanceWeb.MemberLive.FormComponent do
         phx-submit="save"
       >
         <.input field={{f, :name}} type="text" label="name" />
+        <.input field={{f, :team_id}} type="text" label="Team ID" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Member</.button>
         </:actions>
