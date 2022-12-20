@@ -1,7 +1,8 @@
-<header class="px-4 sm:px-6 lg:px-8">
-<h1>Pair Dance</h1>
+<header class="mx-auto max-w-2xl">
+  <h1>Pair Dance</h1>
 </header>
-<main class="px-4 py-20 sm:px-6 lg:px-8">
+
+<main class="py-10">
   <div class="mx-auto max-w-2xl">
     <.flash kind={:info} title="Success!" flash={@flash} />
     <.flash kind={:error} title="Error!" flash={@flash} />
@@ -16,6 +17,19 @@
     >
       Attempting to reconnect <Heroicons.arrow_path class="ml-1 w-3 h-3 inline animate-spin" />
     </.flash>
+    <div>
+      <ul class="main-menu">
+        <li>
+          <.link href={~p"/teams"}>Teams</.link>
+        </li>
+        <li>
+          <.link href={~p"/tasks"}>Tasks</.link>
+        </li>
+        <li>
+          <.link href={~p"/members"}>Members</.link>
+        </li>
+      </ul>
+    </div>
     <%= @inner_content %>
   </div>
 </main>

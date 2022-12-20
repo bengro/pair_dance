@@ -3,3 +3,23 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+ul.main-menu {
+  display: flex;
+  margin: 30px 0;
+}
+
+ul.main-menu li {
+  flex-grow: 1;
+  border: 1px solid black;
+  margin: 15px;
+}
+
+ul.main-menu li a {
+  margin: 0;
+  display: block;
+  padding: 15px;
+}
+
+ul.main-menu li a:hover {
+  background: lightslategray
+}
