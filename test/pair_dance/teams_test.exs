@@ -1,0 +1,167 @@
+defmodule PairDance.TeamsTest do
+  use PairDance.DataCase
+
+  alias PairDance.Teams
+
+  describe "teams" do
+    alias PairDance.Teams.Team
+
+    import PairDance.TeamsFixtures
+
+    @invalid_attrs %{name: nil}
+
+    test "list_teams/0 returns all teams" do
+      team = team_fixture()
+      assert Teams.list_teams() == [team]
+    end
+
+    test "get_team!/1 returns the team with given id" do
+      team = team_fixture()
+      assert Teams.get_team!(team.id) == team
+    end
+
+    test "create_team/1 with valid data creates a team" do
+      valid_attrs = %{name: "some name"}
+
+      assert {:ok, %Team{} = team} = Teams.create_team(valid_attrs)
+      assert team.name == "some name"
+    end
+
+    test "create_team/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Teams.create_team(@invalid_attrs)
+    end
+
+    test "update_team/2 with valid data updates the team" do
+      team = team_fixture()
+      update_attrs = %{name: "some updated name"}
+
+      assert {:ok, %Team{} = team} = Teams.update_team(team, update_attrs)
+      assert team.name == "some updated name"
+    end
+
+    test "update_team/2 with invalid data returns error changeset" do
+      team = team_fixture()
+      assert {:error, %Ecto.Changeset{}} = Teams.update_team(team, @invalid_attrs)
+      assert team == Teams.get_team!(team.id)
+    end
+
+    test "delete_team/1 deletes the team" do
+      team = team_fixture()
+      assert {:ok, %Team{}} = Teams.delete_team(team)
+      assert_raise Ecto.NoResultsError, fn -> Teams.get_team!(team.id) end
+    end
+
+    test "change_team/1 returns a team changeset" do
+      team = team_fixture()
+      assert %Ecto.Changeset{} = Teams.change_team(team)
+    end
+  end
+
+  describe "members" do
+    alias PairDance.Teams.Member
+
+    import PairDance.TeamsFixtures
+
+    @invalid_attrs %{name: nil}
+
+    test "list_members/0 returns all members" do
+      member = member_fixture()
+      assert Teams.list_members() == [member]
+    end
+
+    test "get_member!/1 returns the member with given id" do
+      member = member_fixture()
+      assert Teams.get_member!(member.id) == member
+    end
+
+    test "create_member/1 with valid data creates a member" do
+      valid_attrs = %{name: "some name"}
+
+      assert {:ok, %Member{} = member} = Teams.create_member(valid_attrs)
+      assert member.name == "some name"
+    end
+
+    test "create_member/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Teams.create_member(@invalid_attrs)
+    end
+
+    test "update_member/2 with valid data updates the member" do
+      member = member_fixture()
+      update_attrs = %{name: "some updated name"}
+
+      assert {:ok, %Member{} = member} = Teams.update_member(member, update_attrs)
+      assert member.name == "some updated name"
+    end
+
+    test "update_member/2 with invalid data returns error changeset" do
+      member = member_fixture()
+      assert {:error, %Ecto.Changeset{}} = Teams.update_member(member, @invalid_attrs)
+      assert member == Teams.get_member!(member.id)
+    end
+
+    test "delete_member/1 deletes the member" do
+      member = member_fixture()
+      assert {:ok, %Member{}} = Teams.delete_member(member)
+      assert_raise Ecto.NoResultsError, fn -> Teams.get_member!(member.id) end
+    end
+
+    test "change_member/1 returns a member changeset" do
+      member = member_fixture()
+      assert %Ecto.Changeset{} = Teams.change_member(member)
+    end
+  end
+
+  describe "tasks" do
+    alias PairDance.Teams.Task
+
+    import PairDance.TeamsFixtures
+
+    @invalid_attrs %{name: nil}
+
+    test "list_tasks/0 returns all tasks" do
+      task = task_fixture()
+      assert Teams.list_tasks() == [task]
+    end
+
+    test "get_task!/1 returns the task with given id" do
+      task = task_fixture()
+      assert Teams.get_task!(task.id) == task
+    end
+
+    test "create_task/1 with valid data creates a task" do
+      valid_attrs = %{name: "some name"}
+
+      assert {:ok, %Task{} = task} = Teams.create_task(valid_attrs)
+      assert task.name == "some name"
+    end
+
+    test "create_task/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Teams.create_task(@invalid_attrs)
+    end
+
+    test "update_task/2 with valid data updates the task" do
+      task = task_fixture()
+      update_attrs = %{name: "some updated name"}
+
+      assert {:ok, %Task{} = task} = Teams.update_task(task, update_attrs)
+      assert task.name == "some updated name"
+    end
+
+    test "update_task/2 with invalid data returns error changeset" do
+      task = task_fixture()
+      assert {:error, %Ecto.Changeset{}} = Teams.update_task(task, @invalid_attrs)
+      assert task == Teams.get_task!(task.id)
+    end
+
+    test "delete_task/1 deletes the task" do
+      task = task_fixture()
+      assert {:ok, %Task{}} = Teams.delete_task(task)
+      assert_raise Ecto.NoResultsError, fn -> Teams.get_task!(task.id) end
+    end
+
+    test "change_task/1 returns a task changeset" do
+      task = task_fixture()
+      assert %Ecto.Changeset{} = Teams.change_task(task)
+    end
+  end
+end

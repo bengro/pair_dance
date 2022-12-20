@@ -6,15 +6,17 @@ defmodule PairDanceWeb.AuthController do
 
   alias Ueberauth.Auth
 
-  def request(conn, _params) do
-    render(conn, :home, current_user: get_session(conn, :current_user))
+  @redirect_url "/auth"
+
+  def index(conn, _params) do
+    render(conn, :index, current_user: get_session(conn, :current_user))
   end
 
   def delete(conn, _params) do
     conn
     |> put_flash(:info, "You have been logged out!")
     |> clear_session()
-    |> redirect(to: "/")
+    |> redirect(to: @redirect_url)
   end
 
   def callback(
@@ -27,7 +29,7 @@ defmodule PairDanceWeb.AuthController do
       ) do
     conn
     |> put_flash(:error, "Failed to authenticate.")
-    |> redirect(to: "/")
+    |> redirect(to: @redirect_url)
   end
 
   def callback(
@@ -44,12 +46,12 @@ defmodule PairDanceWeb.AuthController do
         |> put_flash(:info, "Successfully authenticated.")
         |> put_session(:current_user, user)
         |> configure_session(renew: true)
-        |> redirect(to: "/")
+        |> redirect(to: @redirect_url)
 
       {:error, reason} ->
         conn
         |> put_flash(:error, reason)
-        |> redirect(to: "/")
+        |> redirect(to: @redirect_url)
     end
   end
 
