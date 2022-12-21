@@ -4,12 +4,12 @@ defmodule PairDanceWeb.TaskLiveTest do
   import Phoenix.LiveViewTest
   import PairDance.TeamsFixtures
 
-  @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
 
   defp create_task(_) do
-    task = task_fixture()
+    team = team_fixture()
+    task = task_fixture(%{team_id: team.id})
     %{task: task}
   end
 
@@ -35,9 +35,12 @@ defmodule PairDanceWeb.TaskLiveTest do
              |> form("#task-form", task: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
+      team = team_fixture()
+      valid_task = %{name: "a new task", team_id: team.id}
+
       {:ok, _, html} =
         index_live
-        |> form("#task-form", task: @create_attrs)
+        |> form("#task-form", task: valid_task)
         |> render_submit()
         |> follow_redirect(conn, ~p"/tasks")
 

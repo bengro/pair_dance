@@ -4,6 +4,7 @@ defmodule PairDance.Teams.Task do
 
   schema "tasks" do
     field :name, :string
+    belongs_to(:team, PairDance.Teams.Team)
 
     timestamps()
   end
@@ -11,7 +12,8 @@ defmodule PairDance.Teams.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :team_id])
+    |> foreign_key_constraint(:team_id)
+    |> validate_required([:name, :team_id])
   end
 end

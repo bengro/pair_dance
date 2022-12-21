@@ -5,6 +5,7 @@ defmodule PairDance.Teams.Team do
   schema "teams" do
     field :name, :string
     has_many(:members, PairDance.Teams.Member)
+    has_many(:tasks, PairDance.Teams.Task)
 
     timestamps()
   end

@@ -64,19 +64,19 @@ defmodule PairDance.TeamsTest do
 
     @invalid_attrs %{name: nil}
 
-    defp create_member(attrs \\ %{}) do
+    defp create_team_and_member(attrs \\ %{}) do
       team = team_fixture()
       member = member_fixture(Enum.into(%{:team_id => team.id}, attrs))
       member
     end
 
     test "list_members/0 returns all members" do
-      member = create_member()
+      member = create_team_and_member()
       assert Teams.list_members() == [member]
     end
 
     test "get_member!/1 returns the member with given id" do
-      member = create_member()
+      member = create_team_and_member()
       assert Teams.get_member!(member.id) == member
     end
 
@@ -91,7 +91,7 @@ defmodule PairDance.TeamsTest do
     end
 
     test "update_member/2 with valid data updates the member" do
-      member = create_member()
+      member = create_team_and_member()
       update_attrs = %{name: "Tod L"}
 
       assert {:ok, %Member{} = member} = Teams.update_member(member, update_attrs)
@@ -99,19 +99,19 @@ defmodule PairDance.TeamsTest do
     end
 
     test "update_member/2 with invalid data returns error changeset" do
-      member = create_member()
+      member = create_team_and_member()
       assert {:error, %Ecto.Changeset{}} = Teams.update_member(member, @invalid_attrs)
       assert member == Teams.get_member!(member.id)
     end
 
     test "delete_member/1 deletes the member" do
-      member = create_member()
+      member = create_team_and_member()
       assert {:ok, %Member{}} = Teams.delete_member(member)
       assert_raise Ecto.NoResultsError, fn -> Teams.get_member!(member.id) end
     end
 
     test "change_member/1 returns a member changeset" do
-      member = create_member()
+      member = create_team_and_member()
       assert %Ecto.Changeset{} = Teams.change_member(member)
     end
   end
@@ -123,18 +123,25 @@ defmodule PairDance.TeamsTest do
 
     @invalid_attrs %{name: nil}
 
+    defp create_team_and_task(attrs \\ %{}) do
+      team = team_fixture()
+      member = task_fixture(Enum.into(%{:team_id => team.id}, attrs))
+      member
+    end
+
     test "list_tasks/0 returns all tasks" do
-      task = task_fixture()
+      task = create_team_and_task()
       assert Teams.list_tasks() == [task]
     end
 
     test "get_task!/1 returns the task with given id" do
-      task = task_fixture()
+      task = create_team_and_task()
       assert Teams.get_task!(task.id) == task
     end
 
     test "create_task/1 with valid data creates a task" do
-      valid_attrs = %{name: "some name"}
+      team = team_fixture()
+      valid_attrs = %{name: "some name", team_id: team.id}
 
       assert {:ok, %Task{} = task} = Teams.create_task(valid_attrs)
       assert task.name == "some name"
@@ -145,7 +152,7 @@ defmodule PairDance.TeamsTest do
     end
 
     test "update_task/2 with valid data updates the task" do
-      task = task_fixture()
+      task = create_team_and_task()
       update_attrs = %{name: "some updated name"}
 
       assert {:ok, %Task{} = task} = Teams.update_task(task, update_attrs)
@@ -153,19 +160,19 @@ defmodule PairDance.TeamsTest do
     end
 
     test "update_task/2 with invalid data returns error changeset" do
-      task = task_fixture()
+      task = create_team_and_task()
       assert {:error, %Ecto.Changeset{}} = Teams.update_task(task, @invalid_attrs)
       assert task == Teams.get_task!(task.id)
     end
 
     test "delete_task/1 deletes the task" do
-      task = task_fixture()
+      task = create_team_and_task()
       assert {:ok, %Task{}} = Teams.delete_task(task)
       assert_raise Ecto.NoResultsError, fn -> Teams.get_task!(task.id) end
     end
 
     test "change_task/1 returns a task changeset" do
-      task = task_fixture()
+      task = create_team_and_task()
       assert %Ecto.Changeset{} = Teams.change_task(task)
     end
   end
