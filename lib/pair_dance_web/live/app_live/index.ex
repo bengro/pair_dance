@@ -5,10 +5,19 @@ defmodule PairDanceWeb.PairingTableLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :members, list_members())}
+    socket_with_assigns =
+      socket
+      |> assign(:members, list_members())
+      |> assign(:tasks, list_tasks())
+
+    {:ok, socket_with_assigns}
   end
 
   defp list_members do
     Teams.list_members()
+  end
+
+  defp list_tasks do
+    Teams.list_tasks()
   end
 end

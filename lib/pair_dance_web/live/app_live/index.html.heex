@@ -1,0 +1,17 @@
+<h2>
+  Team members:
+</h2>
+<ul>
+  <%= for member <- @members do %>
+    <li><%= member.name %></li>
+  <% end %>
+</ul>
+
+<h2>
+  Tasks:
+</h2>
+<ul>
+  <%= for task <- @tasks do %>
+    <li><%= task.name %></li>
+  <% end %>
+</ul>
