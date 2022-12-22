@@ -1,20 +1,20 @@
 <.header>
   Listing Members
   <:actions>
-    <.link patch={~p"/members/new"}>
+    <.link patch={~p"/admin/members/new"}>
       <.button>New Member</.button>
     </.link>
   </:actions>
 </.header>
 
-<.table id="members" rows={@members} row_click={&JS.navigate(~p"/members/#{&1}")}>
+<.table id="members" rows={@members} row_click={&JS.navigate(~p"/admin/members/#{&1}")}>
   <:col :let={member} label="Name"><%= member.name %></:col>
   <:col :let={member} label="Team"><%= member.team_id %></:col>
   <:action :let={member}>
     <div class="sr-only">
-      <.link navigate={~p"/members/#{member}"}>Show</.link>
+      <.link navigate={~p"/admin/members/#{member}"}>Show</.link>
     </div>
-    <.link patch={~p"/members/#{member}/edit"}>Edit</.link>
+    <.link patch={~p"/admin/members/#{member}/edit"}>Edit</.link>
   </:action>
   <:action :let={member}>
     <.link phx-click={JS.push("delete", value: %{id: member.id})} data-confirm="Are you sure?">
@@ -35,6 +35,6 @@
     title={@page_title}
     action={@live_action}
     member={@member}
-    navigate={~p"/members"}
+    navigate={~p"/admin/members"}
   />
 </.modal>

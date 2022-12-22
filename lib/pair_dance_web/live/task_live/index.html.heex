@@ -1,20 +1,20 @@
 <.header>
   Listing Tasks
   <:actions>
-    <.link patch={~p"/tasks/new"}>
+    <.link patch={~p"/admin/tasks/new"}>
       <.button>New Task</.button>
     </.link>
   </:actions>
 </.header>
 
-<.table id="tasks" rows={@tasks} row_click={&JS.navigate(~p"/tasks/#{&1}")}>
+<.table id="tasks" rows={@tasks} row_click={&JS.navigate(~p"/admin/tasks/#{&1}")}>
   <:col :let={task} label="Name"><%= task.name %></:col>
   <:col :let={member} label="Team"><%= member.team_id %></:col>
   <:action :let={task}>
     <div class="sr-only">
-      <.link navigate={~p"/tasks/#{task}"}>Show</.link>
+      <.link navigate={~p"/admin/tasks/#{task}"}>Show</.link>
     </div>
-    <.link patch={~p"/tasks/#{task}/edit"}>Edit</.link>
+    <.link patch={~p"/admin/tasks/#{task}/edit"}>Edit</.link>
   </:action>
   <:action :let={task}>
     <.link phx-click={JS.push("delete", value: %{id: task.id})} data-confirm="Are you sure?">
@@ -27,7 +27,7 @@
   :if={@live_action in [:new, :edit]}
   id="task-modal"
   show
-  on_cancel={JS.navigate(~p"/tasks")}
+  on_cancel={JS.navigate(~p"/admin/tasks")}
 >
   <.live_component
     module={PairDanceWeb.TaskLive.FormComponent}
@@ -35,6 +35,6 @@
     title={@page_title}
     action={@live_action}
     task={@task}
-    navigate={~p"/tasks"}
+    navigate={~p"/admin/tasks"}
   />
 </.modal>

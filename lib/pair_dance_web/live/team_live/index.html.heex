@@ -1,20 +1,20 @@
 <.header>
   Listing Teams
   <:actions>
-    <.link patch={~p"/teams/new"}>
+    <.link patch={~p"/admin/teams/new"}>
       <.button>New Team</.button>
     </.link>
   </:actions>
 </.header>
 
-<.table id="teams" rows={@teams} row_click={&JS.navigate(~p"/teams/#{&1}")}>
+<.table id="teams" rows={@teams} row_click={&JS.navigate(~p"/admin/teams/#{&1}")}>
   <:col :let={team} label="ID"><%= team.id %></:col>
   <:col :let={team} label="Name"><%= team.name %></:col>
   <:action :let={team}>
     <div class="sr-only">
-      <.link navigate={~p"/teams/#{team}"}>Show</.link>
+      <.link navigate={~p"/admin/teams/#{team}"}>Show</.link>
     </div>
-    <.link patch={~p"/teams/#{team}/edit"}>Edit</.link>
+    <.link patch={~p"/admin/teams/#{team}/edit"}>Edit</.link>
   </:action>
   <:action :let={team}>
     <.link phx-click={JS.push("delete", value: %{id: team.id})} data-confirm="Are you sure?">
@@ -27,7 +27,7 @@
   :if={@live_action in [:new, :edit]}
   id="team-modal"
   show
-  on_cancel={JS.navigate(~p"/teams")}
+  on_cancel={JS.navigate(~p"/admin/teams")}
 >
   <.live_component
     module={PairDanceWeb.TeamLive.FormComponent}
@@ -35,6 +35,6 @@
     title={@page_title}
     action={@live_action}
     team={@team}
-    navigate={~p"/teams"}
+    navigate={~p"/admin/teams"}
   />
 </.modal>

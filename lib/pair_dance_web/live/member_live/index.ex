@@ -1,5 +1,5 @@
 defmodule PairDanceWeb.MemberLive.Index do
-  use PairDanceWeb, :live_view
+  use(PairDanceWeb, :live_view)
 
   alias PairDance.Teams
   alias PairDance.Teams.Member

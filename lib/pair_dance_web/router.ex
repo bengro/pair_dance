@@ -5,7 +5,6 @@ defmodule PairDanceWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {PairDanceWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -14,10 +13,23 @@ defmodule PairDanceWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", PairDanceWeb do
-    pipe_through :browser
+  pipeline :admin do
+    plug :put_root_layout, {PairDanceWeb.Layouts, :admin}
+  end
 
-    get "/", PageController, :index
+  pipeline :app do
+    plug :put_root_layout, {PairDanceWeb.Layouts, :app}
+  end
+
+  scope "/", PairDanceWeb do
+    pipe_through [:browser, :app]
+
+    # pairing table / main app
+    live "/", PairingTableLive.Index, :index
+  end
+
+  scope "/admin", PairDanceWeb do
+    pipe_through [:browser, :admin]
 
     # team management
     live "/teams", TeamLive.Index, :index
