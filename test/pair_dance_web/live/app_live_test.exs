@@ -32,5 +32,17 @@ defmodule PairDanceWeb.AppLiveTest do
       assert html =~ "Tasks:"
       assert html =~ first_task.name
     end
+
+    test "create a task", %{conn: conn, team: team} do
+      {:ok, index_live, _} = live(conn, ~p"/")
+
+      {:ok, _, html} =
+        index_live
+        |> form("#new-task-form", task: %{ name: "my task name" })
+        |> render_submit()
+
+
+      assert html =~ "my task name"
+    end
   end
 end

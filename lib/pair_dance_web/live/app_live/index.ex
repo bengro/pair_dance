@@ -2,6 +2,7 @@ defmodule PairDanceWeb.PairingTableLive.Index do
   use PairDanceWeb, :live_view
 
   alias PairDance.Teams
+  alias PairDance.Teams.Task
 
   @impl true
   def mount(_params, _session, socket) do
@@ -9,8 +10,14 @@ defmodule PairDanceWeb.PairingTableLive.Index do
       socket
       |> assign(:members, list_members())
       |> assign(:tasks, list_tasks())
+      |> assign(:task, %Task{team_id: 1})
 
     {:ok, socket_with_assigns}
+  end
+
+  defp apply_action(socket, :new, _params) do
+    socket
+    |> assign(:page_title, "New Task")
   end
 
   defp list_members do
@@ -19,5 +26,10 @@ defmodule PairDanceWeb.PairingTableLive.Index do
 
   defp list_tasks do
     Teams.list_tasks()
+  end
+
+  @impl true
+  def handle_event("create-task", %{}, socket) do
+    {:noreply, socket}
   end
 end
