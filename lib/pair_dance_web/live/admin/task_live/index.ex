@@ -6,7 +6,7 @@ defmodule PairDanceWeb.TaskLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :tasks, list_tasks())}
+    {:ok, assign(socket, :tasks, Teams.list_all_tasks())}
   end
 
   @impl true
@@ -37,10 +37,7 @@ defmodule PairDanceWeb.TaskLive.Index do
     task = Teams.get_task!(id)
     {:ok, _} = Teams.delete_task(task)
 
-    {:noreply, assign(socket, :tasks, list_tasks())}
+    {:noreply, assign(socket, :tasks, Teams.list_all_tasks())}
   end
 
-  defp list_tasks do
-    Teams.list_tasks()
-  end
 end

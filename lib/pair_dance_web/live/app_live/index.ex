@@ -15,7 +15,7 @@ defmodule PairDanceWeb.PairingTableLive.Index do
         socket
         |> assign(:team_id, team_id)
         |> assign(:members, Teams.list_members(team_id))
-        |> assign(:tasks, list_tasks())
+        |> assign(:tasks, Teams.list_tasks(team_id))
         |> assign(:task, %Task{team_id: team_id})
 
       {:ok, socket_with_assigns}
@@ -66,10 +66,6 @@ defmodule PairDanceWeb.PairingTableLive.Index do
 
   defp get_team(team_id) do
     Teams.get_team(team_id)
-  end
-
-  defp list_tasks do
-    Teams.list_tasks()
   end
 
   @impl true
