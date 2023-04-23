@@ -20,6 +20,15 @@ defmodule PairDance.TeamsTest do
       assert Teams.get_team!(team.id) == team
     end
 
+    test "get_team/1 returns the team with given id" do
+      team = team_fixture()
+      assert Teams.get_team(team.id) == team
+    end
+
+    test "get_team/1 returns an error when team not found" do
+      assert Teams.get_team(99999) == nil
+    end
+
     test "create_team/1 with valid data creates a team" do
       valid_attrs = %{name: "some name"}
 

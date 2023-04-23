@@ -15,6 +15,12 @@ defmodule PairDanceWeb.AppLiveTest do
   describe "Index" do
     setup [:setup_data]
 
+    test "non-existing team", %{conn: conn} do
+      {:ok, _index_live, html} = live(conn, ~p"/teams/99999")
+
+      assert html =~ "not found"
+    end
+
     test "lists all members", %{conn: conn, members: members, team: team} do
       {:ok, _index_live, html} = live(conn, ~p"/teams/#{team.id}")
 
