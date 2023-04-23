@@ -15,8 +15,8 @@ defmodule PairDanceWeb.AppLiveTest do
   describe "Index" do
     setup [:setup_data]
 
-    test "lists all members", %{conn: conn, members: members} do
-      {:ok, _index_live, html} = live(conn, ~p"/")
+    test "lists all members", %{conn: conn, members: members, team: team} do
+      {:ok, _index_live, html} = live(conn, ~p"/teams/#{team.id}")
 
       [first_member] = members
 
@@ -24,8 +24,8 @@ defmodule PairDanceWeb.AppLiveTest do
       assert html =~ first_member.name
     end
 
-    test "lists all tasks", %{conn: conn, tasks: tasks} do
-      {:ok, _index_live, html} = live(conn, ~p"/")
+    test "lists all tasks", %{conn: conn, tasks: tasks, team: team} do
+      {:ok, _index_live, html} = live(conn, ~p"/teams/#{team.id}")
 
       [first_task] = tasks
 
@@ -34,15 +34,15 @@ defmodule PairDanceWeb.AppLiveTest do
     end
 
     test "create a task", %{conn: conn, team: team} do
-      {:ok, index_live, _} = live(conn, ~p"/")
+      {:ok, index_live, _} = live(conn, ~p"/teams/#{team.id}")
 
-      {:ok, _, html} =
-        index_live
+      html = index_live
         |> form("#new-task-form", task: %{ name: "my task name" })
         |> render_submit()
 
+      {:ok, _, html_after_refresh} = live(conn, ~p"/teams/#{team.id}")
 
-      assert html =~ "my task name"
+      assert html_after_refresh =~ "my task name"
     end
   end
 end

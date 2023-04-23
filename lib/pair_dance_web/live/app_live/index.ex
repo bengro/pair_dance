@@ -5,12 +5,14 @@ defmodule PairDanceWeb.PairingTableLive.Index do
   alias PairDance.Teams.Task
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(%{"id" => team_id_str}, _session, socket) do
+    { team_id, ""} = Integer.parse(team_id_str)
     socket_with_assigns =
       socket
+      |> assign(:team_id, team_id)
       |> assign(:members, list_members())
       |> assign(:tasks, list_tasks())
-      |> assign(:task, %Task{team_id: 1})
+      |> assign(:task, %Task{team_id: team_id})
 
     {:ok, socket_with_assigns}
   end

@@ -25,7 +25,7 @@ defmodule PairDanceWeb.Router do
     pipe_through [:browser, :app]
 
     # pairing table / main app
-    live "/", PairingTableLive.Index, :index
+    live "/teams/:id", PairingTableLive.Index, :index
   end
 
   scope "/admin", PairDanceWeb do
