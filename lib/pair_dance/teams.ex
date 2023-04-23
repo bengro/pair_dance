@@ -7,6 +7,9 @@ defmodule PairDance.Teams do
   alias PairDance.Repo
 
   alias PairDance.Teams.Team
+  alias PairDance.Teams.Member
+  alias PairDance.Teams.Task
+  alias PairDance.Teams.TaskOwnership
 
   @doc """
   Returns the list of teams.
@@ -103,8 +106,6 @@ defmodule PairDance.Teams do
   def change_team(%Team{} = team, attrs \\ %{}) do
     Team.changeset(team, attrs)
   end
-
-  alias PairDance.Teams.Member
 
   @doc """
   Returns the list of members.
@@ -204,8 +205,6 @@ defmodule PairDance.Teams do
     Member.changeset(member, attrs)
   end
 
-  alias PairDance.Teams.Task
-
   @doc """
   Returns the list of tasks.
 
@@ -302,5 +301,24 @@ defmodule PairDance.Teams do
   """
   def change_task(%Task{} = task, attrs \\ %{}) do
     Task.changeset(task, attrs)
+  end
+
+  def create_ownership(%Task{} = task, %Member{} = member) do
+     TaskOwnership.changeset(%TaskOwnership{ task_id: task.id, member_id: member.id }, %{})
+     |> Repo.insert()
+   end
+
+  def remove_ownership(%Task{} = task, %Member{} = member) do
+    member_id = member.id
+    Repo.delete_all from to in TaskOwnership, where: to.member_id == ^member_id
+  end
+
+  def list_ownerships(%Team{} = team) do
+    team_id = team.id
+    Repo.all from m in Member,
+      join: to in TaskOwnership,
+      on: to.member_id == m.id,
+      where: m.team_id == ^team_id,
+      select: to
   end
 end

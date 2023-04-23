@@ -2,11 +2,12 @@ defmodule PairDance.TeamsTest do
   use PairDance.DataCase
 
   alias PairDance.Teams
+  alias PairDance.Teams.TaskOwnership
+
+  import PairDance.TeamsFixtures
 
   describe "teams" do
     alias PairDance.Teams.Team
-
-    import PairDance.TeamsFixtures
 
     @invalid_attrs %{name: nil}
 
@@ -194,5 +195,49 @@ defmodule PairDance.TeamsTest do
       {_,task} = create_team_and_task()
       assert %Ecto.Changeset{} = Teams.change_task(task)
     end
+  end
+
+  describe "task ownership" do
+
+    defp team_member_task(attrs \\ %{}) do
+      team = team_fixture()
+      member = member_fixture(Enum.into(%{:team_id => team.id}, %{}))
+      task = task_fixture(Enum.into(%{:team_id => team.id}, attrs))
+      { team, member, task }
+    end
+
+    test "create and retrieve" do
+      { team, member, task } = team_member_task()
+
+      Teams.create_ownership(task, member)
+      [%TaskOwnership{} = ownership] = Teams.list_ownerships(team)
+
+      assert ownership.task_id == task.id
+      assert ownership.member_id == member.id
+    end
+
+    test "remove task ownership" do
+      { team1, member1, task1 } = team_member_task()
+      { team2, member2, task2 } = team_member_task()
+
+      Teams.create_ownership(task1, member1)
+      Teams.create_ownership(task2, member2)
+      Teams.remove_ownership(task1, member1)
+
+      assert [] = Teams.list_ownerships(team1)
+      assert [_] = Teams.list_ownerships(team2)
+    end
+
+    test "only retrieves ownerships of the specified team" do
+      { team1, member1, task1 } = team_member_task()
+      { _, member2, task2 } = team_member_task()
+
+      Teams.create_ownership(task1, member1)
+      Teams.create_ownership(task2, member2)
+
+      assert [ownership] = Teams.list_ownerships(team1)
+      assert ownership.member_id == member1.id
+    end
+
   end
 end

@@ -42,7 +42,7 @@ defmodule PairDanceWeb.AppLiveTest do
     test "create a task", %{conn: conn, team: team} do
       {:ok, index_live, _} = live(conn, ~p"/teams/#{team.id}")
 
-      html = index_live
+      index_live
         |> form("#new-task-form", task: %{ name: "my task name" })
         |> render_submit()
 
