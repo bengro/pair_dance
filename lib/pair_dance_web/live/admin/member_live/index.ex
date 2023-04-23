@@ -6,7 +6,7 @@ defmodule PairDanceWeb.MemberLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :members, list_members())}
+    {:ok, assign(socket, :members, Teams.list_all_members())}
   end
 
   @impl true
@@ -37,10 +37,6 @@ defmodule PairDanceWeb.MemberLive.Index do
     member = Teams.get_member!(id)
     {:ok, _} = Teams.delete_member(member)
 
-    {:noreply, assign(socket, :members, list_members())}
-  end
-
-  defp list_members do
-    Teams.list_members()
+    {:noreply, assign(socket, :members, Teams.list_all_members())}
   end
 end

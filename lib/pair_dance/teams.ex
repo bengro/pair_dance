@@ -111,12 +111,16 @@ defmodule PairDance.Teams do
 
   ## Examples
 
-      iex> list_members()
+      iex> list_all_members()
       [%Member{}, ...]
 
   """
-  def list_members do
+  def list_all_members do
     Repo.all(Member)
+  end
+
+  def list_members(team_id) do
+    Repo.all from m in Member, where: m.team_id == ^team_id
   end
 
   @doc """

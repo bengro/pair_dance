@@ -76,16 +76,21 @@ defmodule PairDance.TeamsTest do
     defp create_team_and_member(attrs \\ %{}) do
       team = team_fixture()
       member = member_fixture(Enum.into(%{:team_id => team.id}, attrs))
-      member
+      { team, member }
     end
 
     test "list_members/0 returns all members" do
-      member = create_team_and_member()
-      assert Teams.list_members() == [member]
+      { _, member } = create_team_and_member()
+      assert Teams.list_all_members() == [member]
+    end
+
+    test "list_members/1 returns all members of the team" do
+      { team, member } = create_team_and_member()
+      assert Teams.list_members(team.id) == [member]
     end
 
     test "get_member!/1 returns the member with given id" do
-      member = create_team_and_member()
+      { _, member } = create_team_and_member()
       assert Teams.get_member!(member.id) == member
     end
 
@@ -100,7 +105,7 @@ defmodule PairDance.TeamsTest do
     end
 
     test "update_member/2 with valid data updates the member" do
-      member = create_team_and_member()
+      { _, member } = create_team_and_member()
       update_attrs = %{name: "Tod L"}
 
       assert {:ok, %Member{} = member} = Teams.update_member(member, update_attrs)
@@ -108,19 +113,19 @@ defmodule PairDance.TeamsTest do
     end
 
     test "update_member/2 with invalid data returns error changeset" do
-      member = create_team_and_member()
+      { _, member } = create_team_and_member()
       assert {:error, %Ecto.Changeset{}} = Teams.update_member(member, @invalid_attrs)
       assert member == Teams.get_member!(member.id)
     end
 
     test "delete_member/1 deletes the member" do
-      member = create_team_and_member()
+      { _, member } = create_team_and_member()
       assert {:ok, %Member{}} = Teams.delete_member(member)
       assert_raise Ecto.NoResultsError, fn -> Teams.get_member!(member.id) end
     end
 
     test "change_member/1 returns a member changeset" do
-      member = create_team_and_member()
+      { _, member } = create_team_and_member()
       assert %Ecto.Changeset{} = Teams.change_member(member)
     end
   end
@@ -134,8 +139,8 @@ defmodule PairDance.TeamsTest do
 
     defp create_team_and_task(attrs \\ %{}) do
       team = team_fixture()
-      member = task_fixture(Enum.into(%{:team_id => team.id}, attrs))
-      member
+      task = task_fixture(Enum.into(%{:team_id => team.id}, attrs))
+      task
     end
 
     test "list_tasks/0 returns all tasks" do
