@@ -6,19 +6,23 @@ A tool to encourage and orchestrate pair programming.
 
 ### Model
 
-- Team: A team has a name and consists of team members
-- Team member: Has a name, and potentially an email
-- Task: Piece of work a team member is working on
-- Allocation: A configuration of team members and tasks
+- User: a person who has logged in to pair.dance via SSO.
+- Team: A group of team members.
+- Member: a user associated with a team. 
+- Task: Piece of work a team member is working on. May be linked to an entity in a backlog management tool (e.g. Jira, Pivotal Tracker).
+- Assignment: An assignment links a member with a task.  
 
 ### Business rules
 
-The Pair Dance consists of optimally allocating team members to tasks such that:
+The Pair Dance consists of optimally allocating team members to tasks.
 
-- Their personal choice is taken into account where possible
-- Knowledge is optimally shared among the team members
-- Skills are applied and transferred
-- Team members may have specialist areas but have worked an all aspects of the system
+#### Teams
+- All users can create unlimited number of teams.
+- The user who created the team becomes its first member.
+- Every team member can invite more people.
+
+#### Assignments
+- Any number of members can be assigned to a single task. A single member may be assigned to any number of tasks.
 
 ## Feature ideas
 
@@ -26,6 +30,10 @@ The Pair Dance consists of optimally allocating team members to tasks such that:
 - Allocations could happen off-platform on Slack
 - Insights into pairing patterns can surface Retro conversations
 - Tuple API to get actual allocations
+- Their personal choice is taken into account where possible
+- Knowledge is optimally shared among the team members
+- Skills are applied and transferred
+- Team members may have specialist areas but have worked an all aspects of the system
 
 ## Development
 
