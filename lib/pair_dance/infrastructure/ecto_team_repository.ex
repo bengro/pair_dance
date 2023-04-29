@@ -32,7 +32,12 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
   def find_all() do
     Repo.all(TeamEntity)
     |> Enum.map(fn entity -> %Team{ id: entity.id, name: entity.name } end)
+  end
 
+  @impl TeamRepository
+  def update(team_id, patch) do
+    {:ok, entity} = TeamEntity.changeset(%TeamEntity{ id: team_id }, patch) |> Repo.update()
+    {:ok, from_entity(entity)}
   end
 
   @impl TeamRepository

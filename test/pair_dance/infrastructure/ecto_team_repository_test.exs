@@ -33,6 +33,15 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     assert String.starts_with?(name, "team")
   end
 
+  test "update a team" do
+    {:ok, team} = EctoTeamRepository.create("original name")
+
+    {:ok, _} = EctoTeamRepository.update(team.id, %{name: "new name"})
+    %Team{name: name} = EctoTeamRepository.find(team.id)
+
+    assert name == "new name"
+  end
+
   test "delete a team" do
     {:ok, %Team{ id: id }} = EctoTeamRepository.create("comet")
 
