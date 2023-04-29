@@ -37,6 +37,17 @@ The Pair Dance consists of optimally allocating team members to tasks.
 
 ## Development
 
+Check types:
+
+```shell
+mix dialyzer
+```
+
+Run tests:
+```shell
+mix test
+```
+
 To start your Phoenix server:
 
 - Install dependencies with `mix deps.get`
