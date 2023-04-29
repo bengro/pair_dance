@@ -7,14 +7,8 @@ defmodule PairDance.TeamsFixtures do
   @doc """
   Generate a team.
   """
-  def team_fixture(attrs \\ %{}) do
-    {:ok, team} =
-      attrs
-      |> Enum.into(%{
-        name: "some name"
-      })
-      |> PairDance.Teams.create_team()
-
+  def team_fixture(name \\ "some name") do
+    {:ok, team} = PairDance.Infrastructure.EctoTeamRepository.create(name)
     team
   end
 

@@ -14,19 +14,9 @@ defmodule PairDance.TeamsTest do
     @invalid_attrs %{name: nil}
 
     test "list_teams/0 returns all teams" do
-      team = team_fixture()
-      assert Teams.list_teams() == [team]
-    end
-
-    test "create_team/1 with valid data creates a team" do
-      valid_attrs = %{name: "some name"}
-
-      assert {:ok, %Team{} = team} = Teams.create_team(valid_attrs)
-      assert team.name == "some name"
-    end
-
-    test "create_team/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Teams.create_team(@invalid_attrs)
+      team_fixture("team name")
+      [team] = Teams.list_teams()
+      assert team.name == "team name"
     end
 
     test "update_team/2 with valid data updates the team" do

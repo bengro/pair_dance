@@ -8,12 +8,6 @@ defmodule PairDance.Teams do
   alias PairDance.Teams.Task
   alias PairDance.Teams.TaskOwnership
 
-  def create_team(attrs \\ %{}) do
-    %Team{}
-    |> Team.changeset(attrs)
-    |> Repo.insert()
-  end
-
   def update_team(%Team{} = team, attrs) do
     team
     |> Team.changeset(attrs)
