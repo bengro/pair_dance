@@ -8,5 +8,7 @@ defmodule PairDance.Domain.TeamRepository do
 
   @callback find(team_id()) :: Team.t() | nil
 
+  @callback find_all() :: list(Team.t())
+
   @callback delete(team_id()) :: {:ok}
 end

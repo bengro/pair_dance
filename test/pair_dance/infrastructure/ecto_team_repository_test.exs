@@ -24,6 +24,15 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     assert EctoTeamRepository.find(-1) == nil
   end
 
+  test "list all teams" do
+    {:ok, _} = EctoTeamRepository.create("team 1")
+    {:ok, _} = EctoTeamRepository.create("team 2")
+
+    [%Team{ name: name }, %Team{}] = EctoTeamRepository.find_all()
+
+    assert String.starts_with?(name, "team")
+  end
+
   test "delete a team" do
     {:ok, %Team{ id: id }} = EctoTeamRepository.create("comet")
 

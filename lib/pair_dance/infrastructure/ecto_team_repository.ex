@@ -29,6 +29,13 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
   end
 
   @impl TeamRepository
+  def find_all() do
+    Repo.all(TeamEntity)
+    |> Enum.map(fn entity -> %Team{ id: entity.id, name: entity.name } end)
+
+  end
+
+  @impl TeamRepository
   def delete(id) do
     {:ok, _entity} = Repo.delete(%TeamEntity{ id: id })
     {:ok}
