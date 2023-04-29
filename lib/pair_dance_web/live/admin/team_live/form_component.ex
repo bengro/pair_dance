@@ -3,6 +3,8 @@ defmodule PairDanceWeb.TeamLive.FormComponent do
 
   alias PairDance.Teams
 
+  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -67,15 +69,12 @@ defmodule PairDanceWeb.TeamLive.FormComponent do
   end
 
   defp save_team(socket, :new, team_params) do
-    case Teams.create_team(team_params) do
+    case TeamRepository.create(team_params["name"]) do
       {:ok, _team} ->
         {:noreply,
          socket
          |> put_flash(:info, "Team created successfully")
          |> push_navigate(to: socket.assigns.navigate)}
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 end

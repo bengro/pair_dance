@@ -3,6 +3,7 @@ defmodule PairDance.Domain.TeamRepository do
   alias PairDance.Domain.Team
 
 
-  @callback create_team(String.t()) :: Team.t()
+  @callback create(String.t()) :: Team.t()
 
+  @callback find(integer()) :: Team.t()
 end
