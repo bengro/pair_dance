@@ -56,7 +56,7 @@ defmodule PairDanceWeb.TeamLive.FormComponent do
   end
 
   defp save_team(socket, :edit, team_params) do
-    case Teams.update_team(socket.assigns.team, team_params) do
+    case TeamRepository.update(socket.assigns.team.id, team_params) do
       {:ok, _team} ->
         {:noreply,
          socket

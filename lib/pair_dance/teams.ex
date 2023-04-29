@@ -8,16 +8,6 @@ defmodule PairDance.Teams do
   alias PairDance.Teams.Task
   alias PairDance.Teams.TaskOwnership
 
-  def update_team(%Team{} = team, attrs) do
-    team
-    |> Team.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def update_team(%PairDance.Domain.Team{} = team, attrs) do
-    change_team(team, attrs) |> Repo.update()
-  end
-
   def change_team(%Team{} = team, attrs) do
     Team.changeset(team, attrs)
   end

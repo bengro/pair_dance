@@ -6,27 +6,9 @@ defmodule PairDance.TeamsTest do
 
   import PairDance.TeamsFixtures
 
-  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
-
   describe "teams" do
-    alias PairDance.Teams.Team
 
     @invalid_attrs %{name: nil}
-
-    test "update_team/2 with valid data updates the team" do
-      team = team_fixture()
-      update_attrs = %{name: "some updated name"}
-
-      assert {:ok, %Team{} = team} = Teams.update_team(team, update_attrs)
-      assert team.name == "some updated name"
-    end
-
-    test "update_team/2 with invalid data returns error changeset" do
-      teamEntity = team_fixture()
-      team = %PairDance.Domain.Team{id: teamEntity.id, name: teamEntity.name}
-      assert {:error, %Ecto.Changeset{}} = Teams.update_team(teamEntity, @invalid_attrs)
-      assert team == TeamRepository.find(teamEntity.id)
-    end
 
     test "change_team/1 returns a team changeset" do
       team = team_fixture()
