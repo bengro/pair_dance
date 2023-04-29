@@ -28,6 +28,12 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
     end
   end
 
+  @impl TeamRepository
+  def delete(id) do
+    {:ok, _entity} = Repo.delete(%TeamEntity{ id: id })
+    {:ok}
+  end
+
   @spec from_entity(TeamEntity) :: Team.t()
   defp from_entity(entity) do
     %Team{ id: entity.id, name: entity.name }

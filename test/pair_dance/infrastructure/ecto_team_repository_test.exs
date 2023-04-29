@@ -19,9 +19,17 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     assert team.name == "comet"
   end
 
+
   test "get a non-existing team" do
     assert EctoTeamRepository.find(-1) == nil
   end
 
+  test "delete a team" do
+    {:ok, %Team{ id: id }} = EctoTeamRepository.create("comet")
+
+    {:ok} = EctoTeamRepository.delete(id)
+
+    assert EctoTeamRepository.find(id) == nil
+  end
 
 end
