@@ -4,6 +4,8 @@ defmodule PairDanceWeb.TeamLive.Index do
   alias PairDance.Teams
   alias PairDance.Teams.Team
 
+  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, :teams, list_teams())}
@@ -34,8 +36,7 @@ defmodule PairDanceWeb.TeamLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    team = Teams.get_team!(id)
-    {:ok, _} = Teams.delete_team(team)
+    {:ok} = TeamRepository.delete(id)
 
     {:noreply, assign(socket, :teams, list_teams())}
   end

@@ -26,10 +26,6 @@ defmodule PairDance.Teams do
     Team.changeset(team, attrs)
   end
 
-  def delete_team(%Team{} = team) do
-    Repo.delete(team)
-  end
-
   def list_teams do
     Repo.all(Team)
   end

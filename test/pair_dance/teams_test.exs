@@ -55,12 +55,6 @@ defmodule PairDance.TeamsTest do
       assert team == Teams.get_team!(team.id)
     end
 
-    test "delete_team/1 deletes the team" do
-      team = team_fixture()
-      assert {:ok, %Team{}} = Teams.delete_team(team)
-      assert_raise Ecto.NoResultsError, fn -> Teams.get_team!(team.id) end
-    end
-
     test "change_team/1 returns a team changeset" do
       team = team_fixture()
       assert %Ecto.Changeset{} = Teams.change_team(team)
