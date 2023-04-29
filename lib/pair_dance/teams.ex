@@ -20,15 +20,21 @@ defmodule PairDance.Teams do
     |> Repo.update()
   end
 
-  def change_team(%Team{} = team, attrs \\ %{}) do
+  def update_team(%PairDance.Domain.Team{} = team, attrs) do
+    change_team(team, attrs) |> Repo.update()
+  end
+
+  def change_team(%Team{} = team, attrs) do
     Team.changeset(team, attrs)
+  end
+
+  def change_team(%PairDance.Domain.Team{} = team, attrs) do
+    Team.changeset(%Team{ name: team.name, id: team.id }, attrs)
   end
 
   def list_teams do
     Repo.all(Team)
   end
-
-  def get_team(id), do: Repo.get(Team, id)
 
   def create_member(attrs \\ %{}) do
     %Member{}

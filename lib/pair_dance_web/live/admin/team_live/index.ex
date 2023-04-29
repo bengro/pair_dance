@@ -19,7 +19,7 @@ defmodule PairDanceWeb.TeamLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Team")
-    |> assign(:team, Teams.get_team(id))
+    |> assign(:team, TeamRepository.find(id))
   end
 
   defp apply_action(socket, :new, _params) do

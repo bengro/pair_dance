@@ -6,6 +6,8 @@ defmodule PairDance.TeamsTest do
 
   import PairDance.TeamsFixtures
 
+  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+
   describe "teams" do
     alias PairDance.Teams.Team
 
@@ -14,15 +16,6 @@ defmodule PairDance.TeamsTest do
     test "list_teams/0 returns all teams" do
       team = team_fixture()
       assert Teams.list_teams() == [team]
-    end
-
-    test "get_team/1 returns the team with given id" do
-      team = team_fixture()
-      assert Teams.get_team(team.id) == team
-    end
-
-    test "get_team/1 returns an error when team not found" do
-      assert Teams.get_team(99999) == nil
     end
 
     test "create_team/1 with valid data creates a team" do
@@ -45,14 +38,15 @@ defmodule PairDance.TeamsTest do
     end
 
     test "update_team/2 with invalid data returns error changeset" do
-      team = team_fixture()
-      assert {:error, %Ecto.Changeset{}} = Teams.update_team(team, @invalid_attrs)
-      assert team == Teams.get_team(team.id)
+      teamEntity = team_fixture()
+      team = %PairDance.Domain.Team{id: teamEntity.id, name: teamEntity.name}
+      assert {:error, %Ecto.Changeset{}} = Teams.update_team(teamEntity, @invalid_attrs)
+      assert team == TeamRepository.find(teamEntity.id)
     end
 
     test "change_team/1 returns a team changeset" do
       team = team_fixture()
-      assert %Ecto.Changeset{} = Teams.change_team(team)
+      assert %Ecto.Changeset{} = Teams.change_team(team, %{})
     end
   end
 

@@ -3,6 +3,8 @@ defmodule PairDanceWeb.TeamLive.Show do
 
   alias PairDance.Teams
 
+  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
@@ -13,7 +15,7 @@ defmodule PairDanceWeb.TeamLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:team, Teams.get_team(id))}
+     |> assign(:team, TeamRepository.find(id))}
   end
 
   defp page_title(:show), do: "Show Team"

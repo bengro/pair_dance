@@ -33,7 +33,7 @@ defmodule PairDanceWeb.TeamLive.FormComponent do
 
   @impl true
   def update(%{team: team} = assigns, socket) do
-    changeset = Teams.change_team(team)
+    changeset = Teams.change_team(team, %{})
 
     {:ok,
      socket

@@ -4,10 +4,12 @@ defmodule PairDanceWeb.PairingTableLive.Index do
   alias PairDance.Teams
   alias PairDance.Teams.Task
 
+  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+
   @impl true
   def mount(%{"id" => team_id_str}, _session, socket) do
     { team_id, ""} = Integer.parse(team_id_str)
-    team = get_team(team_id)
+    team = TeamRepository.find(team_id)
     if team == nil do
       {:ok, assign(socket, :error, "not found")}
     else
@@ -62,10 +64,6 @@ defmodule PairDanceWeb.PairingTableLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Task")
-  end
-
-  defp get_team(team_id) do
-    Teams.get_team(team_id)
   end
 
   @impl true
