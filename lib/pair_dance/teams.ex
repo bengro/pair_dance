@@ -14,8 +14,6 @@ defmodule PairDance.Teams do
     |> Repo.insert()
   end
 
-  def get_team!(id), do: Repo.get!(Team, id)
-
   def update_team(%Team{} = team, attrs) do
     team
     |> Team.changeset(attrs)

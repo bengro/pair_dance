@@ -16,11 +16,6 @@ defmodule PairDance.TeamsTest do
       assert Teams.list_teams() == [team]
     end
 
-    test "get_team!/1 returns the team with given id" do
-      team = team_fixture()
-      assert Teams.get_team!(team.id) == team
-    end
-
     test "get_team/1 returns the team with given id" do
       team = team_fixture()
       assert Teams.get_team(team.id) == team
@@ -52,7 +47,7 @@ defmodule PairDance.TeamsTest do
     test "update_team/2 with invalid data returns error changeset" do
       team = team_fixture()
       assert {:error, %Ecto.Changeset{}} = Teams.update_team(team, @invalid_attrs)
-      assert team == Teams.get_team!(team.id)
+      assert team == Teams.get_team(team.id)
     end
 
     test "change_team/1 returns a team changeset" do
