@@ -19,7 +19,7 @@ defmodule PairDanceWeb.TeamLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={{f, :name}} type="text" label="name" value={@team.name} />
+        <.input field={{f, :name}} type="text" label="name" value={case @team do nil -> ""; team -> team.name end} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Team</.button>
         </:actions>
@@ -29,15 +29,12 @@ defmodule PairDanceWeb.TeamLive.FormComponent do
   end
 
   @impl true
-  def update(%{team: team} = assigns, socket) do
-    {:ok,
-     socket
-     |> assign(assigns)
-    }
+  def update(assigns, socket) do
+    {:ok, assign(socket, assigns) }
   end
 
   @impl true
-  def handle_event("validate", %{"team" => team_params}, socket) do
+  def handle_event("validate", _, socket) do
     {:noreply, socket}
   end
 

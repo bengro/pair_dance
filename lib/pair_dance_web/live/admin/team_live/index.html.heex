@@ -31,7 +31,7 @@
 >
   <.live_component
     module={PairDanceWeb.TeamLive.FormComponent}
-    id={@team.id || :new}
+    id={case @team do nil -> :new; team -> team.id end}
     title={@page_title}
     action={@live_action}
     team={@team}

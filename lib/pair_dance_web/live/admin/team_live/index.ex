@@ -25,7 +25,7 @@ defmodule PairDanceWeb.TeamLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Team")
-    |> assign(:team, %Team{})
+    |> assign(:team, nil)
   end
 
   defp apply_action(socket, :index, _params) do

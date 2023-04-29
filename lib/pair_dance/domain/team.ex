@@ -3,7 +3,7 @@ defmodule PairDance.Domain.Team do
   defstruct [:id, :name]
 
   @type t() :: %__MODULE__{
-    name: String.t(),
     id: integer(),
+    name: String.t(),
   }
 end
