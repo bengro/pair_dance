@@ -13,12 +13,6 @@ defmodule PairDance.TeamsTest do
 
     @invalid_attrs %{name: nil}
 
-    test "list_teams/0 returns all teams" do
-      team_fixture("team name")
-      [team] = Teams.list_teams()
-      assert team.name == "team name"
-    end
-
     test "update_team/2 with valid data updates the team" do
       team = team_fixture()
       update_attrs = %{name: "some updated name"}

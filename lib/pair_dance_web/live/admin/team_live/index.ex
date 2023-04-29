@@ -8,7 +8,7 @@ defmodule PairDanceWeb.TeamLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :teams, list_teams())}
+    {:ok, assign(socket, :teams, TeamRepository.find_all())}
   end
 
   @impl true
@@ -38,10 +38,6 @@ defmodule PairDanceWeb.TeamLive.Index do
   def handle_event("delete", %{"id" => id}, socket) do
     {:ok} = TeamRepository.delete(id)
 
-    {:noreply, assign(socket, :teams, list_teams())}
-  end
-
-  defp list_teams do
-    Teams.list_teams()
+    {:noreply, assign(socket, :teams, TeamRepository.find_all())}
   end
 end

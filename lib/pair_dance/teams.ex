@@ -26,10 +26,6 @@ defmodule PairDance.Teams do
     Team.changeset(%Team{ name: team.name, id: team.id }, attrs)
   end
 
-  def list_teams do
-    Repo.all(Team)
-  end
-
   def create_member(attrs \\ %{}) do
     %Member{}
     |> Member.changeset(attrs)
