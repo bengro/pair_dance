@@ -204,7 +204,7 @@ defmodule PairDance.TeamsTest do
       { team, member, task } = team_member_task()
 
       Teams.create_ownership(task, member)
-      [%TaskOwnership{} = ownership] = Teams.list_ownerships(team)
+      [%TaskOwnership{} = ownership] = Teams.list_ownerships(team.id)
 
       assert ownership.task_id == task.id
       assert ownership.member_id == member.id
@@ -218,8 +218,8 @@ defmodule PairDance.TeamsTest do
       Teams.create_ownership(task2, member2)
       Teams.remove_ownership(task1, member1)
 
-      assert [] = Teams.list_ownerships(team1)
-      assert [_] = Teams.list_ownerships(team2)
+      assert [] = Teams.list_ownerships(team1.id)
+      assert [_] = Teams.list_ownerships(team2.id)
     end
 
     test "only retrieves ownerships of the specified team" do
@@ -229,7 +229,7 @@ defmodule PairDance.TeamsTest do
       Teams.create_ownership(task1, member1)
       Teams.create_ownership(task2, member2)
 
-      assert [ownership] = Teams.list_ownerships(team1)
+      assert [ownership] = Teams.list_ownerships(team1.id)
       assert ownership.member_id == member1.id
     end
 

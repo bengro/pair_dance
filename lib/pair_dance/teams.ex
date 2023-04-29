@@ -102,8 +102,7 @@ defmodule PairDance.Teams do
     Repo.delete_all from to in TaskOwnership, where: to.member_id == ^member_id
   end
 
-  def list_ownerships(%Team{} = team) do
-    team_id = team.id
+  def list_ownerships(team_id) do
     Repo.all from m in Member,
              join: to in TaskOwnership,
              on: to.member_id == m.id,
