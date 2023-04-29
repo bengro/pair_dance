@@ -8,14 +8,6 @@ defmodule PairDance.Teams do
   alias PairDance.Teams.Task
   alias PairDance.Teams.TaskOwnership
 
-  def change_team(%Team{} = team, attrs) do
-    Team.changeset(team, attrs)
-  end
-
-  def change_team(%PairDance.Domain.Team{} = team, attrs) do
-    Team.changeset(%Team{ name: team.name, id: team.id }, attrs)
-  end
-
   def create_member(attrs \\ %{}) do
     %Member{}
     |> Member.changeset(attrs)

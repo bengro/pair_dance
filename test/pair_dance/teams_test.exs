@@ -6,16 +6,6 @@ defmodule PairDance.TeamsTest do
 
   import PairDance.TeamsFixtures
 
-  describe "teams" do
-
-    @invalid_attrs %{name: nil}
-
-    test "change_team/1 returns a team changeset" do
-      team = team_fixture()
-      assert %Ecto.Changeset{} = Teams.change_team(team, %{})
-    end
-  end
-
   describe "members" do
     alias PairDance.Teams.Member
 

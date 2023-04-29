@@ -6,7 +6,6 @@ defmodule PairDanceWeb.TeamLiveTest do
 
   @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}
-  @invalid_attrs %{name: nil}
 
   defp create_team(_) do
     team = team_fixture()
@@ -31,10 +30,6 @@ defmodule PairDanceWeb.TeamLiveTest do
 
       assert_patch(index_live, ~p"/admin/teams/new")
 
-      assert index_live
-             |> form("#team-form", team: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
-
       {:ok, _, html} =
         index_live
         |> form("#team-form", team: @create_attrs)
@@ -52,10 +47,6 @@ defmodule PairDanceWeb.TeamLiveTest do
                "Edit Team"
 
       assert_patch(index_live, ~p"/admin/teams/#{team}/edit")
-
-      assert index_live
-             |> form("#team-form", team: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         index_live
@@ -92,10 +83,6 @@ defmodule PairDanceWeb.TeamLiveTest do
                "Edit Team"
 
       assert_patch(show_live, ~p"/admin/teams/#{team}/show/edit")
-
-      assert show_live
-             |> form("#team-form", team: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         show_live

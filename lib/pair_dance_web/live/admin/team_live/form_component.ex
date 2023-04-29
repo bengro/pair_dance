@@ -1,8 +1,6 @@
 defmodule PairDanceWeb.TeamLive.FormComponent do
   use PairDanceWeb, :live_component
 
-  alias PairDance.Teams
-
   alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
 
   @impl true
@@ -13,16 +11,15 @@ defmodule PairDanceWeb.TeamLive.FormComponent do
         <%= @title %>
         <:subtitle>Use this form to manage team records in your database.</:subtitle>
       </.header>
-
       <.simple_form
         :let={f}
-        for={@changeset}
+        for={:team}
         id="team-form"
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={{f, :name}} type="text" label="name" />
+        <.input field={{f, :name}} type="text" label="name" value={@team.name} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Team</.button>
         </:actions>
@@ -33,22 +30,15 @@ defmodule PairDanceWeb.TeamLive.FormComponent do
 
   @impl true
   def update(%{team: team} = assigns, socket) do
-    changeset = Teams.change_team(team, %{})
-
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)}
+    }
   end
 
   @impl true
   def handle_event("validate", %{"team" => team_params}, socket) do
-    changeset =
-      socket.assigns.team
-      |> Teams.change_team(team_params)
-      |> Map.put(:action, :validate)
-
-    {:noreply, assign(socket, :changeset, changeset)}
+    {:noreply, socket}
   end
 
   def handle_event("save", %{"team" => team_params}, socket) do
@@ -62,9 +52,6 @@ defmodule PairDanceWeb.TeamLive.FormComponent do
          socket
          |> put_flash(:info, "Team updated successfully")
          |> push_navigate(to: socket.assigns.navigate)}
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :changeset, changeset)}
     end
   end
 
