@@ -4,7 +4,7 @@ defmodule PairDance.Teams.Task do
 
   schema "tasks" do
     field :name, :string
-    belongs_to(:team, PairDance.Teams.Team)
+    belongs_to(:team, PairDance.Infrastructure.TeamEntity)
 
     timestamps()
   end
