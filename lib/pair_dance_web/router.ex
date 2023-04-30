@@ -26,6 +26,7 @@ defmodule PairDanceWeb.Router do
 
     # pairing table / main app
     live "/teams/:id", PairingTableLive.Index, :index
+    live "/teams/:id/members", TeamMembersLive.Index, :index
   end
 
   scope "/admin", PairDanceWeb do
