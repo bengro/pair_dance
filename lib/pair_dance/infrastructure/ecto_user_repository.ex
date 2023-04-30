@@ -11,9 +11,9 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
   @behaviour UserRepository
 
   @impl UserRepository
-  def create(name) do
+  def create(email) do
     {:ok, entity } = %UserEntity{}
-      |> UserEntity.changeset(%{ name: name })
+      |> UserEntity.changeset(%{ email: email })
       |> Repo.insert()
     {:ok, from_entity(entity)}
   end
@@ -39,7 +39,7 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
 
   @spec from_entity(UserEntity) :: User.t()
   defp from_entity(entity) do
-    %User{ id: entity.id, name: entity.name }
+    %User{ id: entity.id, email: entity.email }
   end
 
 end

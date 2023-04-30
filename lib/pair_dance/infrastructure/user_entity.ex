@@ -5,7 +5,7 @@ defmodule PairDance.Infrastructure.UserEntity do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "users" do
-    field :name, :string
+    field :email, :string
 
     timestamps()
   end
@@ -13,7 +13,7 @@ defmodule PairDance.Infrastructure.UserEntity do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:email])
+    |> validate_required([:email])
   end
 end

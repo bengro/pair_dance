@@ -1,9 +1,9 @@
 defmodule PairDance.Domain.User do
-  @enforce_keys [:id, :name]
-  defstruct [:id, :name]
+  @enforce_keys [:id, :email]
+  defstruct [:id, :email]
 
   @type t() :: %__MODULE__{
     id: String.t(),
-    name: String.t(),
+    email: String.t(),
   }
 end

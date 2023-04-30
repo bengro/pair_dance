@@ -5,23 +5,23 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
   alias PairDance.Infrastructure.EctoUserRepository
 
   test "create a user" do
-    {:ok, user} = EctoUserRepository.create("Bob")
+    {:ok, user} = EctoUserRepository.create("bob@example.com")
 
-    assert user.name == "Bob"
+    assert user.email == "bob@example.com"
   end
 
   test "ids are uuids" do
-    {:ok, user} = EctoUserRepository.create("Bob")
+    {:ok, user} = EctoUserRepository.create("bob@me.com")
 
     assert user.id =~ ~r/[0-9a-f]{8}-/i
   end
 
   test "get a user by id" do
-    {:ok, %User{ id: id }} = EctoUserRepository.create("Bob")
+    {:ok, %User{ id: id }} = EctoUserRepository.create("bob@me.com")
 
-    %User{ name: name } = EctoUserRepository.find_by_id(id)
+    %User{ email: email} = EctoUserRepository.find_by_id(id)
 
-    assert name == "Bob"
+    assert email == "bob@me.com"
   end
 
   test "get a user when does not exist" do
@@ -29,7 +29,7 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
   end
 
   test "delete a user" do
-    {:ok, %User{ id: id }} = EctoUserRepository.create("Bob")
+    {:ok, %User{ id: id }} = EctoUserRepository.create("bob@me.com")
 
     {:ok} = EctoUserRepository.delete(id)
 
@@ -37,12 +37,12 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
   end
 
   test "list all users" do
-    {:ok, _} = EctoUserRepository.create("user 1")
-    {:ok, _} = EctoUserRepository.create("user 2")
+    {:ok, _} = EctoUserRepository.create("user1@me.com")
+    {:ok, _} = EctoUserRepository.create("user2@me.com")
 
-    [%User{ name: name }, %User{}] = EctoUserRepository.find_all()
+    [%User{ email: email}, %User{}] = EctoUserRepository.find_all()
 
-    assert String.starts_with?(name, "user")
+    assert String.starts_with?(email, "user")
   end
 
 end
