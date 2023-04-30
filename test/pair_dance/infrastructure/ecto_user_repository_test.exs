@@ -36,4 +36,13 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
     assert EctoUserRepository.find(id) == nil
   end
 
+  test "list all users" do
+    {:ok, _} = EctoUserRepository.create("user 1")
+    {:ok, _} = EctoUserRepository.create("user 2")
+
+    [%User{ name: name }, %User{}] = EctoUserRepository.find_all()
+
+    assert String.starts_with?(name, "user")
+  end
+
 end

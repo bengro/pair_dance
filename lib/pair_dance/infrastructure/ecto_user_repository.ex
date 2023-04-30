@@ -27,6 +27,11 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
   end
 
   @impl UserRepository
+  def find_all() do
+    Repo.all(UserEntity) |> Enum.map(&from_entity/1)
+  end
+
+  @impl UserRepository
   def delete(id) do
     {:ok, _entity} = Repo.delete(%UserEntity{ id: id })
     {:ok}

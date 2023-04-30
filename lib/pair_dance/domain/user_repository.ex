@@ -8,5 +8,7 @@ defmodule PairDance.Domain.UserRepository do
 
   @callback find(user_id()) :: User.t() | nil
 
+  @callback find_all() :: list(User.t())
+
   @callback delete(user_id()) :: {:ok}
 end
