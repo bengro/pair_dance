@@ -28,4 +28,12 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
     assert EctoUserRepository.find("123e4567-e89b-12d3-a456-426655440000") == nil
   end
 
+  test "delete a user" do
+    {:ok, %User{ id: id }} = EctoUserRepository.create("Bob")
+
+    {:ok} = EctoUserRepository.delete(id)
+
+    assert EctoUserRepository.find(id) == nil
+  end
+
 end

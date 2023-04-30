@@ -26,6 +26,12 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
     end
   end
 
+  @impl UserRepository
+  def delete(id) do
+    {:ok, _entity} = Repo.delete(%UserEntity{ id: id })
+    {:ok}
+  end
+
   @spec from_entity(UserEntity) :: User.t()
   defp from_entity(entity) do
     %User{ id: entity.id, name: entity.name }
