@@ -4,7 +4,7 @@ defmodule PairDance.Domain.UserRepository do
 
   @type user_id :: String.t
 
-  @callback create(String.t()) :: {:ok, User.t()}
+  @callback create(String.t()) :: {:ok, User.t()} | {:error, String.t()}
 
   @callback find_by_id(user_id()) :: User.t() | nil
 

@@ -15,5 +15,6 @@ defmodule PairDance.Infrastructure.UserEntity do
     user
     |> cast(attrs, [:email])
     |> validate_required([:email])
+    |> unique_constraint([:email])
   end
 end

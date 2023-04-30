@@ -10,6 +10,14 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
     assert user.email == "bob@example.com"
   end
 
+  test "emails are unique" do
+    {:ok, _} = EctoUserRepository.create("bob@example.com")
+
+    {:error, detail} = EctoUserRepository.create("bob@example.com")
+
+    assert detail =~ ~r/already/i
+  end
+
   test "ids are uuids" do
     {:ok, user} = EctoUserRepository.create("bob@me.com")
 

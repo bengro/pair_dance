@@ -12,10 +12,13 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
 
   @impl UserRepository
   def create(email) do
-    {:ok, entity } = %UserEntity{}
+    result = %UserEntity{}
       |> UserEntity.changeset(%{ email: email })
       |> Repo.insert()
-    {:ok, from_entity(entity)}
+    case result do
+      {:ok, entity} -> {:ok, from_entity(entity)}
+      {:error, %Ecto.Changeset{ errors: [ {:email, {err, _}} ]}} -> {:error, err}
+    end
   end
 
   @impl UserRepository
