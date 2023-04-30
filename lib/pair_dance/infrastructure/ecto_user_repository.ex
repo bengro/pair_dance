@@ -11,7 +11,7 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
   @behaviour UserRepository
 
   @impl UserRepository
-  def create(email) do
+  def create_from_email(email) do
     result = %UserEntity{}
       |> UserEntity.changeset(%{ email: email })
       |> Repo.insert()
@@ -22,8 +22,8 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
   end
 
   @impl UserRepository
-  def find_or_create(email) do
-    case create(email) do
+  def find_by_email_or_create(email) do
+    case create_from_email(email) do
       {:ok, user} -> user
       {:error, {:conflict, _}} -> find_by_email(email)
     end
@@ -51,7 +51,7 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
   end
 
   @impl UserRepository
-  def delete(id) do
+  def delete_by_id(id) do
     {:ok, _entity} = Repo.delete(%UserEntity{ id: id })
     {:ok}
   end
