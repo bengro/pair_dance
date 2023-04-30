@@ -1,9 +1,13 @@
 defmodule PairDance.Domain.Team do
-  @enforce_keys [:id, :name]
-  defstruct [:id, :name]
+
+  alias PairDance.Domain.TeamMember
+
+  @enforce_keys [:id, :name, :members]
+  defstruct [:id, :name, :members]
 
   @type t() :: %__MODULE__{
     id: integer(),
     name: String.t(),
+    members: list(TeamMember.t())
   }
 end

@@ -1,6 +1,7 @@
 defmodule PairDance.Domain.TeamRepository do
 
   alias PairDance.Domain.Team
+  alias PairDance.Domain.TeamMember
 
   @type team_id :: integer
 
@@ -13,4 +14,6 @@ defmodule PairDance.Domain.TeamRepository do
   @callback update(team_id(), map()) :: {:ok, Team.t()}
 
   @callback delete(team_id()) :: {:ok}
+
+  @callback add_member(Team.t(), TeamMember.t()) :: {:ok, Team.t()}
 end
