@@ -19,13 +19,13 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
   test "get a user by id" do
     {:ok, %User{ id: id }} = EctoUserRepository.create("Bob")
 
-    %User{ name: name } = EctoUserRepository.find(id)
+    %User{ name: name } = EctoUserRepository.find_by_id(id)
 
     assert name == "Bob"
   end
 
   test "get a user when does not exist" do
-    assert EctoUserRepository.find("123e4567-e89b-12d3-a456-426655440000") == nil
+    assert EctoUserRepository.find_by_id("123e4567-e89b-12d3-a456-426655440000") == nil
   end
 
   test "delete a user" do
@@ -33,7 +33,7 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
 
     {:ok} = EctoUserRepository.delete(id)
 
-    assert EctoUserRepository.find(id) == nil
+    assert EctoUserRepository.find_by_id(id) == nil
   end
 
   test "list all users" do

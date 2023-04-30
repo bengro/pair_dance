@@ -6,7 +6,7 @@ defmodule PairDance.Domain.UserRepository do
 
   @callback create(String.t()) :: {:ok, User.t()}
 
-  @callback find(user_id()) :: User.t() | nil
+  @callback find_by_id(user_id()) :: User.t() | nil
 
   @callback find_all() :: list(User.t())
 

@@ -19,7 +19,7 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
   end
 
   @impl UserRepository
-  def find(id) do
+  def find_by_id(id) do
     case Repo.get(UserEntity, id) do
       nil -> nil
       entity -> from_entity(entity)
