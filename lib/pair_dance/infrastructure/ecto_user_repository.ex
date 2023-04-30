@@ -17,13 +17,29 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
       |> Repo.insert()
     case result do
       {:ok, entity} -> {:ok, from_entity(entity)}
-      {:error, %Ecto.Changeset{ errors: [ {:email, {err, _}} ]}} -> {:error, err}
+      {:error, %Ecto.Changeset{ errors: [ {:email, {_,[{:constraint, :unique},_]}} ]}} -> {:error, {:conflict, "email address already taken"}}
+    end
+  end
+
+  @impl UserRepository
+  def find_or_create(email) do
+    case create(email) do
+      {:ok, user} -> user
+      {:error, {:conflict, _}} -> find_by_email(email)
     end
   end
 
   @impl UserRepository
   def find_by_id(id) do
     case Repo.get(UserEntity, id) do
+      nil -> nil
+      entity -> from_entity(entity)
+    end
+  end
+
+  @impl UserRepository
+  def find_by_email(email) do
+    case Repo.one from u in UserEntity, where: u.email == ^email do
       nil -> nil
       entity -> from_entity(entity)
     end

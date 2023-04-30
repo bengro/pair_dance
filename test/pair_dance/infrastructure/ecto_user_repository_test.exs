@@ -13,9 +13,23 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
   test "emails are unique" do
     {:ok, _} = EctoUserRepository.create("bob@example.com")
 
-    {:error, detail} = EctoUserRepository.create("bob@example.com")
+    {:error, {:conflict, detail}} = EctoUserRepository.create("bob@example.com")
 
-    assert detail =~ ~r/already/i
+    assert detail == "email address already taken"
+  end
+
+  test "find or create a user when does not exist" do
+    user = EctoUserRepository.find_or_create("hi@me.com")
+
+    assert EctoUserRepository.find_by_email("hi@me.com") == user
+  end
+
+  test "find or create a user when already exists" do
+    {:ok, existing_user} = EctoUserRepository.create("hi@me.com")
+
+    resolved_user = EctoUserRepository.find_or_create("hi@me.com")
+
+    assert existing_user == resolved_user
   end
 
   test "ids are uuids" do
