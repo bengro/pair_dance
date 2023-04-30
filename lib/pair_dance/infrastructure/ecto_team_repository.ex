@@ -13,8 +13,8 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
   @impl TeamRepository
   def create(name) do
     {:ok, entity } = %TeamEntity{}
-    |> TeamEntity.changeset(%{ name: name })
-    |> Repo.insert()
+      |> TeamEntity.changeset(%{ name: name })
+      |> Repo.insert()
     {:ok, from_entity(entity)}
   end
 
