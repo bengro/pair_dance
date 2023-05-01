@@ -67,6 +67,15 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     assert name == "comet"
   end
 
+  test "slugs must be unique" do
+    {:ok, team1} = TeamRepository.create("team 1")
+    {:ok, team2} = TeamRepository.create("team 2")
+
+    {:error, {:conflict, detail}} = TeamRepository.update(team2.id, %{ slug: team1.slug })
+
+    assert detail =~ "slug has already been taken"
+  end
+
   test "delete a team" do
     {:ok, %Team{ id: id }} = TeamRepository.create("comet")
 

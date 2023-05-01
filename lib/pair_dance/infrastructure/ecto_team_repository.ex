@@ -50,9 +50,12 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
   @impl TeamRepository
   def update(team_id, patch) do
     entity = Repo.one from t in TeamEntity, where: t.id == ^team_id
-    {:ok, _entity} = TeamEntity.changeset(entity, patch) |> Repo.update()
+    case TeamEntity.changeset(entity, patch) |> Repo.update() do
+      {:ok, _entity} -> {:ok, find(team_id)}
+      {:error, %Ecto.Changeset{ errors: [{:slug, {detail, _} }] } } -> {:error, {:conflict, "slug " <> detail}}
+    end
 
-    {:ok, find(team_id)}
+
   end
 
   @impl TeamRepository

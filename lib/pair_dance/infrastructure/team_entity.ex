@@ -16,5 +16,6 @@ defmodule PairDance.Infrastructure.TeamEntity do
     team
     |> cast(attrs, [:name, :slug])
     |> validate_required([:name, :slug])
+    |> unique_constraint([:slug])
   end
 end
