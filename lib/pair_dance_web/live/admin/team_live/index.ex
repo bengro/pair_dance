@@ -1,9 +1,6 @@
 defmodule PairDanceWeb.TeamLive.Index do
   use PairDanceWeb, :live_view
 
-  alias PairDance.Teams
-  alias PairDance.Teams.Team
-
   alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
 
   @impl true

@@ -1,8 +1,6 @@
 defmodule PairDanceWeb.TeamLive.Show do
   use PairDanceWeb, :live_view
 
-  alias PairDance.Teams
-
   alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
 
   @impl true

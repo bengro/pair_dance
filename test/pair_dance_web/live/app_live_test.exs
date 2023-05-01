@@ -16,13 +16,13 @@ defmodule PairDanceWeb.AppLiveTest do
     setup [:setup_data]
 
     test "non-existing team", %{conn: conn} do
-      {:ok, _index_live, html} = live(conn, ~p"/teams/99999")
+      {:ok, _index_live, html} = live(conn, ~p"/non-existing-team")
 
       assert html =~ "not found"
     end
 
     test "lists all members", %{conn: conn, members: members, team: team} do
-      {:ok, _index_live, html} = live(conn, ~p"/teams/#{team.id}")
+      {:ok, _index_live, html} = live(conn, ~p"/#{team.slug}")
 
       [first_member] = members
 
@@ -31,7 +31,7 @@ defmodule PairDanceWeb.AppLiveTest do
     end
 
     test "lists all tasks", %{conn: conn, tasks: tasks, team: team} do
-      {:ok, _index_live, html} = live(conn, ~p"/teams/#{team.id}")
+      {:ok, _index_live, html} = live(conn, ~p"/#{team.slug}")
 
       [first_task] = tasks
 
@@ -40,13 +40,13 @@ defmodule PairDanceWeb.AppLiveTest do
     end
 
     test "create a task", %{conn: conn, team: team} do
-      {:ok, index_live, _} = live(conn, ~p"/teams/#{team.id}")
+      {:ok, index_live, _} = live(conn, ~p"/#{team.slug}")
 
       index_live
         |> form("#new-task-form", task: %{ name: "my task name" })
         |> render_submit()
 
-      {:ok, _, html_after_refresh} = live(conn, ~p"/teams/#{team.id}")
+      {:ok, _, html_after_refresh} = live(conn, ~p"/#{team.slug}")
 
       assert html_after_refresh =~ "my task name"
     end

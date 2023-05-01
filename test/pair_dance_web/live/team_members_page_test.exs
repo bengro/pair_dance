@@ -14,13 +14,13 @@ defmodule PairDanceWeb.TeamMembersPageTest do
     setup [:setup_data]
 
     test "view team members", %{conn: conn, team: team} do
-      {:ok, _index_live, html} = live(conn, ~p"/teams/#{team.id}/members")
+      {:ok, _index_live, html} = live(conn, ~p"/#{team.slug}/members")
 
       assert html =~ "Team members:"
     end
 
     test "invite a new member", %{conn: conn, team: team} do
-      {:ok, view, _} = live(conn, ~p"/teams/#{team.id}/members")
+      {:ok, view, _} = live(conn, ~p"/#{team.slug}/members")
 
       view
         |> form("#add-member-form", user: %{ email: "bob@gmail.com" })

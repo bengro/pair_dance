@@ -7,18 +7,17 @@ defmodule PairDanceWeb.PairingTableLive.Index do
   alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
 
   @impl true
-  def mount(%{"id" => team_id_str}, _session, socket) do
-    { team_id, ""} = Integer.parse(team_id_str)
-    team = TeamRepository.find(team_id)
+  def mount(%{"slug" => slug}, _session, socket) do
+    team = TeamRepository.find_by_slug(slug)
     if team == nil do
       {:ok, assign(socket, :error, "not found")}
     else
       socket_with_assigns =
         socket
-        |> assign(:team_id, team_id)
-        |> assign(:team, TeamRepository.find(team_id))
-        |> assign(:tasks, Teams.list_tasks(team_id))
-        |> assign(:task, %Task{team_id: team_id})
+        |> assign(:team_id, team.id)
+        |> assign(:team, team)
+        |> assign(:tasks, Teams.list_tasks(team.id))
+        |> assign(:task, %Task{team_id: team.id})
 
       {:ok, socket_with_assigns}
     end

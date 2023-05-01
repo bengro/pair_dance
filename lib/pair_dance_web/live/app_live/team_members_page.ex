@@ -4,9 +4,8 @@ defmodule PairDanceWeb.TeamMembersLive.Index do
   alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
 
   @impl true
-  def mount(%{"id" => team_id_str}, _session, socket) do
-    { team_id, ""} = Integer.parse(team_id_str)
-    team = TeamRepository.find(team_id)
+  def mount(%{"slug" => slug}, _session, socket) do
+    team = TeamRepository.find_by_slug(slug)
     if team == nil do
       {:ok, assign(socket, :error, "not found")}
     else
@@ -15,15 +14,15 @@ defmodule PairDanceWeb.TeamMembersLive.Index do
   end
 
   @impl true
-  def render( %{ error: "not found"} = assigns) do
-    ~H"""
-      <div>not found</div>
-    """
+  def handle_info({:team_changed, team}, socket) do
+    {:noreply, assign(socket, :team, team)}
   end
 
   @impl true
-  def handle_info({:team_changed, team}, socket) do
-    {:noreply, assign(socket, :team, team)}
+  def render( %{ error: "not found"} = assigns) do
+    ~H"""
+    <div>not found</div>
+    """
   end
 
   def render(assigns) do
