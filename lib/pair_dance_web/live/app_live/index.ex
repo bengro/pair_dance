@@ -16,7 +16,7 @@ defmodule PairDanceWeb.PairingTableLive.Index do
       socket_with_assigns =
         socket
         |> assign(:team_id, team_id)
-        |> assign(:members, Teams.list_members(team_id))
+        |> assign(:team, TeamRepository.find(team_id))
         |> assign(:tasks, Teams.list_tasks(team_id))
         |> assign(:task, %Task{team_id: team_id})
 
@@ -36,8 +36,8 @@ defmodule PairDanceWeb.PairingTableLive.Index do
     Team members:
     </h2>
     <ul>
-    <%= for member <- @members do %>
-    <li><%= member.name %></li>
+    <%= for member <- @team.members do %>
+    <li><%= member.user.email %></li>
     <% end %>
     </ul>
 
@@ -59,11 +59,6 @@ defmodule PairDanceWeb.PairingTableLive.Index do
     />
 
     """
-  end
-
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New Task")
   end
 
   @impl true

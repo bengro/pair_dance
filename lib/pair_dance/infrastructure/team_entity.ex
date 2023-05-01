@@ -4,8 +4,8 @@ defmodule PairDance.Infrastructure.TeamEntity do
 
   schema "teams" do
     field :name, :string
-    has_many(:members, PairDance.Teams.Member, foreign_key: :team_id)
-    has_many(:tasks, PairDance.Teams.Task)
+    has_many(:members, PairDance.Infrastructure.TeamMemberEntity, foreign_key: :team_id)
+    has_many(:tasks, PairDance.Teams.Task, foreign_key: :team_id)
 
     timestamps()
   end
