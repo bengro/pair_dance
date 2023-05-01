@@ -3,7 +3,7 @@ defmodule PairDance.Infrastructure.TeamMemberEntity do
   import Ecto.Changeset
 
   schema "members" do
-    field :name, :string
+    belongs_to :user, PairDance.Infrastructure.UserEntity, references: :id, type: :binary_id
     belongs_to :team, PairDance.Infrastructure.TeamEntity
 
     timestamps()
@@ -12,8 +12,9 @@ defmodule PairDance.Infrastructure.TeamMemberEntity do
   @doc false
   def changeset(member, attrs) do
     member
-    |> cast(attrs, [:name, :team_id])
+    |> cast(attrs, [:user_id, :team_id])
+    |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:team_id)
-    |> validate_required([:name, :team_id])
+    |> validate_required([:user_id, :team_id])
   end
 end

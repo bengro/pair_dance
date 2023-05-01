@@ -1,12 +1,13 @@
 defmodule PairDance.Infrastructure.EctoUserRepository do
 
   alias PairDance.Domain.UserRepository
-  alias PairDance.Domain.User
 
   alias PairDance.Infrastructure.UserEntity
 
   import Ecto.Query, warn: false
   alias PairDance.Repo
+
+  import PairDance.Infrastructure.EntityConverters
 
   @behaviour UserRepository
 
@@ -16,7 +17,7 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
       |> UserEntity.changeset(%{ email: email })
       |> Repo.insert()
     case result do
-      {:ok, entity} -> {:ok, from_entity(entity)}
+      {:ok, entity} -> {:ok, to_user(entity)}
       {:error, %Ecto.Changeset{ errors: [ {:email, {_,[{:constraint, :unique},_]}} ]}} -> {:error, {:conflict, "email address already taken"}}
     end
   end
@@ -33,7 +34,7 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
   def find_by_id(id) do
     case Repo.get(UserEntity, id) do
       nil -> nil
-      entity -> from_entity(entity)
+      entity -> to_user(entity)
     end
   end
 
@@ -41,24 +42,19 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
   def find_by_email(email) do
     case Repo.one from u in UserEntity, where: u.email == ^email do
       nil -> nil
-      entity -> from_entity(entity)
+      entity -> to_user(entity)
     end
   end
 
   @impl UserRepository
   def find_all() do
-    Repo.all(UserEntity) |> Enum.map(&from_entity/1)
+    Repo.all(UserEntity) |> Enum.map(&to_user/1)
   end
 
   @impl UserRepository
   def delete_by_id(id) do
     {:ok, _entity} = Repo.delete(%UserEntity{ id: id })
     {:ok}
-  end
-
-  @spec from_entity(UserEntity) :: User.t()
-  defp from_entity(entity) do
-    %User{ id: entity.id, email: entity.email }
   end
 
 end
