@@ -15,15 +15,10 @@ defmodule PairDance.TeamsFixtures do
   @doc """
   Generate a member, assumes a valid team id is passed in.
   """
-  def member_fixture(attrs \\ %{}) do
-    {:ok, member} =
-      attrs
-      |> Enum.into(%{
-        name: "some name"
-      })
-      |> PairDance.Teams.create_member()
-
-    member
+  @spec member_fixture(Team.t(), String.t()) :: TeamMember.t()
+  def member_fixture(team, email \\ "bob@me.com") do
+    %PairDance.Domain.Team{ members: members } = PairDance.Domain.TeamInviteService.invite(team, email)
+    Enum.find(members, fn m -> m.user.email == email end)
   end
 
   @doc """

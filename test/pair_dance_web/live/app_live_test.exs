@@ -6,7 +6,7 @@ defmodule PairDanceWeb.AppLiveTest do
 
   defp setup_data(_) do
     team = team_fixture()
-    member = member_fixture(%{:team_id => team.id, :name => "Alice"})
+    member = member_fixture(team)
     task = task_fixture(%{:team_id => team.id, :name => "Refactor something amazing"})
 
     %{members: [member], tasks: [task], team: team}
@@ -27,7 +27,7 @@ defmodule PairDanceWeb.AppLiveTest do
       [first_member] = members
 
       assert html =~ "Team members:"
-      assert html =~ first_member.name
+      assert html =~ first_member.user.email
     end
 
     test "lists all tasks", %{conn: conn, tasks: tasks, team: team} do

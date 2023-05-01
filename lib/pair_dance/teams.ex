@@ -4,6 +4,7 @@ defmodule PairDance.Teams do
   alias PairDance.Repo
 
   alias PairDance.Teams.Team
+  alias PairDance.Domain.TeamMember
   alias PairDance.Teams.Member
   alias PairDance.Teams.Task
   alias PairDance.Teams.TaskOwnership
@@ -68,8 +69,8 @@ defmodule PairDance.Teams do
     Repo.all from t in Task, where: t.team_id == ^team_id
   end
 
-  def create_ownership(%Task{} = task, %Member{} = member) do
-    TaskOwnership.changeset(%TaskOwnership{ task_id: task.id, member_id: member.id }, %{})
+  def create_ownership(%Task{} = task, %TeamMember{} = member) do
+    TaskOwnership.changeset(%TaskOwnership{ task_id: task.id, member_id: member.user.id }, %{})
     |> Repo.insert()
   end
 
