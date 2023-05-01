@@ -10,7 +10,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
 
   @spec to_team(TeamEntity) :: Team.t()
   def to_team(entity) do
-    %Team{ id: entity.id, name: entity.name, slug: to_string(entity.id), members: entity.members |> Enum.map(&to_team_member/1) }
+    %Team{ id: entity.id, name: entity.name, slug: entity.slug, members: entity.members |> Enum.map(&to_team_member/1) }
   end
 
   @spec to_team_member(TeamMemberEntity) :: TeamMember.t()

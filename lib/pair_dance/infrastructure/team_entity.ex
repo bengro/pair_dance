@@ -4,6 +4,7 @@ defmodule PairDance.Infrastructure.TeamEntity do
 
   schema "teams" do
     field :name, :string
+    field :slug, :string
     has_many(:members, PairDance.Infrastructure.TeamMemberEntity, foreign_key: :team_id)
     has_many(:tasks, PairDance.Teams.Task, foreign_key: :team_id)
 
@@ -13,7 +14,7 @@ defmodule PairDance.Infrastructure.TeamEntity do
   @doc false
   def changeset(team, attrs) do
     team
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :slug])
+    |> validate_required([:name, :slug])
   end
 end

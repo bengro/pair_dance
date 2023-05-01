@@ -12,10 +12,12 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   @behaviour TeamRepository
 
+  alias Ecto.UUID
+
   @impl TeamRepository
   def create(name) do
     {:ok, entity } = %TeamEntity{}
-      |> TeamEntity.changeset(%{ name: name })
+      |> TeamEntity.changeset(%{ name: name, slug: UUID.generate() })
       |> Repo.insert()
     {:ok, find(entity.id)}
   end
@@ -37,7 +39,8 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   @impl TeamRepository
   def update(team_id, patch) do
-    {:ok, _entity} = TeamEntity.changeset(%TeamEntity{ id: team_id }, patch) |> Repo.update()
+    entity = Repo.one from t in TeamEntity, where: t.id == ^team_id
+    {:ok, _entity} = TeamEntity.changeset(entity, patch) |> Repo.update()
 
     {:ok, find(team_id)}
   end

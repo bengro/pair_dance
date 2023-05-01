@@ -12,10 +12,10 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     assert team.name == "comet"
   end
 
-  test "teams are created with id as slug" do
+  test "teams are created with uuid slugs" do
     {:ok, team} = TeamRepository.create("pair dance")
 
-    assert team.slug == to_string(team.id)
+    assert team.slug =~ ~r/[0-9a-f]{8}-/i
   end
 
   test "get a team by id" do
