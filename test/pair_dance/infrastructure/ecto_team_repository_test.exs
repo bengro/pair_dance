@@ -27,6 +27,14 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     assert team.name == "comet"
   end
 
+  test "get a team by slug" do
+    {:ok, %Team{ slug: slug }} = TeamRepository.create("comet")
+
+    team = TeamRepository.find_by_slug(slug)
+
+    assert team != nil
+    assert team.name == "comet"
+  end
 
   test "get a non-existing team" do
     assert TeamRepository.find(-1) == nil

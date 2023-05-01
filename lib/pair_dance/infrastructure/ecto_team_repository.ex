@@ -33,6 +33,16 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
   end
 
   @impl TeamRepository
+  def find_by_slug(slug) do
+    entity = Repo.one from t in TeamEntity, where: t.slug == ^slug, preload: [:members, [members: :user]]
+    if entity == nil do
+      nil
+    else
+      to_team(entity)
+    end
+  end
+
+  @impl TeamRepository
   def find_all() do
     Repo.all(from t in TeamEntity, preload: [:members]) |> Enum.map(&to_team/1)
   end
