@@ -1,7 +1,7 @@
-defmodule PairDanceWeb.AppLive.AddMemberForm do
+defmodule PairDanceWeb.AppLive.CreateTeamComponent do
   use PairDanceWeb, :live_component
 
-  alias PairDance.Domain.TeamInviteService
+  alias PairDance.Domain.TeamCreationService
 
   @impl true
   def render(assigns) do
@@ -9,15 +9,15 @@ defmodule PairDanceWeb.AppLive.AddMemberForm do
     <div>
       <.simple_form
         :let={f}
-        for={:user}
-        id="add-member-form"
+        for={:team}
+        id="new-team-form"
         phx-target={@myself}
         phx-submit="save"
         phx-change="validate"
       >
-        <.input field={{f, :email}} type="email" label="email" />
+        <.input field={{f, :name}} type="text" label="name" />
         <:actions>
-          <.button phx-disable-with="Adding...">Add</.button>
+          <.button phx-disable-with="Creating...">Create</.button>
         </:actions>
       </.simple_form>
     </div>
@@ -35,9 +35,9 @@ defmodule PairDanceWeb.AppLive.AddMemberForm do
     {:noreply, socket}
   end
 
-  def handle_event("save", %{"user" => user}, socket) do
-    team = TeamInviteService.invite(socket.assigns.team, user["email"])
+  def handle_event("save", %{"team" => team}, socket) do
+    {:ok , team} = TeamCreationService.new_team(team["name"])
     send(self(), {:team_changed, team})
-    {:noreply, assign(socket, team: team)}
+    {:noreply, push_navigate(socket, to: "/" <> team.slug )}
   end
 end

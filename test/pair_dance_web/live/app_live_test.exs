@@ -12,7 +12,22 @@ defmodule PairDanceWeb.AppLiveTest do
     %{members: [member], tasks: [task], team: team}
   end
 
-  describe "Index" do
+  describe "Landing page" do
+
+    test "create a team", %{conn: conn} do
+      {:ok, view, _} = live(conn, ~p"/")
+
+      view
+      |> form("#new-team-form", team: %{ name: "comet" })
+      |> render_submit()
+
+      assert_redirected(view, "/comet")
+    end
+
+
+  end
+
+  describe "Team page" do
     setup [:setup_data]
 
     test "non-existing team", %{conn: conn} do
