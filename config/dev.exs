@@ -1,7 +1,7 @@
 import Config
 
 # Configure your database
-config :pair_dance, PairDance.Repo,
+config :pair_dance, PairDance.Infrastructure.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",

@@ -1,4 +1,4 @@
-defmodule PairDance.Repo.Migrations.AddTeamSlug do
+defmodule PairDance.Infrastructure.Repo.Migrations.AddTeamSlug do
   use Ecto.Migration
 
   def change do

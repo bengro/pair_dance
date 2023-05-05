@@ -1,7 +1,7 @@
 defmodule PairDance.Teams do
 
   import Ecto.Query, warn: false
-  alias PairDance.Repo
+  alias PairDance.Infrastructure.Repo
 
   alias PairDance.Teams.Task
 

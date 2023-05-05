@@ -1,4 +1,4 @@
-defmodule :"Elixir.PairDance.Repo.Migrations.Make-email-unique" do
+defmodule :"Elixir.PairDance.Infrastructure.Repo.Migrations.Make-email-unique" do
   use Ecto.Migration
 
   def change do

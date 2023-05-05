@@ -1,4 +1,4 @@
-defmodule PairDance.Repo.Migrations.CreateTaskOwnerships do
+defmodule PairDance.Infrastructure.Repo.Migrations.CreateTaskOwnerships do
   use Ecto.Migration
 
   def change do

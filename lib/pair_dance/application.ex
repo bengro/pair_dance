@@ -11,7 +11,7 @@ defmodule PairDance.Application do
       # Start the Telemetry supervisor
       PairDanceWeb.Telemetry,
       # Start the Ecto repository
-      PairDance.Repo,
+      PairDance.Infrastructure.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: PairDance.PubSub},
       # Start Finch

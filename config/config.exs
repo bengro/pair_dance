@@ -8,7 +8,7 @@
 import Config
 
 config :pair_dance,
-  ecto_repos: [PairDance.Repo]
+  ecto_repos: [PairDance.Infrastructure.Repo]
 
 # Configures the endpoint
 config :pair_dance, PairDanceWeb.Endpoint,

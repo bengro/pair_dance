@@ -5,7 +5,7 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
   alias PairDance.Infrastructure.UserEntity
 
   import Ecto.Query, warn: false
-  alias PairDance.Repo
+  alias PairDance.Infrastructure.Repo
 
   import PairDance.Infrastructure.EntityConverters
 

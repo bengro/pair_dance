@@ -1,4 +1,4 @@
-defmodule PairDance.Repo.Migrations.CreateMembers do
+defmodule PairDance.Infrastructure.Repo.Migrations.CreateMembers do
   use Ecto.Migration
 
   def change do
