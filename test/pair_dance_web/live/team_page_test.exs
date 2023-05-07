@@ -7,7 +7,7 @@ defmodule PairDanceWeb.TeamPageTest do
   defp setup_data(_) do
     team = team_fixture()
     member = member_fixture(team)
-    task = task_fixture(%{:team_id => team.id, :name => "Refactor something amazing"})
+    task = task_fixture(team, "Refactor something amazing")
 
     %{members: [member], tasks: [task], team: team}
   end

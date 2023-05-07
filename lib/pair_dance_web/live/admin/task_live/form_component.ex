@@ -3,6 +3,8 @@ defmodule PairDanceWeb.TaskLive.FormComponent do
 
   alias PairDance.Teams
 
+  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -68,15 +70,14 @@ defmodule PairDanceWeb.TaskLive.FormComponent do
   end
 
   defp save_task(socket, :new, task_params) do
-    case Teams.create_task(task_params) do
+    %{ "name" => task_name, "team_id" => team_id } = task_params
+    team = TeamRepository.find(team_id)
+    case TeamRepository.add_task(team, task_name) do
       {:ok, _task} ->
         {:noreply,
          socket
          |> put_flash(:info, "Task created successfully")
          |> push_navigate(to: socket.assigns.navigate)}
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 end

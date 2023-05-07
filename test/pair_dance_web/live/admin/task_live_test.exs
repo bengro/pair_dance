@@ -9,7 +9,7 @@ defmodule PairDanceWeb.TaskLiveTest do
 
   defp create_task(_) do
     team = team_fixture()
-    task = task_fixture(%{team_id: team.id})
+    task = task_fixture(team)
     %{task: task}
   end
 
@@ -45,7 +45,7 @@ defmodule PairDanceWeb.TaskLiveTest do
         |> follow_redirect(conn, ~p"/admin/tasks")
 
       assert html =~ "Task created successfully"
-      assert html =~ "some name"
+      assert html =~ "a new task"
     end
 
     test "updates task in listing", %{conn: conn, task: task} do

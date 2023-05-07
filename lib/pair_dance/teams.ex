@@ -5,12 +5,6 @@ defmodule PairDance.Teams do
 
   alias PairDance.Teams.Task
 
-  def create_task(attrs \\ %{}) do
-    %Task{}
-    |> Task.changeset(attrs)
-    |> Repo.insert()
-  end
-
   def get_task!(id), do: Repo.get!(Task, id)
 
   def change_task(%Task{} = task, attrs \\ %{}) do

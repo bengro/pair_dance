@@ -24,14 +24,9 @@ defmodule PairDance.TeamsFixtures do
   @doc """
   Generate a task.
   """
-  def task_fixture(attrs \\ %{}) do
-    {:ok, task} =
-      attrs
-      |> Enum.into(%{
-        name: "some name"
-      })
-      |> PairDance.Teams.create_task()
-
-    task
+  @spec task_fixture(Team.t(), String.t()) :: Task.t()
+  def task_fixture(team, task_name \\ "logout is broken") do
+    {:ok, updated_team} = PairDance.Infrastructure.EctoTeamRepository.add_task(team, task_name)
+    Enum.find(updated_team.tasks, fn t -> t.name == task_name end)
   end
 end
