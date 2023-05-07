@@ -1,7 +1,6 @@
 defmodule PairDanceWeb.PairingTableLive.Index do
   use PairDanceWeb, :live_view
 
-  alias PairDance.Teams
   alias PairDance.Teams.Task
 
   alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
@@ -16,7 +15,6 @@ defmodule PairDanceWeb.PairingTableLive.Index do
         socket
         |> assign(:team_id, team.id)
         |> assign(:team, team)
-        |> assign(:tasks, Teams.list_tasks(team.id))
         |> assign(:task, %Task{team_id: team.id})
 
       {:ok, socket_with_assigns}
@@ -44,7 +42,7 @@ defmodule PairDanceWeb.PairingTableLive.Index do
     Tasks:
     </h2>
     <ul>
-    <%= for task <- @tasks do %>
+    <%= for task <- @team.tasks do %>
     <li><%= task.name %></li>
     <% end %>
     </ul>
