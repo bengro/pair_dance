@@ -4,6 +4,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   alias PairDance.Infrastructure.TeamEntity
   alias PairDance.Infrastructure.TeamMemberEntity
+  alias PairDance.Teams.Task, as: TaskEntity
 
   import Ecto.Query, warn: false
   alias PairDance.Infrastructure.Repo
@@ -24,7 +25,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   @impl TeamRepository
   def find(id) do
-    entity = Repo.one from t in TeamEntity, where: t.id == ^id, preload: [:members, [members: :user]]
+    entity = Repo.one from t in TeamEntity, where: t.id == ^id, preload: [:members, [members: :user], :tasks]
     if entity == nil do
       nil
     else
@@ -68,6 +69,14 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
   def add_member(team, member) do
     {:ok, _} = %TeamMemberEntity{}
       |> TeamMemberEntity.changeset(%{ user_id: member.user.id, team_id: team.id })
+      |> Repo.insert()
+    {:ok, find(team.id)}
+  end
+
+  @impl TeamRepository
+  def add_task(team, task_name) do
+    {:ok, _} = %TaskEntity{}
+      |> TaskEntity.changeset(%{ team_id: team.id, name: task_name })
       |> Repo.insert()
     {:ok, find(team.id)}
   end

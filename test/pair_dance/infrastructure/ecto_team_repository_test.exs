@@ -98,4 +98,24 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
 
   end
 
+  describe "tasks" do
+
+    test "new teams do not have any tasks" do
+      {:ok, team} = TeamRepository.create("comet")
+
+      assert team.tasks == []
+    end
+
+    test "creating a task" do
+      {:ok, team} = TeamRepository.create("comet")
+
+      {:ok, updated_team} = TeamRepository.add_task(team, "login with google")
+
+      assert [task] = updated_team.tasks
+      assert task.name == "login with google"
+      assert updated_team == TeamRepository.find(team.id)
+    end
+
+  end
+
 end
