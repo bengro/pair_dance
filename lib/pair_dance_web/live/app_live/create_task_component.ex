@@ -54,7 +54,8 @@ defmodule PairDanceWeb.AppLive.CreateTaskComponent do
     %{ "name" => task_name, "team_id" => team_id } = task_params
     team = TeamRepository.find(team_id)
     case TeamRepository.add_task(team, task_name) do
-      {:ok, _task} ->
+      {:ok, team} ->
+        send(self(), {:team_changed, team})
         {:noreply,
          socket
          |> put_flash(:info, "Task created successfully")

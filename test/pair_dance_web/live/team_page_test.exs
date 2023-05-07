@@ -39,14 +39,12 @@ defmodule PairDanceWeb.TeamPageTest do
   end
 
   test "create a task", %{conn: conn, team: team} do
-    {:ok, index_live, _} = live(conn, ~p"/#{team.slug}")
+    {:ok, view, _} = live(conn, ~p"/#{team.slug}")
 
-    index_live
+    view
     |> form("#new-task-form", task: %{name: "my task name"})
     |> render_submit()
 
-    {:ok, _, html_after_refresh} = live(conn, ~p"/#{team.slug}")
-
-    assert html_after_refresh =~ "my task name"
+    assert render(view) =~ "my task name"
   end
 end

@@ -64,4 +64,9 @@ defmodule PairDanceWeb.PairingTableLive.Index do
   def handle_event("create-task", %{}, socket) do
     {:noreply, socket}
   end
+
+  @impl true
+  def handle_info({:team_changed, team}, socket) do
+    {:noreply, socket |> assign(:team, team) |> assign(:tasks, team.tasks)}
+  end
 end
