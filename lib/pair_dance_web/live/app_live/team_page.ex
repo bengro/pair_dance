@@ -13,7 +13,6 @@ defmodule PairDanceWeb.PairingTableLive.Index do
     else
       socket_with_assigns =
         socket
-        |> assign(:team_id, team.id)
         |> assign(:team, team)
         |> assign(:task, %Task{team_id: team.id})
 
