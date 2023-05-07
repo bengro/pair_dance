@@ -45,7 +45,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   @impl TeamRepository
   def find_all() do
-    Repo.all(from t in TeamEntity, preload: [:members]) |> Enum.map(&to_team/1)
+    Repo.all(from t in TeamEntity, preload: [:members, :tasks]) |> Enum.map(&to_team/1)
   end
 
   @impl TeamRepository

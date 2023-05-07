@@ -3,6 +3,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
 
   alias PairDance.Domain.Team
   alias PairDance.Domain.TeamMember
+  alias PairDance.Domain.Task
   alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
   alias PairDance.Infrastructure.EctoUserRepository, as: UserRepository
 
@@ -111,8 +112,8 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
 
       {:ok, updated_team} = TeamRepository.add_task(team, "login with google")
 
-      assert [task] = updated_team.tasks
-      assert task.name == "login with google"
+      assert [%Task{name: name}] = updated_team.tasks
+      assert name == "login with google"
       assert updated_team == TeamRepository.find(team.id)
     end
 
