@@ -36,8 +36,5 @@ npm-debug.log
 .idea/
 pair_dance.iml
 
-# Secrets
-.envrc
-
 # vscode
 .vscode/
