@@ -2,9 +2,23 @@ defmodule PairDanceWeb.LandingPageTest do
   use PairDanceWeb.ConnCase
 
   import Phoenix.LiveViewTest
+  import PairDance.TeamsFixtures
 
-  test "create a team", %{conn: conn} do
-    {:ok, view, _} = conn |> impersonate(%{}) |> live(~p"/")
+  defp setup_data(_) do
+    user = user_fixture("bob@pair.dance")
+    %{user: user}
+  end
+
+  setup [:setup_data]
+
+  test "shows current user", %{conn: conn, user: user} do
+    {:ok, _, html} = conn |> impersonate(user) |> live(~p"/")
+
+    assert html =~ "bob@pair.dance"
+  end
+
+  test "create a team", %{conn: conn, user: user} do
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/")
 
     view
     |> form("#new-team-form", team: %{name: "comet"})
