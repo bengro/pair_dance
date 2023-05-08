@@ -17,14 +17,6 @@ defmodule PairDanceWeb.Router do
     plug :put_root_layout, {PairDanceWeb.Layouts, :app}
   end
 
-  scope "/", PairDanceWeb do
-    pipe_through [:browser, :app]
-
-    live "/", LandingPageLive.Index, :index
-    live "/:slug", PairingTableLive.Index, :index
-    live "/:slug/members", TeamMembersLive.Index, :index
-  end
-
   scope "/auth", PairDanceWeb do
     pipe_through :browser
 
@@ -32,6 +24,14 @@ defmodule PairDanceWeb.Router do
     get "/logout", AuthController, :delete
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
+  end
+
+  scope "/", PairDanceWeb do
+    pipe_through [:browser, :app]
+
+    live "/", LandingPageLive.Index, :index
+    live "/:slug", PairingTableLive.Index, :index
+    live "/:slug/members", TeamMembersLive.Index, :index
   end
 
   # Other scopes may use custom stacks.

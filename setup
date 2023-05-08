@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -ex
+
+asdf plugin-add direnv
+
+asdf install
+
+mix deps.get
+
+mix compile
