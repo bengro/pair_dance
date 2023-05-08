@@ -6,6 +6,8 @@ defmodule PairDance.Infrastructure.UserEntity do
 
   schema "users" do
     field :email, :string
+    field :name, :string
+    field :avatar, :string
 
     timestamps()
   end
@@ -13,7 +15,7 @@ defmodule PairDance.Infrastructure.UserEntity do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email])
+    |> cast(attrs, [:email, :name, :avatar])
     |> validate_required([:email])
     |> unique_constraint([:email])
   end

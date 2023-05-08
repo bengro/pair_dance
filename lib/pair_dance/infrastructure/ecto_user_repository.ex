@@ -57,4 +57,12 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
     {:ok}
   end
 
+  @impl UserRepository
+  def update(user, patch) do
+    entity = %UserEntity{ id: user.id, email: user.email }
+    case UserEntity.changeset(entity, patch) |> Repo.update() do
+      {:ok, entity} -> {:ok, to_user(entity)}
+    end
+  end
+
 end

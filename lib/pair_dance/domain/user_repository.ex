@@ -16,4 +16,6 @@ defmodule PairDance.Domain.UserRepository do
   @callback find_all() :: list(User.t())
 
   @callback delete_by_id(user_id()) :: {:ok}
+
+  @callback update(User.t(), %{}) :: {:ok, User.t()}
 end

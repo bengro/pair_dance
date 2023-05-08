@@ -33,7 +33,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
 
   @spec to_user(UserEntity) :: User.t()
   def to_user(entity) do
-    %User{ id: entity.id, email: entity.email }
+    %User{ id: entity.id, email: entity.email, name: entity.name, avatar: entity.avatar }
   end
 
 end
