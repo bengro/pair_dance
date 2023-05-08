@@ -1,4 +1,4 @@
-defmodule PairDance.Teams.Task do
+defmodule PairDance.Teams.TaskEntity do
   use Ecto.Schema
   import Ecto.Changeset
 
