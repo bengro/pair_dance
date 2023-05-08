@@ -4,7 +4,7 @@ defmodule PairDanceWeb.LandingPageTest do
   import Phoenix.LiveViewTest
 
   test "create a team", %{conn: conn} do
-    {:ok, view, _} = live(conn, ~p"/")
+    {:ok, view, _} = conn |> impersonate(%{}) |> live(~p"/")
 
     view
     |> form("#new-team-form", team: %{name: "comet"})

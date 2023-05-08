@@ -5,23 +5,24 @@ defmodule PairDanceWeb.TeamPageTest do
   import PairDance.TeamsFixtures
 
   defp setup_data(_) do
+    user = user_fixture()
     team = team_fixture()
     member = member_fixture(team)
     task = task_fixture(team, "Refactor something amazing")
 
-    %{members: [member], tasks: [task], team: team}
+    %{members: [member], tasks: [task], team: team, user: user}
   end
 
   setup [:setup_data]
 
-  test "non-existing team", %{conn: conn} do
-    {:ok, _index_live, html} = live(conn, ~p"/non-existing-team")
+  test "non-existing team", %{conn: conn, user: user} do
+    {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/non-existing-team")
 
     assert html =~ "not found"
   end
 
-  test "lists all members", %{conn: conn, members: members, team: team} do
-    {:ok, _index_live, html} = live(conn, ~p"/#{team.slug}")
+  test "lists all members", %{conn: conn, members: members, team: team, user: user} do
+    {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
 
     [first_member] = members
 
@@ -29,8 +30,8 @@ defmodule PairDanceWeb.TeamPageTest do
     assert html =~ first_member.user.email
   end
 
-  test "lists all tasks", %{conn: conn, tasks: tasks, team: team} do
-    {:ok, _index_live, html} = live(conn, ~p"/#{team.slug}")
+  test "lists all tasks", %{conn: conn, tasks: tasks, team: team, user: user} do
+    {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
 
     [first_task] = tasks
 
@@ -38,8 +39,8 @@ defmodule PairDanceWeb.TeamPageTest do
     assert html =~ first_task.name
   end
 
-  test "create a task", %{conn: conn, team: team} do
-    {:ok, view, _} = live(conn, ~p"/#{team.slug}")
+  test "create a task", %{conn: conn, team: team, user: user} do
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
 
     view
     |> form("#new-task-form", task: %{name: "my task name"})

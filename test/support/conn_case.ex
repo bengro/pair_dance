@@ -28,6 +28,7 @@ defmodule PairDanceWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import PairDanceWeb.ConnCase
+      import PairDanceWeb.Impersonate
     end
   end
 

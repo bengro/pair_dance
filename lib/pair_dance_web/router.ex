@@ -1,6 +1,13 @@
 defmodule PairDanceWeb.Router do
   use PairDanceWeb, :router
 
+  def ensure_authenticated(conn, _opts) do
+    case get_session(conn, :current_user) do
+      nil -> redirect(conn, to: "/auth")
+      _ -> conn
+    end
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -11,6 +18,10 @@ defmodule PairDanceWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :auth do
+    plug :ensure_authenticated
   end
 
   pipeline :app do
@@ -27,7 +38,7 @@ defmodule PairDanceWeb.Router do
   end
 
   scope "/", PairDanceWeb do
-    pipe_through [:browser, :app]
+    pipe_through [:browser, :app, :auth]
 
     live "/", LandingPageLive.Index, :index
     live "/:slug", PairingTableLive.Index, :index
