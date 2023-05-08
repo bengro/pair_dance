@@ -21,6 +21,10 @@ defmodule PairDanceWeb.TeamPageTest do
     assert html =~ "not found"
   end
 
+  test "requires authentication", %{conn: conn, team: team} do
+    assert {:error, {:redirect, %{flash: %{}, to: "/auth"}}} = live(conn, ~p"/#{team.slug}")
+  end
+
   test "lists all members", %{conn: conn, members: members, team: team, user: user} do
     {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
 
