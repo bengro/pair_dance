@@ -1,10 +1,6 @@
 defmodule PairDanceWeb.LandingPageLive.Index do
   use PairDanceWeb, :live_view
-
-  def assign_user(socket, session) do
-    user = session["current_user"]
-    assign(socket, :user, user)
-  end
+  import PairDanceWeb.Auth.AuthHelpers
 
   @impl true
   def mount(_params, session, socket) do
@@ -16,7 +12,7 @@ defmodule PairDanceWeb.LandingPageLive.Index do
     ~H"""
     <h1>pair.dance</h1>
     <img src={@user.avatar} referrerpolicy="no-referrer" />
-    you are <%= @user.email %>
+    logged in as <%= @user.email %>
     <.live_component
     id={1}
     module={PairDanceWeb.AppLive.CreateTeamComponent}
