@@ -13,10 +13,6 @@ defmodule PairDanceWeb.Router do
     plug :accepts, ["json"]
   end
 
-  pipeline :admin do
-    plug :put_root_layout, {PairDanceWeb.Layouts, :admin}
-  end
-
   pipeline :app do
     plug :put_root_layout, {PairDanceWeb.Layouts, :app}
   end
@@ -27,34 +23,6 @@ defmodule PairDanceWeb.Router do
     live "/", LandingPageLive.Index, :index
     live "/:slug", PairingTableLive.Index, :index
     live "/:slug/members", TeamMembersLive.Index, :index
-  end
-
-  scope "/admin", PairDanceWeb do
-    pipe_through [:browser, :admin]
-
-    # team management
-    live "/teams", TeamLive.Index, :index
-    live "/teams/new", TeamLive.Index, :new
-    live "/teams/:id/edit", TeamLive.Index, :edit
-
-    live "/teams/:id", TeamLive.Show, :show
-    live "/teams/:id/show/edit", TeamLive.Show, :edit
-
-    # member management
-    live "/members", MemberLive.Index, :index
-    live "/members/new", MemberLive.Index, :new
-    live "/members/:id/edit", MemberLive.Index, :edit
-
-    live "/members/:id", MemberLive.Show, :show
-    live "/members/:id/show/edit", MemberLive.Show, :edit
-
-    # task management
-    live "/tasks", TaskLive.Index, :index
-    live "/tasks/new", TaskLive.Index, :new
-    live "/tasks/:id/edit", TaskLive.Index, :edit
-
-    live "/tasks/:id", TaskLive.Show, :show
-    live "/tasks/:id/show/edit", TaskLive.Show, :edit
   end
 
   scope "/auth", PairDanceWeb do
