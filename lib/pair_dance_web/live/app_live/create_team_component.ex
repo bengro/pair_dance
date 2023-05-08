@@ -26,8 +26,8 @@ defmodule PairDanceWeb.AppLive.CreateTeamComponent do
 
   @impl true
   def update(assigns, socket) do
-    team = assigns[:team]
-    {:ok, assign(socket, :team, team)}
+    user = assigns[:user]
+    {:ok, assign(socket, :user, user)}
   end
 
   @impl true
@@ -35,8 +35,8 @@ defmodule PairDanceWeb.AppLive.CreateTeamComponent do
     {:noreply, socket}
   end
 
-  def handle_event("save", %{"team" => team}, socket) do
-    {:ok , team} = TeamCreationService.new_team(team["name"])
+  def handle_event("save", params, socket) do
+    {:ok , team} = TeamCreationService.new_team(params["team"]["name"], socket.assigns.user)
     send(self(), {:team_changed, team})
     {:noreply, push_navigate(socket, to: "/" <> team.slug )}
   end

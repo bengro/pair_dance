@@ -16,6 +16,7 @@ defmodule PairDanceWeb.LandingPageLive.Index do
     <.live_component
     id={1}
     module={PairDanceWeb.AppLive.CreateTeamComponent}
+    user={@user}
     action={:new}
     />
     """
