@@ -4,9 +4,11 @@ defmodule PairDanceWeb.TeamMembersPageTest do
   import Phoenix.LiveViewTest
   import PairDance.TeamsFixtures
 
+  alias PairDance.Domain.TeamCreationService
+
   defp setup_data(_) do
-    team = team_fixture()
     user = user_fixture()
+    {:ok, team} = TeamCreationService.new_team("my team", user)
 
     %{team: team, user: user}
   end

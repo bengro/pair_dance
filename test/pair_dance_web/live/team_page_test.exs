@@ -4,34 +4,36 @@ defmodule PairDanceWeb.TeamPageTest do
   import Phoenix.LiveViewTest
   import PairDance.TeamsFixtures
 
+  alias PairDance.Domain.TeamCreationService
+
   defp setup_data(_) do
     user = user_fixture()
-    team = team_fixture()
-    member = member_fixture(team)
+    {:ok, team} = TeamCreationService.new_team("my team", user)
     task = task_fixture(team, "Refactor something amazing")
 
-    %{members: [member], tasks: [task], team: team, user: user}
+    %{tasks: [task], team: team, user: user}
   end
 
   setup [:setup_data]
 
   test "non-existing team", %{conn: conn, user: user} do
-    {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/non-existing-team")
-
-    assert html =~ "not found"
+    assert {:error, {:redirect, %{to: "/"}}} = conn |> impersonate(user) |> live(~p"/non-existing-team")
   end
 
   test "requires authentication", %{conn: conn, team: team} do
-    assert {:error, {:redirect, %{flash: %{}, to: "/auth"}}} = live(conn, ~p"/#{team.slug}")
+    assert {:error, {:redirect, %{to: "/auth"}}} = live(conn, ~p"/#{team.slug}")
   end
 
-  test "lists all members", %{conn: conn, members: members, team: team, user: user} do
+  test "non-members get redirected away", %{conn: conn, team: team} do
+    another_user = user_fixture("another@user.com")
+    assert {:error, {:redirect, %{to: "/"}}} = conn |> impersonate(another_user) |> live(~p"/#{team.slug}")
+  end
+
+  test "lists all members", %{conn: conn, team: team, user: user} do
     {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
 
-    [first_member] = members
-
     assert html =~ "Team members:"
-    assert html =~ first_member.user.email
+    assert html =~ user.email
   end
 
   test "lists all tasks", %{conn: conn, tasks: tasks, team: team, user: user} do

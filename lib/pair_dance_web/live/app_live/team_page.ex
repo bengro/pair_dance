@@ -6,23 +6,10 @@ defmodule PairDanceWeb.PairingTableLive.Index do
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do
     team = TeamRepository.find_by_slug(slug)
-    if team == nil do
-      {:ok, assign(socket, :error, "not found")}
-    else
-      socket_with_assigns =
-        socket
-        |> assign(:team, team)
-
-      {:ok, socket_with_assigns}
-    end
+    {:ok, assign(socket, :team, team)}
   end
 
   @impl true
-  def render( %{ error: "not found"} = assigns) do
-    ~H"""
-      <div>not found</div>
-    """
-  end
   def render(assigns) do
     ~H"""
     <h2>

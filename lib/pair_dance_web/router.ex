@@ -8,6 +8,15 @@ defmodule PairDanceWeb.Router do
     end
   end
 
+  def ensure_team_member(conn, _opts) do
+    user = get_session(conn, :current_user)
+    %{ "slug" => slug } = conn.params
+    case PairDance.Domain.TeamAccessService.check_access(slug, user) do
+      true -> conn
+      false -> redirect(conn, to: "/") |> halt
+    end
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -28,6 +37,10 @@ defmodule PairDanceWeb.Router do
     plug :put_root_layout, {PairDanceWeb.Layouts, :app}
   end
 
+  pipeline :team do
+    plug :ensure_team_member
+  end
+
   scope "/auth", PairDanceWeb do
     pipe_through :browser
 
@@ -41,8 +54,11 @@ defmodule PairDanceWeb.Router do
     pipe_through [:browser, :app, :auth]
 
     live "/", LandingPageLive.Index, :index
-    live "/:slug", PairingTableLive.Index, :index
-    live "/:slug/members", TeamMembersLive.Index, :index
+    scope "/:slug" do
+      pipe_through :team
+      live "/", PairingTableLive.Index, :index
+      live "/members", TeamMembersLive.Index, :index
+    end
   end
 
   # Other scopes may use custom stacks.

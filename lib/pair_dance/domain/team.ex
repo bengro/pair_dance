@@ -13,4 +13,8 @@ defmodule PairDance.Domain.Team do
     members: list(TeamMember.t()),
     tasks: list(Task.t())
   }
+
+  def has_member(team, user) do
+    Enum.any?(team.members, fn m -> m.user.id == user.id end)
+  end
 end
