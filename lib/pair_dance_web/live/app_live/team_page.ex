@@ -47,6 +47,6 @@ defmodule PairDanceWeb.PairingTableLive.Index do
 
   @impl true
   def handle_info({:team_changed, team}, socket) do
-    {:noreply, socket |> assign(:team, team) |> assign(:tasks, team.tasks)}
+    {:noreply, assign(socket, :team, team)}
   end
 end
