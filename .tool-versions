@@ -2,3 +2,4 @@ erlang 25.1.2
 elixir 1.13.4-otp-25
 nodejs 19.2.0
 direnv 2.32.2
+gcloud 379.0.0
