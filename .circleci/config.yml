@@ -12,23 +12,23 @@ jobs:
       - run: mix local.rebar --force
       - run: mix deps.get
       - run: mix test
-  deploy:
-    docker:
-      - image: circleci/elixir:1.13-node
-    environment:
-      APP_NAME: pair-dance
-    steps:
-      - checkout
-      - run: sudo apt-get update
-      - run: sudo apt-get install -y python3 python3-pip git-core curl
-      - run:
-          command: |
-            pip3 install gigalixir --user
-            echo "export PATH=\$PATH:$(python3 -m site --user-base)/bin" >> ~/.bash_profile
-            . ~/.bash_profile
-      - run: gigalixir login -e "$GIGALIXIR_EMAIL" -y -p "$GIGALIXIR_PASSWORD"
-      - run: gigalixir create --name $APP_NAME || gigalixir git:remote $APP_NAME
-      - run: "git -c http.extraheader='GIGALIXIR-CLEAN: true' push gigalixir HEAD:refs/heads/master --force"
+#  deploy:
+#    docker:
+#      - image: circleci/elixir:1.13-node
+#    environment:
+#      APP_NAME: pair-dance
+#    steps:
+#      - checkout
+#      - run: sudo apt-get update
+#      - run: sudo apt-get install -y python3 python3-pip git-core curl
+#      - run:
+#          command: |
+#            pip3 install gigalixir --user
+#            echo "export PATH=\$PATH:$(python3 -m site --user-base)/bin" >> ~/.bash_profile
+#            . ~/.bash_profile
+#      - run: gigalixir login -e "$GIGALIXIR_EMAIL" -y -p "$GIGALIXIR_PASSWORD"
+#      - run: gigalixir create --name $APP_NAME || gigalixir git:remote $APP_NAME
+#      - run: "git -c http.extraheader='GIGALIXIR-CLEAN: true' push gigalixir HEAD:refs/heads/master --force"
   keep_alive:
     docker:
       - image: cimg/base:2021.04
@@ -47,13 +47,13 @@ workflows:
       not: << pipeline.parameters.run-schedule >>
     jobs:
       - build_phoenix
-      - deploy:
-          requires:
-            - build_phoenix
-          filters:
-            branches:
-              only:
-                - main
+#      - deploy:
+#          requires:
+#            - build_phoenix
+#          filters:
+#            branches:
+#              only:
+#                - main
   keep_alive:
     when: << pipeline.parameters.run-schedule >>
     jobs:
