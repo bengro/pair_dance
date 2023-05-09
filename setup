@@ -2,7 +2,7 @@
 
 set -ex
 
-asdf plugin-add direnv
+cut -d' ' -f1 .tool-versions | xargs -I{} asdf plugin add {} || true
 
 asdf install
 
