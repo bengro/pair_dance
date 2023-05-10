@@ -4,7 +4,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   alias PairDance.Infrastructure.TeamEntity
   alias PairDance.Infrastructure.TeamMemberEntity
-  alias PairDance.Teams.TaskEntity
+  alias PairDance.Infrastructure.TaskEntity
 
   import Ecto.Query, warn: false
   alias PairDance.Infrastructure.Repo
