@@ -1,4 +1,4 @@
-defmodule PairDance.Teams.TaskOwnership do
+defmodule PairDance.Infrastructure.TaskOwnershipEntity do
   use Ecto.Schema
   import Ecto.Changeset
 
