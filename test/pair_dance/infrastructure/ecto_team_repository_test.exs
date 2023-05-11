@@ -134,6 +134,19 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
       assert updated_team == TeamRepository.find(team.id)
     end
 
+    test "unassign a member from a task" do
+      {:ok, team} = TeamRepository.create("comet")
+      {:ok, user} = UserRepository.create_from_email("bob@me.com")
+      {:ok, %Team{ members: [member]}} = TeamRepository.add_member(team, %TeamMember{ user: user, role: :admin})
+      {:ok, %Team{ tasks: [task]}} = TeamRepository.add_task(team, "login with google")
+
+      TeamRepository.assign_member_to_task(team, %Assignment{member: member, task: task})
+      {:ok, updated_team} = TeamRepository.unassign_member_from_task(team, %Assignment{member: member, task: task})
+
+      assert updated_team.assignments == []
+      assert updated_team == TeamRepository.find(team.id)
+    end
+
   end
 
 end

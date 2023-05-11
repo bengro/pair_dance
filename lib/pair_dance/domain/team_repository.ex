@@ -25,4 +25,6 @@ defmodule PairDance.Domain.TeamRepository do
   @callback add_task(Team.t(), task_name()) :: {:ok, Team.t()}
 
   @callback assign_member_to_task(Team.t(), Assignment.t()) :: {:ok, Team.t()}
+
+  @callback unassign_member_from_task(Team.t(), Assignment.t()) :: {:ok, Team.t()}
 end

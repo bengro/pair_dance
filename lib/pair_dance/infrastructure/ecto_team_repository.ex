@@ -91,4 +91,16 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
       |> Repo.insert()
     {:ok, find(team.id)}
   end
+
+  @impl TeamRepository
+  def unassign_member_from_task(team, assignment) do
+    team_id = team.id
+    user_id = assignment.member.user.id
+    task_id = assignment.task.id
+    Repo.delete_all from to in TaskOwnershipEntity,
+                join: m in TeamMemberEntity,
+                on: to.member_id == m.id,
+                where: to.team_id == ^team_id and m.user_id == ^user_id and to.task_id ==^task_id
+    {:ok, find(team.id)}
+  end
 end
