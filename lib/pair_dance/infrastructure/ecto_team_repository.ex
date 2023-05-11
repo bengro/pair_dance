@@ -5,7 +5,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
   alias PairDance.Infrastructure.TeamEntity
   alias PairDance.Infrastructure.TeamMemberEntity
   alias PairDance.Infrastructure.TaskEntity
-  alias PairDance.Infrastructure.TaskOwnershipEntity
+  alias PairDance.Infrastructure.AssignmentEntity
 
   import Ecto.Query, warn: false
   alias PairDance.Infrastructure.Repo
@@ -87,7 +87,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
     team_id = team.id
     user_id = assignment.member.user.id
     %TeamMemberEntity{ id: member_id } = Repo.one from m in TeamMemberEntity, where: m.team_id == ^team_id and m.user_id == ^user_id
-    %TaskOwnershipEntity{ team_id: team.id, member_id: member_id, task_id: assignment.task.id }
+    %AssignmentEntity{ team_id: team.id, member_id: member_id, task_id: assignment.task.id }
       |> Repo.insert()
     {:ok, find(team.id)}
   end
@@ -97,7 +97,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
     team_id = team.id
     user_id = assignment.member.user.id
     task_id = assignment.task.id
-    Repo.delete_all from to in TaskOwnershipEntity,
+    Repo.delete_all from to in AssignmentEntity,
                 join: m in TeamMemberEntity,
                 on: to.member_id == m.id,
                 where: to.team_id == ^team_id and m.user_id == ^user_id and to.task_id ==^task_id

@@ -8,7 +8,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
 
   alias PairDance.Infrastructure.TeamEntity
   alias PairDance.Infrastructure.TeamMemberEntity
-  alias PairDance.Infrastructure.TaskOwnershipEntity
+  alias PairDance.Infrastructure.AssignmentEntity
   alias PairDance.Infrastructure.UserEntity
   alias PairDance.Teams.Task, as: TaskEntity
 
@@ -39,7 +39,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
     %User{ id: entity.id, email: entity.email, name: entity.name, avatar: entity.avatar }
   end
 
-  @spec to_assignment(TaskOwnershipEntity) :: Assignment.t()
+  @spec to_assignment(AssignmentEntity) :: Assignment.t()
   def to_assignment(entity) do
     %Assignment{ member: to_team_member(entity.member), task: to_task(entity.task)}
   end

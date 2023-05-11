@@ -7,7 +7,7 @@ defmodule PairDance.Infrastructure.TeamEntity do
     field :slug, :string
     has_many(:members, PairDance.Infrastructure.TeamMemberEntity, foreign_key: :team_id)
     has_many(:tasks, PairDance.Infrastructure.TaskEntity, foreign_key: :team_id)
-    has_many(:assignments, PairDance.Infrastructure.TaskOwnershipEntity, foreign_key: :team_id)
+    has_many(:assignments, PairDance.Infrastructure.AssignmentEntity, foreign_key: :team_id)
 
     timestamps()
   end
