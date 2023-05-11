@@ -1,4 +1,4 @@
-defmodule PairDance.Domain.TeamSlugService do
+defmodule PairDance.Domain.Team.SlugService do
 
   alias PairDance.Domain.Team
 

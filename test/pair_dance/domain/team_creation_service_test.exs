@@ -2,7 +2,7 @@ defmodule PairDance.Domain.TeamCreationServiceTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.Team
-  alias PairDance.Domain.TeamMember
+  alias PairDance.Domain.Team.Member
 
   alias PairDance.Domain.TeamCreationService
   alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
@@ -37,7 +37,7 @@ defmodule PairDance.Domain.TeamCreationServiceTest do
   test "the team creator gets added as member", %{user: user} do
     {:ok, %Team{members: members}} = TeamCreationService.new_team("infra", user)
 
-    assert [%TeamMember{ user: user, role: :admin}] == members
+    assert [%Member{ user: user, role: :admin}] == members
   end
 
 end

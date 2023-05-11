@@ -1,10 +1,10 @@
 defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
   use PairDance.DataCase
 
-  alias PairDance.Domain.Assignment
+  alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team
-  alias PairDance.Domain.TeamMember
-  alias PairDance.Domain.Task
+  alias PairDance.Domain.Team.Member
+  alias PairDance.Domain.Team.Task
   alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
   alias PairDance.Infrastructure.EctoUserRepository, as: UserRepository
 
@@ -92,9 +92,9 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
       {:ok, team} = TeamRepository.create("comet")
       {:ok, user} = UserRepository.create_from_email("bob@me.com")
 
-      {:ok, updated_team} = TeamRepository.add_member(team, %TeamMember{ user: user, role: :admin})
+      {:ok, updated_team} = TeamRepository.add_member(team, %Member{ user: user, role: :admin})
 
-      assert updated_team.members == [%TeamMember{ user: user, role: :admin}]
+      assert updated_team.members == [%Member{ user: user, role: :admin}]
       assert updated_team == TeamRepository.find(team.id)
     end
 
@@ -125,7 +125,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     test "assign a member to a task" do
       {:ok, team} = TeamRepository.create("comet")
       {:ok, user} = UserRepository.create_from_email("bob@me.com")
-      {:ok, %Team{ members: [member]}} = TeamRepository.add_member(team, %TeamMember{ user: user, role: :admin})
+      {:ok, %Team{ members: [member]}} = TeamRepository.add_member(team, %Member{ user: user, role: :admin})
       {:ok, %Team{ tasks: [task]}} = TeamRepository.add_task(team, "login with google")
 
       {:ok, updated_team} = TeamRepository.assign_member_to_task(team, %Assignment{member: member, task: task})
@@ -137,7 +137,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     test "unassign a member from a task" do
       {:ok, team} = TeamRepository.create("comet")
       {:ok, user} = UserRepository.create_from_email("bob@me.com")
-      {:ok, %Team{ members: [member]}} = TeamRepository.add_member(team, %TeamMember{ user: user, role: :admin})
+      {:ok, %Team{ members: [member]}} = TeamRepository.add_member(team, %Member{ user: user, role: :admin})
       {:ok, %Team{ tasks: [task]}} = TeamRepository.add_task(team, "login with google")
 
       TeamRepository.assign_member_to_task(team, %Assignment{member: member, task: task})

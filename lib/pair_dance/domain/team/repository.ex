@@ -1,8 +1,8 @@
-defmodule PairDance.Domain.TeamRepository do
+defmodule PairDance.Domain.Team.Repository do
 
-  alias PairDance.Domain.Assignment
+  alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team
-  alias PairDance.Domain.TeamMember
+  alias PairDance.Domain.Team.Member
 
   @type team_id :: integer
   @type slug :: String.t
@@ -20,7 +20,7 @@ defmodule PairDance.Domain.TeamRepository do
 
   @callback delete(team_id()) :: {:ok}
 
-  @callback add_member(Team.t(), TeamMember.t()) :: {:ok, Team.t()}
+  @callback add_member(Team.t(), Member.t()) :: {:ok, Team.t()}
 
   @callback add_task(Team.t(), task_name()) :: {:ok, Team.t()}
 

@@ -1,9 +1,9 @@
 defmodule PairDance.Infrastructure.EctoTeamRepository do
 
-  alias PairDance.Domain.TeamRepository
+  alias PairDance.Domain.Team
 
   alias PairDance.Infrastructure.TeamEntity
-  alias PairDance.Infrastructure.TeamMemberEntity
+  alias PairDance.Infrastructure.Team.MemberEntity
   alias PairDance.Infrastructure.TaskEntity
   alias PairDance.Infrastructure.AssignmentEntity
 
@@ -12,11 +12,11 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   import PairDance.Infrastructure.EntityConverters
 
-  @behaviour TeamRepository
+  @behaviour Team.Repository
 
   alias Ecto.UUID
 
-  @impl TeamRepository
+  @impl Team.Repository
   def create(name) do
     {:ok, entity } = %TeamEntity{}
       |> TeamEntity.changeset(%{ name: name, slug: UUID.generate() })
@@ -24,7 +24,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
     {:ok, find(entity.id)}
   end
 
-  @impl TeamRepository
+  @impl Team.Repository
   def find(id) do
     entity = Repo.one from t in TeamEntity, where: t.id == ^id, preload: [:members, [members: :user], :tasks, :assignments, [assignments: [ :task, :member, member: :user]]]
     if entity == nil do
@@ -34,7 +34,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
     end
   end
 
-  @impl TeamRepository
+  @impl Team.Repository
   def find_by_slug(slug) do
     entity = Repo.one from t in TeamEntity, where: t.slug == ^slug, preload:  [:members, [members: :user], :tasks, :assignments, [assignments: [ :task, :member, member: :user]]]
     if entity == nil do
@@ -44,12 +44,12 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
     end
   end
 
-  @impl TeamRepository
+  @impl Team.Repository
   def find_all() do
     Repo.all(from t in TeamEntity, preload:  [:members, [members: :user], :tasks, :assignments, [assignments: [ :task, :member, member: :user]]]) |> Enum.map(&to_team/1)
   end
 
-  @impl TeamRepository
+  @impl Team.Repository
   def update(team_id, patch) do
     entity = Repo.one from t in TeamEntity, where: t.id == ^team_id
     case TeamEntity.changeset(entity, patch) |> Repo.update() do
@@ -60,21 +60,21 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   end
 
-  @impl TeamRepository
+  @impl Team.Repository
   def delete(id) do
     {:ok, _entity} = Repo.delete(%TeamEntity{ id: id })
     {:ok}
   end
 
-  @impl TeamRepository
+  @impl Team.Repository
   def add_member(team, member) do
-    {:ok, _} = %TeamMemberEntity{}
-      |> TeamMemberEntity.changeset(%{ user_id: member.user.id, team_id: team.id })
+    {:ok, _} = %MemberEntity{}
+      |> MemberEntity.changeset(%{ user_id: member.user.id, team_id: team.id })
       |> Repo.insert()
     {:ok, find(team.id)}
   end
 
-  @impl TeamRepository
+  @impl Team.Repository
   def add_task(team, task_name) do
     {:ok, _} = %TaskEntity{}
       |> TaskEntity.changeset(%{ team_id: team.id, name: task_name })
@@ -82,23 +82,23 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
     {:ok, find(team.id)}
   end
 
-  @impl TeamRepository
+  @impl Team.Repository
   def assign_member_to_task(team, assignment) do
     team_id = team.id
     user_id = assignment.member.user.id
-    %TeamMemberEntity{ id: member_id } = Repo.one from m in TeamMemberEntity, where: m.team_id == ^team_id and m.user_id == ^user_id
+    %MemberEntity{ id: member_id } = Repo.one from m in MemberEntity, where: m.team_id == ^team_id and m.user_id == ^user_id
     %AssignmentEntity{ team_id: team.id, member_id: member_id, task_id: assignment.task.id }
       |> Repo.insert()
     {:ok, find(team.id)}
   end
 
-  @impl TeamRepository
+  @impl Team.Repository
   def unassign_member_from_task(team, assignment) do
     team_id = team.id
     user_id = assignment.member.user.id
     task_id = assignment.task.id
     Repo.delete_all from to in AssignmentEntity,
-                join: m in TeamMemberEntity,
+                join: m in MemberEntity,
                 on: to.member_id == m.id,
                 where: to.team_id == ^team_id and m.user_id == ^user_id and to.task_id ==^task_id
     {:ok, find(team.id)}

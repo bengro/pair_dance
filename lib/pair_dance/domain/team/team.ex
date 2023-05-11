@@ -1,8 +1,8 @@
 defmodule PairDance.Domain.Team do
 
-  alias PairDance.Domain.Assignment
-  alias PairDance.Domain.TeamMember
-  alias PairDance.Domain.Task
+  alias PairDance.Domain.Team.Assignment
+  alias PairDance.Domain.Team.Member
+  alias PairDance.Domain.Team.Task
 
   @enforce_keys [:id, :name, :slug, :members, :tasks, :assignments]
   defstruct [:id, :name, :slug, :members, :tasks, :assignments]
@@ -11,7 +11,7 @@ defmodule PairDance.Domain.Team do
     id: integer(),
     name: String.t(),
     slug: String.t(),
-    members: list(TeamMember.t()),
+    members: list(Member.t()),
     tasks: list(Task.t()),
     assignments: list(Assignment.t())
   }

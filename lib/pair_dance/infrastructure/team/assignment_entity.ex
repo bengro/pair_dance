@@ -3,7 +3,7 @@ defmodule PairDance.Infrastructure.AssignmentEntity do
   import Ecto.Changeset
 
   alias  PairDance.Infrastructure.TeamEntity
-  alias  PairDance.Infrastructure.TeamMemberEntity
+  alias  PairDance.Infrastructure.Team.MemberEntity
   alias  PairDance.Infrastructure.TaskEntity
 
   @primary_key false
@@ -11,7 +11,7 @@ defmodule PairDance.Infrastructure.AssignmentEntity do
 
     belongs_to :team, TeamEntity, primary_key: true
     belongs_to :task, TaskEntity, primary_key: true
-    belongs_to :member, TeamMemberEntity, primary_key: true
+    belongs_to :member, MemberEntity, primary_key: true
 
     timestamps()
   end

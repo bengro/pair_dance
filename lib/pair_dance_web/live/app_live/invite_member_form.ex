@@ -1,7 +1,7 @@
 defmodule PairDanceWeb.AppLive.AddMemberForm do
   use PairDanceWeb, :live_component
 
-  alias PairDance.Domain.TeamInviteService
+  alias PairDance.Domain.Team.InviteService
 
   @impl true
   def render(assigns) do
@@ -36,7 +36,7 @@ defmodule PairDanceWeb.AppLive.AddMemberForm do
   end
 
   def handle_event("save", %{"user" => user}, socket) do
-    team = TeamInviteService.invite(socket.assigns.team, user["email"])
+    team = InviteService.invite(socket.assigns.team, user["email"])
     send(self(), {:team_changed, team})
     {:noreply, assign(socket, team: team)}
   end
