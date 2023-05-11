@@ -2,10 +2,14 @@ defmodule PairDance.Infrastructure.TaskOwnershipEntity do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias  PairDance.Infrastructure.TeamMemberEntity
+  alias  PairDance.Infrastructure.TaskEntity
+
   schema "task_ownerships" do
 
-    field :task_id, :id
-    field :member_id, :id
+    field :team_id, :id
+    belongs_to :task, TaskEntity
+    belongs_to :member, TeamMemberEntity
 
     timestamps()
   end

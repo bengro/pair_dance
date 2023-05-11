@@ -1,5 +1,6 @@
 defmodule PairDance.Infrastructure.EntityConverters do
 
+  alias PairDance.Domain.Assignment
   alias PairDance.Domain.Team
   alias PairDance.Domain.TeamMember
   alias PairDance.Domain.User
@@ -7,6 +8,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
 
   alias PairDance.Infrastructure.TeamEntity
   alias PairDance.Infrastructure.TeamMemberEntity
+  alias PairDance.Infrastructure.TaskOwnershipEntity
   alias PairDance.Infrastructure.UserEntity
   alias PairDance.Teams.Task, as: TaskEntity
 
@@ -18,6 +20,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
       slug: entity.slug,
       members: entity.members |> Enum.map(&to_team_member/1),
       tasks: entity.tasks |> Enum.map(&to_task/1),
+      assignments: entity.assignments |> Enum.map(&to_assignment/1),
     }
   end
 
@@ -34,6 +37,11 @@ defmodule PairDance.Infrastructure.EntityConverters do
   @spec to_user(UserEntity) :: User.t()
   def to_user(entity) do
     %User{ id: entity.id, email: entity.email, name: entity.name, avatar: entity.avatar }
+  end
+
+  @spec to_assignment(TaskOwnershipEntity) :: Assignment.t()
+  def to_assignment(entity) do
+    %Assignment{ member: to_team_member(entity.member), task: to_task(entity.task)}
   end
 
 end

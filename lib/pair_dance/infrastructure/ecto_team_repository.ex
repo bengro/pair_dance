@@ -5,6 +5,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
   alias PairDance.Infrastructure.TeamEntity
   alias PairDance.Infrastructure.TeamMemberEntity
   alias PairDance.Infrastructure.TaskEntity
+  alias PairDance.Infrastructure.TaskOwnershipEntity
 
   import Ecto.Query, warn: false
   alias PairDance.Infrastructure.Repo
@@ -25,7 +26,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   @impl TeamRepository
   def find(id) do
-    entity = Repo.one from t in TeamEntity, where: t.id == ^id, preload: [:members, [members: :user], :tasks]
+    entity = Repo.one from t in TeamEntity, where: t.id == ^id, preload: [:members, [members: :user], :tasks, :assignments, [assignments: [ :task, :member, member: :user]]]
     if entity == nil do
       nil
     else
@@ -35,7 +36,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   @impl TeamRepository
   def find_by_slug(slug) do
-    entity = Repo.one from t in TeamEntity, where: t.slug == ^slug, preload: [:members, [members: :user], :tasks]
+    entity = Repo.one from t in TeamEntity, where: t.slug == ^slug, preload:  [:members, [members: :user], :tasks, :assignments, [assignments: [ :task, :member, member: :user]]]
     if entity == nil do
       nil
     else
@@ -45,7 +46,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
 
   @impl TeamRepository
   def find_all() do
-    Repo.all(from t in TeamEntity, preload: [:members, :tasks]) |> Enum.map(&to_team/1)
+    Repo.all(from t in TeamEntity, preload:  [:members, [members: :user], :tasks, :assignments, [assignments: [ :task, :member, member: :user]]]) |> Enum.map(&to_team/1)
   end
 
   @impl TeamRepository
@@ -77,6 +78,16 @@ defmodule PairDance.Infrastructure.EctoTeamRepository do
   def add_task(team, task_name) do
     {:ok, _} = %TaskEntity{}
       |> TaskEntity.changeset(%{ team_id: team.id, name: task_name })
+      |> Repo.insert()
+    {:ok, find(team.id)}
+  end
+
+  @impl TeamRepository
+  def assign_member_to_task(team, assignment) do
+    team_id = team.id
+    user_id = assignment.member.user.id
+    %TeamMemberEntity{ id: member_id } = Repo.one from m in TeamMemberEntity, where: m.team_id == ^team_id and m.user_id == ^user_id
+    %TaskOwnershipEntity{ team_id: team.id, member_id: member_id, task_id: assignment.task.id }
       |> Repo.insert()
     {:ok, find(team.id)}
   end

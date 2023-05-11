@@ -1,6 +1,7 @@
 defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
   use PairDance.DataCase
 
+  alias PairDance.Domain.Assignment
   alias PairDance.Domain.Team
   alias PairDance.Domain.TeamMember
   alias PairDance.Domain.Task
@@ -114,6 +115,22 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
 
       assert [%Task{name: name}] = updated_team.tasks
       assert name == "login with google"
+      assert updated_team == TeamRepository.find(team.id)
+    end
+
+  end
+
+  describe "assignments" do
+
+    test "assign a member to a task" do
+      {:ok, team} = TeamRepository.create("comet")
+      {:ok, user} = UserRepository.create_from_email("bob@me.com")
+      {:ok, %Team{ members: [member]}} = TeamRepository.add_member(team, %TeamMember{ user: user, role: :admin})
+      {:ok, %Team{ tasks: [task]}} = TeamRepository.add_task(team, "login with google")
+
+      {:ok, updated_team} = TeamRepository.assign_member_to_task(team, %Assignment{member: member, task: task})
+
+      assert updated_team.assignments == [%Assignment{member: member, task: task}]
       assert updated_team == TeamRepository.find(team.id)
     end
 

@@ -1,5 +1,6 @@
 defmodule PairDance.Domain.TeamRepository do
 
+  alias PairDance.Domain.Assignment
   alias PairDance.Domain.Team
   alias PairDance.Domain.TeamMember
 
@@ -22,4 +23,6 @@ defmodule PairDance.Domain.TeamRepository do
   @callback add_member(Team.t(), TeamMember.t()) :: {:ok, Team.t()}
 
   @callback add_task(Team.t(), task_name()) :: {:ok, Team.t()}
+
+  @callback assign_member_to_task(Team.t(), Assignment.t()) :: {:ok, Team.t()}
 end
