@@ -2,7 +2,7 @@ defmodule PairDance.Domain.Team.SlugService do
 
   alias PairDance.Domain.Team
 
-  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   @type slug :: String.t
 

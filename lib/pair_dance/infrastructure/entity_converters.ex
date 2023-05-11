@@ -8,7 +8,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
 
   alias PairDance.Infrastructure.TeamEntity
   alias PairDance.Infrastructure.Team.MemberEntity
-  alias PairDance.Infrastructure.AssignmentEntity
+  alias PairDance.Infrastructure.Team.AssignmentEntity
   alias PairDance.Infrastructure.UserEntity
   alias PairDance.Teams.Task, as: TaskEntity
 

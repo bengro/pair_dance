@@ -1,7 +1,7 @@
 defmodule PairDanceWeb.PairingTableLive.Index do
   use PairDanceWeb, :live_view
 
-  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do

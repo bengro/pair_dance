@@ -1,7 +1,7 @@
 defmodule PairDance.Domain.Team.InviteServiceTest do
   use PairDance.DataCase
 
-  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Domain.Team.InviteService
   alias PairDance.Domain.Team
 

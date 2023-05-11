@@ -1,10 +1,10 @@
-defmodule PairDance.Infrastructure.AssignmentEntity do
+defmodule PairDance.Infrastructure.Team.AssignmentEntity do
   use Ecto.Schema
   import Ecto.Changeset
 
   alias  PairDance.Infrastructure.TeamEntity
   alias  PairDance.Infrastructure.Team.MemberEntity
-  alias  PairDance.Infrastructure.TaskEntity
+  alias  PairDance.Infrastructure.Team.TaskEntity
 
   @primary_key false
   schema "assignments" do

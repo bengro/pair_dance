@@ -5,7 +5,7 @@ defmodule PairDance.Domain.TeamCreationServiceTest do
   alias PairDance.Domain.Team.Member
 
   alias PairDance.Domain.TeamCreationService
-  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.EctoUserRepository, as: UserRepository
 
   defp setup_data(_) do

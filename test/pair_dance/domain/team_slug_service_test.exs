@@ -1,7 +1,7 @@
 defmodule PairDance.Domain.TeamSlugServiceTest do
   use PairDance.DataCase
 
-  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Domain.Team.SlugService
 
   describe "set slug" do

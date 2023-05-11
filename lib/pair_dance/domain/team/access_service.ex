@@ -3,7 +3,7 @@ defmodule PairDance.Domain.Team.AccessService do
   alias PairDance.Domain.User
   alias PairDance.Domain.Team
 
-  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   @type team_slug :: String.t
 

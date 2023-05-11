@@ -4,7 +4,7 @@ defmodule PairDance.Domain.TeamCreationService do
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.User
 
-  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Domain.Team.SlugService
 
   @type team_name :: String.t

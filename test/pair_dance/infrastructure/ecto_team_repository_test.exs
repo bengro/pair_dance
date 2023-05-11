@@ -5,7 +5,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
-  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.EctoUserRepository, as: UserRepository
 
   test "create a team" do

@@ -1,7 +1,7 @@
 defmodule PairDanceWeb.AppLive.CreateTaskComponent do
   use PairDanceWeb, :live_component
 
-  alias PairDance.Infrastructure.EctoTeamRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   @impl true
   def render(assigns) do
