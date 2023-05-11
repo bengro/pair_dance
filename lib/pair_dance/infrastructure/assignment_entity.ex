@@ -17,8 +17,8 @@ defmodule PairDance.Infrastructure.AssignmentEntity do
   end
 
   @doc false
-  def changeset(task_ownership, attrs) do
-    task_ownership
+  def changeset(assignment, attrs) do
+    assignment
     |> cast(attrs, [])
     |> validate_required([])
   end
