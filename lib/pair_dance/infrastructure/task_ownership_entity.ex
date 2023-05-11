@@ -7,7 +7,7 @@ defmodule PairDance.Infrastructure.AssignmentEntity do
   alias  PairDance.Infrastructure.TaskEntity
 
   @primary_key false
-  schema "task_ownerships" do
+  schema "assignments" do
 
     belongs_to :team, TeamEntity, primary_key: true
     belongs_to :task, TaskEntity, primary_key: true
