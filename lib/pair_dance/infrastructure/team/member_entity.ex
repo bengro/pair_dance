@@ -3,7 +3,7 @@ defmodule PairDance.Infrastructure.Team.MemberEntity do
   import Ecto.Changeset
 
   schema "members" do
-    belongs_to :user, PairDance.Infrastructure.UserEntity, references: :id, type: :binary_id
+    belongs_to :user, PairDance.Infrastructure.User.Entity, references: :id, type: :binary_id
     belongs_to :team, PairDance.Infrastructure.TeamEntity
 
     timestamps()

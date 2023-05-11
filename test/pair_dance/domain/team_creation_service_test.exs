@@ -6,7 +6,7 @@ defmodule PairDance.Domain.TeamCreationServiceTest do
 
   alias PairDance.Domain.TeamCreationService
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
-  alias PairDance.Infrastructure.EctoUserRepository, as: UserRepository
+  alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
 
   defp setup_data(_) do
     {:ok, user} = UserRepository.create_from_email("bob@gmail.com")

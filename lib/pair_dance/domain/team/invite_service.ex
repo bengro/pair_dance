@@ -4,7 +4,7 @@ defmodule PairDance.Domain.Team.InviteService do
   alias PairDance.Domain.Team.Member
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
-  alias PairDance.Infrastructure.EctoUserRepository, as: UserRepository
+  alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
 
   @type email :: String.t
 

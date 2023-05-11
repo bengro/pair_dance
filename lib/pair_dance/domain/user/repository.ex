@@ -1,4 +1,4 @@
-defmodule PairDance.Domain.UserRepository do
+defmodule PairDance.Domain.User.Repository do
 
   alias PairDance.Domain.User
 

@@ -1,20 +1,20 @@
-defmodule PairDance.Infrastructure.EctoUserRepository do
+defmodule PairDance.Infrastructure.User.EctoRepository do
 
-  alias PairDance.Domain.UserRepository
+  alias PairDance.Domain.User
 
-  alias PairDance.Infrastructure.UserEntity
+  alias PairDance.Infrastructure.User.Entity
 
   import Ecto.Query, warn: false
   alias PairDance.Infrastructure.Repo
 
   import PairDance.Infrastructure.EntityConverters
 
-  @behaviour UserRepository
+  @behaviour User.Repository
 
-  @impl UserRepository
+  @impl User.Repository
   def create_from_email(email) do
-    result = %UserEntity{}
-      |> UserEntity.changeset(%{ email: email })
+    result = %Entity{}
+      |> Entity.changeset(%{ email: email })
       |> Repo.insert()
     case result do
       {:ok, entity} -> {:ok, to_user(entity)}
@@ -22,7 +22,7 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
     end
   end
 
-  @impl UserRepository
+  @impl User.Repository
   def find_by_email_or_create(email) do
     case create_from_email(email) do
       {:ok, user} -> user
@@ -30,37 +30,37 @@ defmodule PairDance.Infrastructure.EctoUserRepository do
     end
   end
 
-  @impl UserRepository
+  @impl User.Repository
   def find_by_id(id) do
-    case Repo.get(UserEntity, id) do
+    case Repo.get(Entity, id) do
       nil -> nil
       entity -> to_user(entity)
     end
   end
 
-  @impl UserRepository
+  @impl User.Repository
   def find_by_email(email) do
-    case Repo.one from u in UserEntity, where: u.email == ^email do
+    case Repo.one from u in Entity, where: u.email == ^email do
       nil -> nil
       entity -> to_user(entity)
     end
   end
 
-  @impl UserRepository
+  @impl User.Repository
   def find_all() do
-    Repo.all(UserEntity) |> Enum.map(&to_user/1)
+    Repo.all(Entity) |> Enum.map(&to_user/1)
   end
 
-  @impl UserRepository
+  @impl User.Repository
   def delete_by_id(id) do
-    {:ok, _entity} = Repo.delete(%UserEntity{ id: id })
+    {:ok, _entity} = Repo.delete(%Entity{ id: id })
     {:ok}
   end
 
-  @impl UserRepository
+  @impl User.Repository
   def update(user, patch) do
-    entity = %UserEntity{ id: user.id, email: user.email }
-    case UserEntity.changeset(entity, patch) |> Repo.update() do
+    entity = %Entity{ id: user.id, email: user.email }
+    case Entity.changeset(entity, patch) |> Repo.update() do
       {:ok, entity} -> {:ok, to_user(entity)}
     end
   end

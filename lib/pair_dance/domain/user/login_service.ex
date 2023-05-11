@@ -1,6 +1,6 @@
-defmodule PairDance.Domain.UserService do
+defmodule PairDance.Domain.User.LoginService do
   alias PairDance.Domain.User
-  alias PairDance.Infrastructure.EctoUserRepository, as: UserRepository
+  alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
 
   @spec login(String.t(), String.t(), String.t()) :: User.t()
   def login(email, name, avatar) do

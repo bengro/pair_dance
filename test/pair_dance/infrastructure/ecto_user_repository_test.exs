@@ -2,7 +2,7 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.User
-  alias PairDance.Infrastructure.EctoUserRepository, as: Repository
+  alias PairDance.Infrastructure.User.EctoRepository, as: Repository
 
   test "create a user" do
     {:ok, user} = Repository.create_from_email("bob@example.com")

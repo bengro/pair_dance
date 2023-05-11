@@ -1,12 +1,12 @@
-defmodule PairDance.Domain.UserServiceTest do
+defmodule PairDance.Domain.LoginServiceTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.User
-  alias PairDance.Domain.UserService
-  alias PairDance.Infrastructure.EctoUserRepository, as: UserRepository
+  alias PairDance.Domain.User.LoginService
+  alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
 
   test "first time login" do
-    user = UserService.login("bob@me.com", "Bob Dylan", "http://avatar.com")
+    user = LoginService.login("bob@me.com", "Bob Dylan", "http://avatar.com")
     %User{ id: id, email: email, name: name, avatar: avatar } = user
 
     assert email == "bob@me.com"
@@ -18,7 +18,7 @@ defmodule PairDance.Domain.UserServiceTest do
   test "first time login of an invited user" do
     UserRepository.create_from_email("bob@me.com")
 
-    user = UserService.login("bob@me.com", "Bob Dylan", "http://avatar.com")
+    user = LoginService.login("bob@me.com", "Bob Dylan", "http://avatar.com")
     %User{ id: id, email: email, name: name, avatar: avatar } = user
 
     assert email == "bob@me.com"

@@ -3,7 +3,7 @@ defmodule PairDance.Domain.Team.AccessServiceTest do
 
   alias PairDance.Domain.Team.AccessService
   alias PairDance.Domain.TeamCreationService
-  alias PairDance.Infrastructure.EctoUserRepository, as: UserRepository
+  alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
 
   test "members have access" do
     {:ok, user} = UserRepository.create_from_email("bob@gmail.com")

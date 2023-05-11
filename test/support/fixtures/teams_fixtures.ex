@@ -5,7 +5,7 @@ defmodule PairDance.TeamsFixtures do
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
 
-  alias PairDance.Infrastructure.EctoUserRepository, as: UserRepository
+  alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Domain.Team.InviteService
 

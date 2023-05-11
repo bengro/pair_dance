@@ -1,4 +1,4 @@
-defmodule PairDance.Infrastructure.UserEntity do
+defmodule PairDance.Infrastructure.User.Entity do
   use Ecto.Schema
   import Ecto.Changeset
 
