@@ -10,7 +10,7 @@ defmodule PairDanceWeb.LandingPageLive.Index do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <h1>pair.dance</h1>
+    <h1 class="text-3xl font-bold">pair.dance</h1>
     <img src={@user.avatar} referrerpolicy="no-referrer" />
     logged in as <%= @user.email %>
     <.live_component

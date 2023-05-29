@@ -12,8 +12,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brand: "#FD4F00",
-      }
+        surf: '#4b8f8cff',
+        gloom: '#59504f',
+        ghost: '#f6f8ffff',
+        tomato: '#f06543ff',
+        crown: '#fdb833ff',
+
+}
     },
   },
   plugins: [
