@@ -51,11 +51,17 @@ defmodule PairDanceWeb.Router do
   end
 
   scope "/", PairDanceWeb do
-    pipe_through [:browser, :app, :auth]
+    pipe_through [:browser, :app]
 
     live "/", LandingPageLive.Index, :index
+
+    scope "/!" do
+      pipe_through [:auth]
+      live "/account", AccountPageLive.Index, :index
+    end
+
     scope "/:slug" do
-      pipe_through :team
+      pipe_through [:auth, :team]
       live "/", PairingTableLive.Index, :index
       live "/members", TeamMembersLive.Index, :index
     end
