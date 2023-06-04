@@ -8,12 +8,41 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import mountApp from "./mountApp";
+import Sortable from "sortablejs";
 
+let Hooks = {};
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
+
+Hooks.Sortable = {
+  mounted() {
+    let group = this.el.dataset.group;
+    console.log("Group", group);
+    console.log("this.el", this.el);
+    let sorter = new Sortable(this.el, {
+      group: "tasks",
+      animation: 150,
+      delay: 100,
+      dragClass: "drag-item",
+      ghostClass: "drag-ghost",
+      forceFallback: true,
+      onEnd: (e) => {
+        let params = {
+          old: e.oldIndex,
+          new: e.newIndex,
+          to: e.to.dataset,
+          ...e.item.dataset,
+        };
+        this.pushEventTo(this.el, "reposition", params);
+      },
+    });
+  },
+};
+
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
+  hooks: Hooks,
 });
 
 // Show progress bar on live navigation and form submits
