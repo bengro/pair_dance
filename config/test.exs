@@ -18,7 +18,9 @@ config :pair_dance, PairDance.Infrastructure.Repo,
 config :pair_dance, PairDanceWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "frW6rubBjFO/T6u3jNHuLnSJPwiop3QCnsVBT5qMlXaRJ8/yRaAXEtFaoBtonn0K",
-  server: false
+  server: true
+
+config :pair_dance, :sandbox, Ecto.Adapters.SQL.Sandbox
 
 # In test we don't send emails.
 config :pair_dance, PairDance.Mailer, adapter: Swoosh.Adapters.Test
@@ -31,3 +33,17 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# E2E configuration
+config :wallaby,
+  chromedriver: [
+    headless: false
+  ],
+  otp_app: :pair_dance
+
+# override SSO provider
+IO.puts "Use fake auth provider"
+config :ueberauth, Ueberauth,
+  providers: [
+    google: {PairDance.TestSupport.FakeGoogleAuth, []}
+  ]

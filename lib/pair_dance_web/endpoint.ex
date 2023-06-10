@@ -1,6 +1,10 @@
 defmodule PairDanceWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :pair_dance
 
+  if sandbox = Application.get_env(:pair_dance, :sandbox) do
+    plug Phoenix.Ecto.SQL.Sandbox, sandbox: sandbox
+  end
+
   defmodule RuntimeEnv do
     def signing_salt(), do: System.fetch_env!("PHOENIX_SESSION_SIGNING_SALT")
   end
@@ -15,7 +19,7 @@ defmodule PairDanceWeb.Endpoint do
     same_site: "Lax"
   ]
 
-  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
+  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [:user_agent, session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #

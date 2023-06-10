@@ -53,7 +53,8 @@ defmodule PairDance.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:ueberauth, "~> 0.10.2"},
-      {:ueberauth_google, "~> 0.10.2"}
+      {:ueberauth_google, "~> 0.10.2"},
+      {:wallaby, "~> 0.30.3", runtime: false, only: :test}
     ]
   end
 

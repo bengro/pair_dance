@@ -55,13 +55,21 @@ defmodule PairDanceWeb.AuthController do
     end
   end
 
+  # We need to define the request call back to enable E2E tests.
+  if Mix.env() == :test do
+    def request(conn, params) do
+      callback(conn, params)
+    end
+  end
+
   defp extract_user(%Auth{provider: :google} = auth) do
     case auth.info do
       nil ->
         {:error, "Login failed"}
 
       _ ->
-      {:ok, PairDance.Domain.User.LoginService.login(auth.info.email, auth.info.name, auth.info.image)}
+      user = PairDance.Domain.User.LoginService.login(auth.info.email, auth.info.name, auth.info.image)
+      {:ok, user}
     end
   end
 end
