@@ -47,6 +47,7 @@ mix dialyzer
 Run tests:
 ```shell
 mix test
+mix test --exclude e2e
 ```
 
 To start your Phoenix server:
