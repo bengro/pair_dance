@@ -1,13 +1,17 @@
 defmodule PairDanceWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :pair_dance
 
+  defmodule RuntimeEnv do
+    def signing_salt(), do: System.fetch_env!("PHOENIX_SESSION_SIGNING_SALT")
+  end
+
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
     key: "_pair_dance_key",
-    signing_salt: "8UoyN88S",
+    signing_salt: {RuntimeEnv, :signing_salt, []},
     same_site: "Lax"
   ]
 

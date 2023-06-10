@@ -67,11 +67,6 @@ defmodule PairDanceWeb.Router do
     end
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", PairDanceWeb do
-  #   pipe_through :api
-  # end
-
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:pair_dance, :dev_routes) do
     # If you want to use the LiveDashboard in production, you should put

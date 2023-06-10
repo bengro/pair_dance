@@ -17,8 +17,7 @@ config :pair_dance, PairDanceWeb.Endpoint,
     formats: [html: PairDanceWeb.ErrorHTML, json: PairDanceWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: PairDance.PubSub,
-  live_view: [signing_salt: "wydBboIV"]
+  pubsub_server: PairDance.PubSub
 
 # Configures the mailer
 #
@@ -64,10 +63,6 @@ config :ueberauth, Ueberauth,
   providers: [
     google: {Ueberauth.Strategy.Google, [default_scope: "email profile"]}
   ]
-
-config :ueberauth, Ueberauth.Strategy.Google.OAuth,
-  client_id: {System, :get_env, ["GOOGLE_CLIENT_ID"]},
-  client_secret: {System, :get_env, ["GOOGLE_CLIENT_SECRET"]}
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
