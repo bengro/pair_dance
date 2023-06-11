@@ -1,10 +1,6 @@
 defmodule PairDance.TestSupport.FakeGoogleAuth do
   use Ueberauth.Strategy
 
-  def default_options() do
-    IO.puts("FakeGoogleAuth default_options called")
-  end
-
   def handle_request!(conn) do
     IO.puts("FakeGoogleAuth handle_request called")
     handle_callback!(conn)

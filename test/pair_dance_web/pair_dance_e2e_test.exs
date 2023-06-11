@@ -4,9 +4,12 @@ defmodule PairDance.E2E.Tests do
 
   @moduletag :e2e
 
-  feature "view the dashboard", %{session: session} do
-    {:ok, _} = Application.ensure_all_started(:wallaby)
+  setup_all do
+    Application.ensure_all_started(:wallaby)
+    :ok
+  end
 
+  feature "view the dashboard", %{session: session} do
     Application.put_env(:wallaby, :base_url, PairDanceWeb.Endpoint.url())
 
     session
