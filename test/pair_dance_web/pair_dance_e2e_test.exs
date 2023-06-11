@@ -2,17 +2,15 @@ defmodule PairDance.E2E.Tests do
   use ExUnit.Case, async: true
   use Wallaby.Feature
 
-  @moduletag :e2e
-
   setup_all do
     Application.ensure_all_started(:wallaby)
     :ok
   end
 
   setup %{session: session} do
-    on_exit fn ->
+    on_exit(fn ->
       Wallaby.end_session(session)
-    end
+    end)
   end
 
   feature "view the dashboard", %{session: session} do

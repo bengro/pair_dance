@@ -1,4 +1,5 @@
 # Pair Dance
+
 [![Pair Dance CI status](https://circleci.com/gh/TresAmigosLtd/pair_dance.svg?style=svg)](https://github.com/TresAmigosLtd/pair_dance)
 
 A tool to encourage and orchestrate pair programming.
@@ -9,20 +10,22 @@ A tool to encourage and orchestrate pair programming.
 
 - User: a person who has logged in to pair.dance via SSO.
 - Team: A group of team members.
-- Member: a user associated with a team. 
+- Member: a user associated with a team.
 - Task: Piece of work a team member is working on. May be linked to an entity in a backlog management tool (e.g. Jira, Pivotal Tracker).
-- Assignment: An assignment links a member with a task.  
+- Assignment: An assignment links a member with a task.
 
 ### Business rules
 
 The Pair Dance consists of optimally allocating team members to tasks.
 
 #### Teams
+
 - All users can create unlimited number of teams.
 - The user who created the team becomes its first member.
 - Every team member can invite more people.
 
 #### Assignments
+
 - Any number of members can be assigned to a single task. A single member may be assigned to any number of tasks.
 
 ## Feature ideas
@@ -45,9 +48,10 @@ mix dialyzer
 ```
 
 Run tests:
+
 ```shell
 mix test
-mix test --exclude e2e
+mix test.e2e
 ```
 
 To start your Phoenix server:
