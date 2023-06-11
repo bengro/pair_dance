@@ -3,6 +3,11 @@ defmodule PairDanceWeb.AppLive.LandingPage do
 
   @impl true
   def mount(_params, session, socket) do
-    {:ok, assign(socket, :current_user, session["current_user"])}
+    assigns =
+      socket
+      |> assign(:current_user, session["current_user"])
+      |> assign(:page_title, "Welcome")
+
+    {:ok, assigns}
   end
 end

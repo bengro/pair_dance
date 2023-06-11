@@ -4,6 +4,10 @@ defmodule PairDanceWeb.AppLive.AccountPage do
 
   @impl true
   def mount(_params, session, socket) do
-    {:ok, assign_user(socket, session)}
+    assigns =
+      assign_user(socket, session)
+      |> assign(:page_title, "Your Account")
+
+    {:ok, assigns}
   end
 end

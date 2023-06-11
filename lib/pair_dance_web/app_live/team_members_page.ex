@@ -8,9 +8,19 @@ defmodule PairDanceWeb.AppLive.TeamMembersPage do
     team = TeamRepository.find_by_slug(slug)
 
     if team == nil do
-      {:ok, assign(socket, :error, "not found")}
+      assigns =
+        socket
+        |> assign(:error, "not found")
+        |> assign(:page_title, "Sorry, not found")
+
+      {:ok, assigns}
     else
-      {:ok, assign(socket, :team, team)}
+      assigns =
+        socket
+        |> assign(:team, team)
+        |> assign(:page_title, "Team Members")
+
+      {:ok, assigns}
     end
   end
 
