@@ -58,13 +58,13 @@ defmodule PairDanceWeb.Router do
 
     scope "/!" do
       pipe_through [:auth]
-      live "/account", AccountPageLive.Index, :index
+      live "/account", AppLive.AccountPage, :index
     end
 
     scope "/:slug" do
       pipe_through [:auth, :team]
-      live "/", PairingTableLive.Index, :index
-      live "/members", TeamMembersLive.Index, :index
+      live "/", AppLive.TeamPage, :index
+      live "/members", AppLive.TeamMembersPage, :index
     end
   end
 

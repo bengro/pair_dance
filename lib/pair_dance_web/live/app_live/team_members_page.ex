@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.TeamMembersLive.Index do
+defmodule PairDanceWeb.AppLive.TeamMembersPage do
   use PairDanceWeb, :live_view
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
@@ -19,26 +19,4 @@ defmodule PairDanceWeb.TeamMembersLive.Index do
     {:noreply, assign(socket, :team, team)}
   end
 
-  @impl true
-  def render(%{error: "not found"} = assigns) do
-    ~H"""
-    <div>not found</div>
-    """
-  end
-
-  def render(assigns) do
-    ~H"""
-    <h2>
-      Team members:
-    </h2>
-    <.live_component id={1} module={PairDanceWeb.AppLive.AddMemberForm} team={@team} />
-    <table>
-      <tbody>
-        <tr :for={member <- @team.members}>
-          <td><%= member.user.email %></td>
-        </tr>
-      </tbody>
-    </table>
-    """
-  end
 end

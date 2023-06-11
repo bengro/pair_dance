@@ -1,0 +1,11 @@
+<h2>
+    Team members:
+</h2>
+<.live_component id={1} module={PairDanceWeb.AppLive.AddMemberForm} team={@team} />
+<table>
+    <tbody>
+    <tr :for={member <- @team.members}>
+    <td><%= member.user.email %></td>
+    </tr>
+    </tbody>
+</table>
