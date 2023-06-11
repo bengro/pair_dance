@@ -9,6 +9,12 @@ defmodule PairDance.E2E.Tests do
     :ok
   end
 
+  setup %{session: session} do
+    on_exit fn ->
+      Wallaby.end_session(session)
+    end
+  end
+
   feature "view the dashboard", %{session: session} do
     Application.put_env(:wallaby, :base_url, PairDanceWeb.Endpoint.url())
 
