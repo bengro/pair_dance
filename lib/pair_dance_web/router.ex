@@ -54,7 +54,7 @@ defmodule PairDanceWeb.Router do
   scope "/", PairDanceWeb do
     pipe_through [:browser, :app]
 
-    live "/", LandingPageLive.Index, :index
+    live "/", AppLive.LandingPage, :landing_page
 
     scope "/!" do
       pipe_through [:auth]
