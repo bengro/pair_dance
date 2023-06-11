@@ -36,6 +36,8 @@ defmodule PairDanceWeb.PairingTableLive.Index do
       team={@team}
       action={:new}
     />
+
+    <.live_component id="1" module={PairDanceWeb.ShoppingListComponent} />
     """
   end
 
