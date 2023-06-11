@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.TeamPageTest do
+defmodule PairDanceWeb.AppLive.TeamPageTest do
   use PairDanceWeb.ConnCase
 
   import Phoenix.LiveViewTest
