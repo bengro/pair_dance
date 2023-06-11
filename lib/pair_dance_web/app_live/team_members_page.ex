@@ -18,5 +18,4 @@ defmodule PairDanceWeb.AppLive.TeamMembersPage do
   def handle_info({:team_changed, team}, socket) do
     {:noreply, assign(socket, :team, team)}
   end
-
 end

@@ -1,0 +1,28 @@
+<h1>Daily Pair Dance for Team <%= @team.name %></h1>
+
+<.live_component id="1" module={PairDanceWeb.AppLive.TeamPage.ShoppingListComponent} />
+
+<h2>
+  Tasks:
+</h2>
+<ul>
+  <%= for task <- @team.tasks do %>
+    <li><%= task.name %></li>
+  <% end %>
+</ul>
+
+<.live_component
+  id={1}
+  module={PairDanceWeb.AppLive.TeamPage.CreateTaskComponent}
+  team={@team}
+  action={:new}
+/>
+
+<h2>
+  Team members:
+</h2>
+<ul>
+  <%= for member <- @team.members do %>
+    <li><%= member.user.email %></li>
+  <% end %>
+</ul>
