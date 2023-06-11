@@ -2,6 +2,17 @@
 
 <%= if @current_user do %>
   <h2>Hi, <%= @current_user.name %>!</h2>
+
+  <h2>
+    My teams:
+  </h2>
+  <ul>
+    <%= for team <- @my_teams do %>
+      <li>
+        <.link href={team.slug} class="button"><%= team.name %></.link>
+      </li>
+    <% end %>
+  </ul>
 <% else %>
   <p>
     You're not logged in. Check out the amazing pair.dance features and

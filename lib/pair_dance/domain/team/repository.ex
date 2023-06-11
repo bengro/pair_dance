@@ -4,12 +4,15 @@ defmodule PairDance.Domain.Team.Repository do
   alias PairDance.Domain.Team.Member
 
   @type team_id :: integer
+  @type member_id :: String.t()
   @type slug :: String.t()
   @type task_name :: String.t()
 
   @callback create(String.t()) :: {:ok, Team.t()}
 
   @callback find(team_id()) :: Team.t() | nil
+
+  @callback find_by_member(member_id()) :: list(Team.t())
 
   @callback find_by_slug(slug()) :: Team.t() | nil
 

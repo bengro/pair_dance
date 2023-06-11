@@ -1,4 +1,4 @@
-defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
+defmodule PairDance.Infrastructure.User.EctoRepositoryTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.User

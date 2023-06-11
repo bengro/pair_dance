@@ -1,10 +1,11 @@
-defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
+defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
+  alias PairDance.Domain.User
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
 
@@ -49,6 +50,19 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     [%Team{name: name}, %Team{}] = TeamRepository.find_all()
 
     assert String.starts_with?(name, "team")
+  end
+
+  test "list teams of a member" do
+    {:ok, team} = TeamRepository.create("team 1")
+    {:ok, user} = UserRepository.create_from_email("bob@me.com")
+
+    {:ok, _} = TeamRepository.add_member(team, %Member{user: user, role: :admin})
+
+    teams = TeamRepository.find_by_member(user.id)
+
+    [%Team{members: [%Member{user: %User{id: user_id}}]}] = teams
+
+    assert user.id == user_id
   end
 
   test "update team name" do
