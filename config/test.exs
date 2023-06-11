@@ -42,7 +42,8 @@ config :wallaby,
   otp_app: :pair_dance
 
 # override SSO provider
-IO.puts "Use fake auth provider"
+IO.puts("Use fake auth provider")
+
 config :ueberauth, Ueberauth,
   providers: [
     google: {PairDance.TestSupport.FakeGoogleAuth, []}

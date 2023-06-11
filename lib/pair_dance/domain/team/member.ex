@@ -1,5 +1,4 @@
 defmodule PairDance.Domain.Team.Member do
-
   alias PairDance.Domain.User
 
   @enforce_keys [:user, :role]
@@ -8,7 +7,7 @@ defmodule PairDance.Domain.Team.Member do
   @type team_role :: :admin | :user
 
   @type t() :: %__MODULE__{
-    user: User.t(),
-    role: team_role(),
-  }
+          user: User.t(),
+          role: team_role()
+        }
 end

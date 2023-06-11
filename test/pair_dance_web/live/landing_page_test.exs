@@ -8,5 +8,4 @@ defmodule PairDanceWeb.LandingPageTest do
 
     assert html =~ "pair.dance"
   end
-
 end

@@ -39,9 +39,9 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
   end
 
   test "get a user by id" do
-    {:ok, %User{ id: id }} = Repository.create_from_email("bob@me.com")
+    {:ok, %User{id: id}} = Repository.create_from_email("bob@me.com")
 
-    %User{ email: email} = Repository.find_by_id(id)
+    %User{email: email} = Repository.find_by_id(id)
 
     assert email == "bob@me.com"
   end
@@ -51,7 +51,7 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
   end
 
   test "delete a user" do
-    {:ok, %User{ id: id }} = Repository.create_from_email("bob@me.com")
+    {:ok, %User{id: id}} = Repository.create_from_email("bob@me.com")
 
     {:ok} = Repository.delete_by_id(id)
 
@@ -62,9 +62,8 @@ defmodule PairDance.Infrastructure.EctoUserRepositoryTest do
     {:ok, _} = Repository.create_from_email("user1@me.com")
     {:ok, _} = Repository.create_from_email("user2@me.com")
 
-    [%User{ email: email}, %User{}] = Repository.find_all()
+    [%User{email: email}, %User{}] = Repository.find_all()
 
     assert String.starts_with?(email, "user")
   end
-
 end

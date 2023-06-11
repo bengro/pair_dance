@@ -40,14 +40,15 @@ defmodule PairDanceWeb.AppLive.CreateTaskComponent do
   end
 
   defp save_task(socket, task_params) do
-    %{ "name" => task_name } = task_params
+    %{"name" => task_name} = task_params
+
     case TeamRepository.add_task(socket.assigns.team, task_name) do
       {:ok, team} ->
         send(self(), {:team_changed, team})
+
         {:noreply,
          socket
-         |> put_flash(:info, "Task created successfully")
-        }
+         |> put_flash(:info, "Task created successfully")}
     end
   end
 end

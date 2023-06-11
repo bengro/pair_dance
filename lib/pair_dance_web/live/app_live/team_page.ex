@@ -13,30 +13,29 @@ defmodule PairDanceWeb.PairingTableLive.Index do
   def render(assigns) do
     ~H"""
     <h2>
-    Team members:
+      Team members:
     </h2>
     <ul>
-    <%= for member <- @team.members do %>
-    <li><%= member.user.email %></li>
-    <% end %>
+      <%= for member <- @team.members do %>
+        <li><%= member.user.email %></li>
+      <% end %>
     </ul>
 
     <h2>
-    Tasks:
+      Tasks:
     </h2>
     <ul>
-    <%= for task <- @team.tasks do %>
-    <li><%= task.name %></li>
-    <% end %>
+      <%= for task <- @team.tasks do %>
+        <li><%= task.name %></li>
+      <% end %>
     </ul>
 
     <.live_component
-    id={1}
-    module={PairDanceWeb.AppLive.CreateTaskComponent}
-    team={@team}
-    action={:new}
+      id={1}
+      module={PairDanceWeb.AppLive.CreateTaskComponent}
+      team={@team}
+      action={:new}
     />
-
     """
   end
 

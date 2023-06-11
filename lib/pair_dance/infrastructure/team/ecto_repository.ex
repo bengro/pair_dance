@@ -1,5 +1,4 @@
 defmodule PairDance.Infrastructure.Team.EctoRepository do
-
   alias PairDance.Domain.Team
 
   alias PairDance.Infrastructure.TeamEntity
@@ -18,15 +17,29 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
 
   @impl Team.Repository
   def create(name) do
-    {:ok, entity } = %TeamEntity{}
-      |> TeamEntity.changeset(%{ name: name, slug: UUID.generate() })
+    {:ok, entity} =
+      %TeamEntity{}
+      |> TeamEntity.changeset(%{name: name, slug: UUID.generate()})
       |> Repo.insert()
+
     {:ok, find(entity.id)}
   end
 
   @impl Team.Repository
   def find(id) do
-    entity = Repo.one from t in TeamEntity, where: t.id == ^id, preload: [:members, [members: :user], :tasks, :assignments, [assignments: [ :task, :member, member: :user]]]
+    entity =
+      Repo.one(
+        from t in TeamEntity,
+          where: t.id == ^id,
+          preload: [
+            :members,
+            [members: :user],
+            :tasks,
+            :assignments,
+            [assignments: [:task, :member, member: :user]]
+          ]
+      )
+
     if entity == nil do
       nil
     else
@@ -36,7 +49,19 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
 
   @impl Team.Repository
   def find_by_slug(slug) do
-    entity = Repo.one from t in TeamEntity, where: t.slug == ^slug, preload:  [:members, [members: :user], :tasks, :assignments, [assignments: [ :task, :member, member: :user]]]
+    entity =
+      Repo.one(
+        from t in TeamEntity,
+          where: t.slug == ^slug,
+          preload: [
+            :members,
+            [members: :user],
+            :tasks,
+            :assignments,
+            [assignments: [:task, :member, member: :user]]
+          ]
+      )
+
     if entity == nil do
       nil
     else
@@ -46,39 +71,55 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
 
   @impl Team.Repository
   def find_all() do
-    Repo.all(from t in TeamEntity, preload:  [:members, [members: :user], :tasks, :assignments, [assignments: [ :task, :member, member: :user]]]) |> Enum.map(&to_team/1)
+    Repo.all(
+      from t in TeamEntity,
+        preload: [
+          :members,
+          [members: :user],
+          :tasks,
+          :assignments,
+          [assignments: [:task, :member, member: :user]]
+        ]
+    )
+    |> Enum.map(&to_team/1)
   end
 
   @impl Team.Repository
   def update(team_id, patch) do
-    entity = Repo.one from t in TeamEntity, where: t.id == ^team_id
+    entity = Repo.one(from t in TeamEntity, where: t.id == ^team_id)
+
     case TeamEntity.changeset(entity, patch) |> Repo.update() do
-      {:ok, _entity} -> {:ok, find(team_id)}
-      {:error, %Ecto.Changeset{ errors: [{:slug, {detail, _} }] } } -> {:error, {:conflict, "slug " <> detail}}
+      {:ok, _entity} ->
+        {:ok, find(team_id)}
+
+      {:error, %Ecto.Changeset{errors: [{:slug, {detail, _}}]}} ->
+        {:error, {:conflict, "slug " <> detail}}
     end
-
-
   end
 
   @impl Team.Repository
   def delete(id) do
-    {:ok, _entity} = Repo.delete(%TeamEntity{ id: id })
+    {:ok, _entity} = Repo.delete(%TeamEntity{id: id})
     {:ok}
   end
 
   @impl Team.Repository
   def add_member(team, member) do
-    {:ok, _} = %MemberEntity{}
-      |> MemberEntity.changeset(%{ user_id: member.user.id, team_id: team.id })
+    {:ok, _} =
+      %MemberEntity{}
+      |> MemberEntity.changeset(%{user_id: member.user.id, team_id: team.id})
       |> Repo.insert()
+
     {:ok, find(team.id)}
   end
 
   @impl Team.Repository
   def add_task(team, task_name) do
-    {:ok, _} = %TaskEntity{}
-      |> TaskEntity.changeset(%{ team_id: team.id, name: task_name })
+    {:ok, _} =
+      %TaskEntity{}
+      |> TaskEntity.changeset(%{team_id: team.id, name: task_name})
       |> Repo.insert()
+
     {:ok, find(team.id)}
   end
 
@@ -86,9 +127,13 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   def assign_member_to_task(team, assignment) do
     team_id = team.id
     user_id = assignment.member.user.id
-    %MemberEntity{ id: member_id } = Repo.one from m in MemberEntity, where: m.team_id == ^team_id and m.user_id == ^user_id
-    %AssignmentEntity{ team_id: team.id, member_id: member_id, task_id: assignment.task.id }
-      |> Repo.insert()
+
+    %MemberEntity{id: member_id} =
+      Repo.one(from m in MemberEntity, where: m.team_id == ^team_id and m.user_id == ^user_id)
+
+    %AssignmentEntity{team_id: team.id, member_id: member_id, task_id: assignment.task.id}
+    |> Repo.insert()
+
     {:ok, find(team.id)}
   end
 
@@ -97,10 +142,14 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
     team_id = team.id
     user_id = assignment.member.user.id
     task_id = assignment.task.id
-    Repo.delete_all from to in AssignmentEntity,
-                join: m in MemberEntity,
-                on: to.member_id == m.id,
-                where: to.team_id == ^team_id and m.user_id == ^user_id and to.task_id ==^task_id
+
+    Repo.delete_all(
+      from to in AssignmentEntity,
+        join: m in MemberEntity,
+        on: to.member_id == m.id,
+        where: to.team_id == ^team_id and m.user_id == ^user_id and to.task_id == ^task_id
+    )
+
     {:ok, find(team.id)}
   end
 end

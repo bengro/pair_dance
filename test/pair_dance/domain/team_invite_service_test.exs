@@ -6,13 +6,12 @@ defmodule PairDance.Domain.Team.InviteServiceTest do
   alias PairDance.Domain.Team
 
   test "invite a new user to the team" do
-    {:ok, team } = TeamRepository.create("pair dance")
+    {:ok, team} = TeamRepository.create("pair dance")
 
     team = InviteService.invite(team, "bobby@pair.dance")
 
-    assert %Team{ members: [member] } = team
+    assert %Team{members: [member]} = team
     assert member.user.email == "bobby@pair.dance"
     assert TeamRepository.find(team.id) == team
   end
-
 end

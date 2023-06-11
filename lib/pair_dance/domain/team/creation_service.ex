@@ -1,5 +1,4 @@
 defmodule PairDance.Domain.TeamCreationService do
-
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.User
@@ -7,7 +6,7 @@ defmodule PairDance.Domain.TeamCreationService do
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Domain.Team.SlugService
 
-  @type team_name :: String.t
+  @type team_name :: String.t()
 
   @spec new_team(team_name(), User.t()) :: {:ok, Team.t()}
   def new_team(name, owner) do
@@ -25,7 +24,6 @@ defmodule PairDance.Domain.TeamCreationService do
 
   @spec add_member(Team.t(), User.t()) :: {:ok, Team.t()}
   defp add_member(team, owner) do
-    TeamRepository.add_member(team, %Member{user: owner, role: :admin })
+    TeamRepository.add_member(team, %Member{user: owner, role: :admin})
   end
-
 end

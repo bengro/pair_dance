@@ -5,7 +5,6 @@ defmodule PairDance.Domain.TeamSlugServiceTest do
   alias PairDance.Domain.Team.SlugService
 
   describe "set slug" do
-
     test "requested value is normalised" do
       {:ok, team} = TeamRepository.create("my team")
 
@@ -19,17 +18,16 @@ defmodule PairDance.Domain.TeamSlugServiceTest do
       case TeamRepository.create("infra") do
         {:ok, anotherTeam} -> SlugService.set_slug(anotherTeam, "infra")
       end
+
       {:ok, team} = TeamRepository.create("infra")
 
       {:conflict, "infra"} = SlugService.set_slug(team, "infra")
 
       assert TeamRepository.find(team.id) == team
     end
-
   end
 
   describe "normalise slug" do
-
     test "characters are lowercased" do
       assert SlugService.slugify("ABC") == "abc"
     end
@@ -45,7 +43,5 @@ defmodule PairDance.Domain.TeamSlugServiceTest do
     test "strings without any alphanumeric characters result in an empty slug" do
       assert SlugService.slugify("!#$/") == ""
     end
-
   end
-
 end

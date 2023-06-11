@@ -1,5 +1,4 @@
 defmodule PairDance.TeamsFixtures do
-
   alias PairDance.Domain.User
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
@@ -9,7 +8,7 @@ defmodule PairDance.TeamsFixtures do
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Domain.Team.InviteService
 
-  @type email :: String.t
+  @type email :: String.t()
 
   @spec user_fixture(email()) :: User.t()
   def user_fixture(email \\ "me@hello.com") do
@@ -24,7 +23,7 @@ defmodule PairDance.TeamsFixtures do
 
   @spec member_fixture(Team.t(), String.t()) :: Member.t()
   def member_fixture(team, email \\ "bob@me.com") do
-    %Team{ members: members } = InviteService.invite(team, email)
+    %Team{members: members} = InviteService.invite(team, email)
     Enum.find(members, fn m -> m.user.email == email end)
   end
 

@@ -1,5 +1,4 @@
 defmodule PairDance.Infrastructure.User.EctoRepository do
-
   alias PairDance.Domain.User
 
   alias PairDance.Infrastructure.User.Entity
@@ -13,12 +12,17 @@ defmodule PairDance.Infrastructure.User.EctoRepository do
 
   @impl User.Repository
   def create_from_email(email) do
-    result = %Entity{}
-      |> Entity.changeset(%{ email: email })
+    result =
+      %Entity{}
+      |> Entity.changeset(%{email: email})
       |> Repo.insert()
+
     case result do
-      {:ok, entity} -> {:ok, to_user(entity)}
-      {:error, %Ecto.Changeset{ errors: [ {:email, {_,[{:constraint, :unique},_]}} ]}} -> {:error, {:conflict, "email address already taken"}}
+      {:ok, entity} ->
+        {:ok, to_user(entity)}
+
+      {:error, %Ecto.Changeset{errors: [{:email, {_, [{:constraint, :unique}, _]}}]}} ->
+        {:error, {:conflict, "email address already taken"}}
     end
   end
 
@@ -40,7 +44,7 @@ defmodule PairDance.Infrastructure.User.EctoRepository do
 
   @impl User.Repository
   def find_by_email(email) do
-    case Repo.one from u in Entity, where: u.email == ^email do
+    case Repo.one(from u in Entity, where: u.email == ^email) do
       nil -> nil
       entity -> to_user(entity)
     end
@@ -53,16 +57,16 @@ defmodule PairDance.Infrastructure.User.EctoRepository do
 
   @impl User.Repository
   def delete_by_id(id) do
-    {:ok, _entity} = Repo.delete(%Entity{ id: id })
+    {:ok, _entity} = Repo.delete(%Entity{id: id})
     {:ok}
   end
 
   @impl User.Repository
   def update(user, patch) do
-    entity = %Entity{ id: user.id, email: user.email }
+    entity = %Entity{id: user.id, email: user.email}
+
     case Entity.changeset(entity, patch) |> Repo.update() do
       {:ok, entity} -> {:ok, to_user(entity)}
     end
   end
-
 end

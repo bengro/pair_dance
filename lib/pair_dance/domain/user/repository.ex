@@ -1,9 +1,8 @@
 defmodule PairDance.Domain.User.Repository do
-
   alias PairDance.Domain.User
 
-  @type user_id :: String.t
-  @type email :: String.t
+  @type user_id :: String.t()
+  @type email :: String.t()
 
   @callback create_from_email(email()) :: {:ok, User.t()} | {:error, String.t()}
 

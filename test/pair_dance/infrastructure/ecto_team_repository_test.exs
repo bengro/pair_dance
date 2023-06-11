@@ -21,7 +21,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
   end
 
   test "get a team by id" do
-    {:ok, %Team{ id: id }} = TeamRepository.create("comet")
+    {:ok, %Team{id: id}} = TeamRepository.create("comet")
 
     team = TeamRepository.find(id)
 
@@ -30,7 +30,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
   end
 
   test "get a team by slug" do
-    {:ok, %Team{ slug: slug }} = TeamRepository.create("comet")
+    {:ok, %Team{slug: slug}} = TeamRepository.create("comet")
 
     team = TeamRepository.find_by_slug(slug)
 
@@ -46,7 +46,7 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     {:ok, _} = TeamRepository.create("team 1")
     {:ok, _} = TeamRepository.create("team 2")
 
-    [%Team{ name: name }, %Team{}] = TeamRepository.find_all()
+    [%Team{name: name}, %Team{}] = TeamRepository.find_all()
 
     assert String.starts_with?(name, "team")
   end
@@ -73,13 +73,13 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     {:ok, team1} = TeamRepository.create("team 1")
     {:ok, team2} = TeamRepository.create("team 2")
 
-    {:error, {:conflict, detail}} = TeamRepository.update(team2.id, %{ slug: team1.slug })
+    {:error, {:conflict, detail}} = TeamRepository.update(team2.id, %{slug: team1.slug})
 
     assert detail =~ "slug has already been taken"
   end
 
   test "delete a team" do
-    {:ok, %Team{ id: id }} = TeamRepository.create("comet")
+    {:ok, %Team{id: id}} = TeamRepository.create("comet")
 
     {:ok} = TeamRepository.delete(id)
 
@@ -87,21 +87,18 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
   end
 
   describe "members" do
-
     test "add a new member" do
       {:ok, team} = TeamRepository.create("comet")
       {:ok, user} = UserRepository.create_from_email("bob@me.com")
 
-      {:ok, updated_team} = TeamRepository.add_member(team, %Member{ user: user, role: :admin})
+      {:ok, updated_team} = TeamRepository.add_member(team, %Member{user: user, role: :admin})
 
-      assert updated_team.members == [%Member{ user: user, role: :admin}]
+      assert updated_team.members == [%Member{user: user, role: :admin}]
       assert updated_team == TeamRepository.find(team.id)
     end
-
   end
 
   describe "tasks" do
-
     test "new teams do not have any tasks" do
       {:ok, team} = TeamRepository.create("comet")
 
@@ -117,18 +114,20 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
       assert name == "login with google"
       assert updated_team == TeamRepository.find(team.id)
     end
-
   end
 
   describe "assignments" do
-
     test "assign a member to a task" do
       {:ok, team} = TeamRepository.create("comet")
       {:ok, user} = UserRepository.create_from_email("bob@me.com")
-      {:ok, %Team{ members: [member]}} = TeamRepository.add_member(team, %Member{ user: user, role: :admin})
-      {:ok, %Team{ tasks: [task]}} = TeamRepository.add_task(team, "login with google")
 
-      {:ok, updated_team} = TeamRepository.assign_member_to_task(team, %Assignment{member: member, task: task})
+      {:ok, %Team{members: [member]}} =
+        TeamRepository.add_member(team, %Member{user: user, role: :admin})
+
+      {:ok, %Team{tasks: [task]}} = TeamRepository.add_task(team, "login with google")
+
+      {:ok, updated_team} =
+        TeamRepository.assign_member_to_task(team, %Assignment{member: member, task: task})
 
       assert updated_team.assignments == [%Assignment{member: member, task: task}]
       assert updated_team == TeamRepository.find(team.id)
@@ -137,16 +136,19 @@ defmodule PairDance.Infrastructure.EctoTeamRepositoryTest do
     test "unassign a member from a task" do
       {:ok, team} = TeamRepository.create("comet")
       {:ok, user} = UserRepository.create_from_email("bob@me.com")
-      {:ok, %Team{ members: [member]}} = TeamRepository.add_member(team, %Member{ user: user, role: :admin})
-      {:ok, %Team{ tasks: [task]}} = TeamRepository.add_task(team, "login with google")
+
+      {:ok, %Team{members: [member]}} =
+        TeamRepository.add_member(team, %Member{user: user, role: :admin})
+
+      {:ok, %Team{tasks: [task]}} = TeamRepository.add_task(team, "login with google")
 
       TeamRepository.assign_member_to_task(team, %Assignment{member: member, task: task})
-      {:ok, updated_team} = TeamRepository.unassign_member_from_task(team, %Assignment{member: member, task: task})
+
+      {:ok, updated_team} =
+        TeamRepository.unassign_member_from_task(team, %Assignment{member: member, task: task})
 
       assert updated_team.assignments == []
       assert updated_team == TeamRepository.find(team.id)
     end
-
   end
-
 end

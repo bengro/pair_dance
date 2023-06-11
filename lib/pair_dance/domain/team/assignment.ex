@@ -1,5 +1,4 @@
 defmodule PairDance.Domain.Team.Assignment do
-
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
 
@@ -7,7 +6,7 @@ defmodule PairDance.Domain.Team.Assignment do
   defstruct [:member, :task]
 
   @type t() :: %__MODULE__{
-    member: Member.t(),
-    task: Task.t(),
-  }
+          member: Member.t(),
+          task: Task.t()
+        }
 end

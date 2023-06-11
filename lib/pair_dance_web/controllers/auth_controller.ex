@@ -68,8 +68,14 @@ defmodule PairDanceWeb.AuthController do
         {:error, "Login failed"}
 
       _ ->
-      user = PairDance.Domain.User.LoginService.login(auth.info.email, auth.info.name, auth.info.image)
-      {:ok, user}
+        user =
+          PairDance.Domain.User.LoginService.login(
+            auth.info.email,
+            auth.info.name,
+            auth.info.image
+          )
+
+        {:ok, user}
     end
   end
 end

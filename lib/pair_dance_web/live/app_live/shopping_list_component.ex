@@ -14,7 +14,6 @@ defmodule PairDanceWeb.ShoppingListComponent do
     {:ok, assign(socket, shopping_list: list)}
   end
 
-
   def render(assigns) do
     ~H"""
     <div id="lists" class="grid sm:grid-cols-1 md:grid-cols-3 gap-2">

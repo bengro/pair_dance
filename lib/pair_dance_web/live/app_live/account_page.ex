@@ -11,13 +11,12 @@ defmodule PairDanceWeb.AccountPageLive.Index do
   def render(assigns) do
     ~H"""
     <h1 class="text-3xl font-bold">pair.dance</h1>
-    <img src={@user.avatar} referrerpolicy="no-referrer" />
-    logged in as <%= @user.email %>
+    <img src={@user.avatar} referrerpolicy="no-referrer" /> logged in as <%= @user.email %>
     <.live_component
-    id={1}
-    module={PairDanceWeb.AppLive.CreateTeamComponent}
-    user={@user}
-    action={:new}
+      id={1}
+      module={PairDanceWeb.AppLive.CreateTeamComponent}
+      user={@user}
+      action={:new}
     />
     """
   end

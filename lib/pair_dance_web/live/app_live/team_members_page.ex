@@ -6,6 +6,7 @@ defmodule PairDanceWeb.TeamMembersLive.Index do
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do
     team = TeamRepository.find_by_slug(slug)
+
     if team == nil do
       {:ok, assign(socket, :error, "not found")}
     else
@@ -19,7 +20,7 @@ defmodule PairDanceWeb.TeamMembersLive.Index do
   end
 
   @impl true
-  def render( %{ error: "not found"} = assigns) do
+  def render(%{error: "not found"} = assigns) do
     ~H"""
     <div>not found</div>
     """
@@ -28,13 +29,9 @@ defmodule PairDanceWeb.TeamMembersLive.Index do
   def render(assigns) do
     ~H"""
     <h2>
-    Team members:
+      Team members:
     </h2>
-    <.live_component
-    id={1}
-    module={PairDanceWeb.AppLive.AddMemberForm}
-    team={@team}
-    />
+    <.live_component id={1} module={PairDanceWeb.AppLive.AddMemberForm} team={@team} />
     <table>
       <tbody>
         <tr :for={member <- @team.members}>

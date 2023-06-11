@@ -3,9 +3,9 @@ defmodule PairDance.Domain.User do
   defstruct [:id, :email, :name, :avatar]
 
   @type t() :: %__MODULE__{
-    id: String.t(),
-    email: String.t(),
-    name: String.t() | nil,
-    avatar: String.t() | nil,
-  }
+          id: String.t(),
+          email: String.t(),
+          name: String.t() | nil,
+          avatar: String.t() | nil
+        }
 end

@@ -17,7 +17,8 @@ defmodule PairDanceWeb.TeamPageTest do
   setup [:setup_data]
 
   test "non-existing team", %{conn: conn, user: user} do
-    assert {:error, {:redirect, %{to: "/"}}} = conn |> impersonate(user) |> live(~p"/non-existing-team")
+    assert {:error, {:redirect, %{to: "/"}}} =
+             conn |> impersonate(user) |> live(~p"/non-existing-team")
   end
 
   test "requires authentication", %{conn: conn, team: team} do
@@ -26,7 +27,9 @@ defmodule PairDanceWeb.TeamPageTest do
 
   test "non-members get redirected away", %{conn: conn, team: team} do
     another_user = user_fixture("another@user.com")
-    assert {:error, {:redirect, %{to: "/"}}} = conn |> impersonate(another_user) |> live(~p"/#{team.slug}")
+
+    assert {:error, {:redirect, %{to: "/"}}} =
+             conn |> impersonate(another_user) |> live(~p"/#{team.slug}")
   end
 
   test "lists all members", %{conn: conn, team: team, user: user} do

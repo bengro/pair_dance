@@ -16,10 +16,12 @@ defmodule PairDance.TestSupport.FakeGoogleAuth do
     auth = %Ueberauth.Auth{
       credentials: %Ueberauth.Auth.Credentials{
         expires: true,
-        expires_at: 1686433782,
+        expires_at: 1_686_433_782,
         other: %{},
         refresh_token: nil,
-        scopes: ["https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid"],
+        scopes: [
+          "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid"
+        ],
         secret: nil,
         token: "xxx",
         token_type: "Bearer"
@@ -29,7 +31,8 @@ defmodule PairDance.TestSupport.FakeGoogleAuth do
         description: nil,
         email: "Joe Dough",
         first_name: "Joe",
-        image: "https://lh3.googleusercontent.com/a/AAcHTtdKvB8nhNR8FhsrADRGpM4Pvohuu9KJg11gkjA5vAw=s96-c",
+        image:
+          "https://lh3.googleusercontent.com/a/AAcHTtdKvB8nhNR8FhsrADRGpM4Pvohuu9KJg11gkjA5vAw=s96-c",
         last_name: "Dough",
         location: nil,
         name: "Joe Dough",

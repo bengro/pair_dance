@@ -10,7 +10,8 @@ defmodule PairDanceWeb.Router do
 
   def ensure_team_member(conn, _opts) do
     user = get_session(conn, :current_user)
-    %{ "slug" => slug } = conn.params
+    %{"slug" => slug} = conn.params
+
     case PairDance.Domain.Team.AccessService.check_access(slug, user) do
       true -> conn
       false -> redirect(conn, to: "/") |> halt

@@ -37,7 +37,6 @@ defmodule PairDance.Domain.TeamCreationServiceTest do
   test "the team creator gets added as member", %{user: user} do
     {:ok, %Team{members: members}} = TeamCreationService.new_team("infra", user)
 
-    assert [%Member{ user: user, role: :admin}] == members
+    assert [%Member{user: user, role: :admin}] == members
   end
-
 end

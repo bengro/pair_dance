@@ -9,12 +9,7 @@ defmodule PairDanceWeb.ListComponent do
           <%= @list_name %>
         </.header>
         <div id={"#{@id}-items"} phx-hook="Sortable" data-list_id={@id}>
-          <div
-            :for={item <- @list}
-            id={"#{@id}-#{item.id}"}
-            class=""
-            data-id={item.id}
-          >
+          <div :for={item <- @list} id={"#{@id}-#{item.id}"} class="" data-id={item.id}>
             <div class="flex">
               <button type="button" class="w-24">
                 <span><%= item.status %></span>
@@ -24,7 +19,7 @@ defmodule PairDanceWeb.ListComponent do
               </div>
               <button type="button" class="w-10 -mt-1 flex-none">
                 <span name="hero-x-mark">x</span>
-             </button>
+              </button>
             </div>
           </div>
         </div>
@@ -34,12 +29,11 @@ defmodule PairDanceWeb.ListComponent do
   end
 
   def handle_event("reposition", params, socket) do
-    #Put your logic here to deal with the changes to the list order
-    #and persist the data
+    # Put your logic here to deal with the changes to the list order
+    # and persist the data
     IO.inspect(params)
     {:noreply, socket}
   end
-
 
   def update(assigns, socket) do
     {:ok, assign(socket, assigns)}

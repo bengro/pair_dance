@@ -25,5 +25,4 @@ defmodule PairDance.Domain.Team.AccessServiceTest do
 
     assert AccessService.check_access("never-existed", user) == false
   end
-
 end

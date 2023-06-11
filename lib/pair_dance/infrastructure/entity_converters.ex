@@ -1,5 +1,4 @@
 defmodule PairDance.Infrastructure.EntityConverters do
-
   alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
@@ -13,24 +12,23 @@ defmodule PairDance.Infrastructure.EntityConverters do
       slug: entity.slug,
       members: entity.members |> Enum.map(&to_team_member/1),
       tasks: entity.tasks |> Enum.map(&to_task/1),
-      assignments: entity.assignments |> Enum.map(&to_assignment/1),
+      assignments: entity.assignments |> Enum.map(&to_assignment/1)
     }
   end
 
   def to_team_member(entity) do
-    %Member{ user: to_user(entity.user), role: :admin }
+    %Member{user: to_user(entity.user), role: :admin}
   end
 
   def to_task(entity) do
-    %Task{ id: entity.id, name: entity.name }
+    %Task{id: entity.id, name: entity.name}
   end
 
   def to_user(entity) do
-    %User{ id: entity.id, email: entity.email, name: entity.name, avatar: entity.avatar }
+    %User{id: entity.id, email: entity.email, name: entity.name, avatar: entity.avatar}
   end
 
   def to_assignment(entity) do
-    %Assignment{ member: to_team_member(entity.member), task: to_task(entity.task)}
+    %Assignment{member: to_team_member(entity.member), task: to_task(entity.task)}
   end
-
 end

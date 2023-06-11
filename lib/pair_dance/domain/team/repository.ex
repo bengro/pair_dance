@@ -1,12 +1,11 @@
 defmodule PairDance.Domain.Team.Repository do
-
   alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
 
   @type team_id :: integer
-  @type slug :: String.t
-  @type task_name :: String.t
+  @type slug :: String.t()
+  @type task_name :: String.t()
 
   @callback create(String.t()) :: {:ok, Team.t()}
 

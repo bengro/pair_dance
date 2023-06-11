@@ -1,11 +1,10 @@
 defmodule PairDance.Domain.Team.AccessService do
-
   alias PairDance.Domain.User
   alias PairDance.Domain.Team
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
-  @type team_slug :: String.t
+  @type team_slug :: String.t()
 
   @spec check_access(team_slug(), User.t()) :: boolean
   def check_access(slug, user) do
@@ -14,5 +13,4 @@ defmodule PairDance.Domain.Team.AccessService do
       team -> Team.has_member(team, user)
     end
   end
-
 end
