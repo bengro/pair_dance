@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.AppLive.CreateTeamComponent do
+defmodule PairDanceWeb.AppLive.AccountPage.CreateTeamComponent do
   use PairDanceWeb, :live_component
 
   alias PairDance.Domain.TeamCreationService

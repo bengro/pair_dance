@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.AppLive.AddMemberForm do
+defmodule PairDanceWeb.AppLive.TeamMembersPage.AddMemberForm do
   use PairDanceWeb, :live_component
 
   alias PairDance.Domain.Team.InviteService

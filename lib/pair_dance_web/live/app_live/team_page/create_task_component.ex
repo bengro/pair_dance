@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.AppLive.CreateTaskComponent do
+defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
   use PairDanceWeb, :live_component
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
