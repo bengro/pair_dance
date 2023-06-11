@@ -71,7 +71,12 @@ defmodule PairDance.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test --exclude feature"],
-      "test.e2e": ["esbuild default", "ecto.create --quiet", "ecto.migrate --quiet", "test --only feature"],
+      "test.e2e": [
+        "esbuild default",
+        "ecto.create --quiet",
+        "ecto.migrate --quiet",
+        "test --only feature"
+      ],
       "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
     ]
   end
