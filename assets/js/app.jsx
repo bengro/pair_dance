@@ -10,17 +10,14 @@ import topbar from "../vendor/topbar";
 import mountApp from "./mountApp";
 import Sortable from "sortablejs";
 
-let Hooks = {};
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
 
+let Hooks = {};
 Hooks.Sortable = {
   mounted() {
-    let group = this.el.dataset.group;
-    console.log("Group", group);
-    console.log("this.el", this.el);
-    let sorter = new Sortable(this.el, {
+    new Sortable(this.el, {
       group: "tasks",
       animation: 150,
       delay: 100,
@@ -60,5 +57,3 @@ liveSocket.enableDebug();
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket;
-
-mountApp("app", window.liveSocket.socket);

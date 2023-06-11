@@ -6,7 +6,7 @@ defmodule PairDanceWeb.LandingPageTest do
   test "accessible without logging in", %{conn: conn} do
     {:ok, _, html} = conn |> live(~p"/")
 
-    assert html =~ "Landing page"
+    assert html =~ "pair.dance"
   end
 
 end

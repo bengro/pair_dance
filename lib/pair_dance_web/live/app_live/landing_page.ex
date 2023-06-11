@@ -10,7 +10,7 @@ defmodule PairDanceWeb.LandingPageLive.Index do
   def render(assigns) do
     ~H"""
     <h1 class="text-3xl font-bold">pair.dance</h1>
-    Landing page <.live_component id="1" module={PairDanceWeb.ShoppingListComponent} />
+    <.live_component id="1" module={PairDanceWeb.ShoppingListComponent} />
     """
   end
 end

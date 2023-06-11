@@ -9,7 +9,6 @@ const App: React.FC<Props> = (props: Props) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    console.log("state changed!", props.socket.connectionState());
     if (props.socket.connectionState() === "open") {
       setIsConnected(true);
     } else {
