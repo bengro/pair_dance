@@ -2,6 +2,7 @@ defmodule PairDance.Domain.Team.Repository do
   alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
+  alias PairDance.Domain.Team.Task
 
   @type team_id :: integer
   @type member_id :: String.t()
@@ -25,6 +26,8 @@ defmodule PairDance.Domain.Team.Repository do
   @callback add_member(Team.t(), Member.t()) :: {:ok, Team.t()}
 
   @callback add_task(Team.t(), task_name()) :: {:ok, Team.t()}
+
+  @callback delete_task(Task.t()) :: {:ok, Team.t()}
 
   @callback assign_member_to_task(Team.t(), Assignment.t()) :: {:ok, Team.t()}
 

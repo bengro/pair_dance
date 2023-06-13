@@ -142,6 +142,13 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   end
 
   @impl Team.Repository
+  def delete_task(task) do
+    {:ok, _entity} = Repo.delete(%TaskEntity{id: task.id})
+    {:ok}
+    :ok
+  end
+
+  @impl Team.Repository
   def assign_member_to_task(team, assignment) do
     team_id = team.id
     user_id = assignment.member.user.id
