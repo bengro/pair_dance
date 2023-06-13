@@ -1,7 +1,7 @@
 defmodule PairDanceWeb.AppLive.AccountPage.CreateTeamComponent do
   use PairDanceWeb, :live_component
 
-  alias PairDance.Domain.TeamCreationService
+  alias PairDance.Domain.Team
 
   @impl true
   def render(assigns) do
@@ -36,7 +36,7 @@ defmodule PairDanceWeb.AppLive.AccountPage.CreateTeamComponent do
   end
 
   def handle_event("save", params, socket) do
-    {:ok, team} = TeamCreationService.new_team(params["team"]["name"], socket.assigns.user)
+    {:ok, team} = Team.TeamService.new_team(params["team"]["name"], socket.assigns.user)
     send(self(), {:team_changed, team})
     {:noreply, push_navigate(socket, to: "/" <> team.slug)}
   end

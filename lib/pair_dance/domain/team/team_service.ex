@@ -1,4 +1,4 @@
-defmodule PairDance.Domain.TeamCreationService do
+defmodule PairDance.Domain.Team.TeamService do
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.User
