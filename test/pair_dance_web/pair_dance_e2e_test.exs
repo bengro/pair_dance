@@ -1,6 +1,5 @@
 defmodule PairDance.E2E.Tests do
-  use ExUnit.Case, async: false
-  use Wallaby.Feature
+  use PairDance.E2eCase
 
   setup_all do
     Application.ensure_all_started(:wallaby)
@@ -27,6 +26,6 @@ defmodule PairDance.E2E.Tests do
 
     |> fill_in(Query.css("#new-task-form_name"), with: "Refactor the code")
     |> click(Query.text("Save Task"))
-    |> assert_has(Query.css("[data-qa=pairing-table]"))
+    |> assert_has(data_qa("pairing-table"))
   end
 end
