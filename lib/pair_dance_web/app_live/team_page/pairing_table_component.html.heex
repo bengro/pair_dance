@@ -1,17 +1,16 @@
-<div id="lists" class="grid sm:grid-cols-1 md:grid-cols-3 gap-2" data-qa="pairing-table">
-
-  <ul>
-  <%= for member <- @team.members do %>
-    <.live_component
-      id={"#{member.user.id}-unassigned"}
-      module={PairDanceWeb.AppLive.MemberComponent}
-      member={member}
-    />
-  <% end %>
-  </ul>
+<div class="flex flex-col gap-2" data-qa="pairing-table">
+  <section>
+    <%= for member <- @team.members do %>
+      <.live_component
+        id={"#{member.user.id}-unassigned"}
+        module={PairDanceWeb.AppLive.MemberComponent}
+        member={member}
+      />
+    <% end %>
+  </section>
 
   <%= for task <- @team.tasks do %>
-    <li data-qa={"task-#{task.id}"}>
+    <section data-qa={"task-#{task.id}"}>
       <.live_component
         id={"task-#{task.id}"}
         module={PairDanceWeb.AppLive.TeamPage.WorkTrackComponent}
@@ -25,6 +24,6 @@
       >
         delete!
       </button>
-    </li>
+    </section>
   <% end %>
 </div>

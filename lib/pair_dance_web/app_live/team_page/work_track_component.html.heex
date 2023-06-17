@@ -4,7 +4,12 @@
       <%= @task.name %>
     </.header>
     <div id={"#{@id}-assignments"} phx-hook="Sortable" data-list_id={@id}>
-      <div :for={assignment <- @list} id={"#{@id}-#{assignment.member.user.id}"} class="" data-id={assignment.member.user.id}>
+      <div
+        :for={assignment <- @list}
+        id={"#{@id}-#{assignment.member.user.id}"}
+        class=""
+        data-id={assignment.member.user.id}
+      >
         <div class="flex">
           <div class="flex-auto block text-sm leading-6 text-zinc-900">
             <.live_component

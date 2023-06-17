@@ -23,13 +23,14 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
 
   test "renders assigned people" do
     task = %Task{id: 1, name: "my task"}
-    member = %Member{ user: %User{ id: 1, email: "bob@gmail.com" }, role: :admin }
+    member = %Member{user: %User{id: 1, email: "bob@gmail.com"}, role: :admin}
+
     team = %Team{
       id: "some-id",
       name: "my team",
       slug: "my-team",
       members: [member],
-      assignments: [%Assignment{ task: task, member: member }],
+      assignments: [%Assignment{task: task, member: member}],
       tasks: [task]
     }
 
@@ -38,7 +39,8 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
 
   test "renders all unassigned members" do
     task = %Task{id: 1, name: "my task"}
-    member = %Member{ user: %User{ id: 1, email: "bob@gmail.com" }, role: :admin }
+    member = %Member{user: %User{id: 1, email: "bob@gmail.com"}, role: :admin}
+
     team = %Team{
       id: "some-id",
       name: "my team",

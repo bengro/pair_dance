@@ -19,11 +19,9 @@ defmodule PairDance.E2E.Tests do
     |> visit("/auth")
     |> click(Query.text("Login"))
     |> assert_text("Hi, Joe Dough!")
-
     |> visit("/!/account")
     |> fill_in(Query.css("#new-team-form_name"), with: "Comet")
     |> click(Query.text("Create"))
-
     |> fill_in(Query.css("#new-task-form_name"), with: "Refactor the code")
     |> click(Query.text("Save Task"))
     |> assert_has(data_qa("pairing-table"))

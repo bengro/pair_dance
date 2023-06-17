@@ -1,6 +1,7 @@
 defmodule PairDance.E2eCase do
   use ExUnit.CaseTemplate
   alias Wallaby.Query
+
   using do
     quote do
       import PairDance.E2eCase
@@ -12,5 +13,4 @@ defmodule PairDance.E2eCase do
   def data_qa(value) do
     Query.css("[data-qa=#{value}]")
   end
-
 end

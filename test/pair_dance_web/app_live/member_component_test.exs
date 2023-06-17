@@ -13,7 +13,8 @@ defmodule PairDanceWeb.AppLive.MemberComponentTest do
       avatar: "https://avatar.com",
       name: "Jane Doe"
     }
-    member = %Member{ user: user, role: :admin }
+
+    member = %Member{user: user, role: :admin}
 
     html = render_component(MemberComponent, member: member)
 
@@ -26,7 +27,8 @@ defmodule PairDanceWeb.AppLive.MemberComponentTest do
       id: 1,
       email: "jane@doe.com"
     }
-    member = %Member{ user: user, role: :admin }
+
+    member = %Member{user: user, role: :admin}
 
     html = render_component(MemberComponent, member: member)
 
