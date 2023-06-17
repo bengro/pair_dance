@@ -22,7 +22,10 @@ end
 
 ## LIVE VIEW
 config :pair_dance, PairDanceWeb.Endpoint,
-  live_view: [signing_salt: System.get_env("LIVE_VIEW_SIGNING_SALT")]
+  live_view: [
+    signing_salt:
+      System.get_env("LIVE_VIEW_SIGNING_SALT") || raise("LIVE_VIEW_SIGNING_SALT not set")
+  ]
 
 ## SSO
 config :ueberauth, Ueberauth.Strategy.Google.OAuth,

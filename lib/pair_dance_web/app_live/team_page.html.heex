@@ -7,7 +7,12 @@
 </h2>
 <ul>
   <%= for task <- @team.tasks do %>
-    <li><%= task.name %></li>
+    <li>
+      <%= task.name %>
+      <button id={"delete_task_#{task.id}"} phx-click="delete_task" phx-value-task_id={task.id}>
+        x
+      </button>
+    </li>
   <% end %>
 </ul>
 

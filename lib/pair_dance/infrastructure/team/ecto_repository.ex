@@ -142,10 +142,9 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   end
 
   @impl Team.Repository
-  def delete_task(task) do
+  def delete_task(team, task) do
     {:ok, _entity} = Repo.delete(%TaskEntity{id: task.id})
-    {:ok}
-    :ok
+    {:ok, find(team.id)}
   end
 
   @impl Team.Repository

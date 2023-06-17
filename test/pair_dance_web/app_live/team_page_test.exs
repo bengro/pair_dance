@@ -57,4 +57,18 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
 
     assert render(view) =~ "my task name"
   end
+
+  test "delete a task", %{conn: conn, tasks: tasks, team: team, user: user} do
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    task = Enum.at(tasks, 0)
+
+    assert render(view) =~ task.name
+
+    updated_view =
+      view
+      |> element("#delete_task_#{task.id}")
+      |> render_click()
+
+    refute String.contains?(updated_view, task.name)
+  end
 end
