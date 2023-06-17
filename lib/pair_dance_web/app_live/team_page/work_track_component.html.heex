@@ -7,7 +7,11 @@
       <div :for={assignment <- @list} id={"#{@id}-#{assignment.member.user.id}"} class="" data-id={assignment.member.user.id}>
         <div class="flex">
           <div class="flex-auto block text-sm leading-6 text-zinc-900">
-            <%= assignment.member.user.email %>
+            <.live_component
+              id={assignment.member.user.id}
+              module={PairDanceWeb.AppLive.MemberComponent}
+              member={assignment.member}
+            />
           </div>
           <button type="button" class="w-10 -mt-1 flex-none">
             <span name="hero-x-mark">x</span>

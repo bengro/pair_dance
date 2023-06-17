@@ -2,7 +2,11 @@
 
   <ul>
   <%= for member <- @team.members do %>
-    <%= member.user.email %>
+    <.live_component
+      id={"#{member.user.id}-unassigned"}
+      module={PairDanceWeb.AppLive.MemberComponent}
+      member={member}
+    />
   <% end %>
   </ul>
 

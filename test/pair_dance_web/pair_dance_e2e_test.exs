@@ -27,5 +27,6 @@ defmodule PairDance.E2E.Tests do
     |> fill_in(Query.css("#new-task-form_name"), with: "Refactor the code")
     |> click(Query.text("Save Task"))
     |> assert_has(data_qa("pairing-table"))
+    |> assert_has(data_qa("member-avatar"))
   end
 end
