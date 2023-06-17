@@ -8,7 +8,7 @@ defmodule PairDance.Domain.Team.AccessService do
 
   @spec check_access(team_slug(), User.t()) :: boolean
   def check_access(slug, user) do
-    case TeamRepository.find_by_slug(slug) do
+    case TeamRepository.find_by_slug?(slug) do
       nil -> false
       team -> Team.has_member(team, user)
     end

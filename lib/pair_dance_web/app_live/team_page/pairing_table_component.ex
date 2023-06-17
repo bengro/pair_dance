@@ -1,8 +1,10 @@
-defmodule PairDanceWeb.AppLive.TeamPage.ShoppingListComponent do
+defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
   use PairDanceWeb, :live_component
 
   @impl true
-  def update(_assigns, socket) do
+  def update(assigns, socket) do
+    team = assigns.team
+
     list = [
       %{name: "Bread", id: 1, position: 1, status: :in_progress},
       %{name: "Butter", id: 2, position: 2, status: :in_progress},
@@ -11,6 +13,6 @@ defmodule PairDanceWeb.AppLive.TeamPage.ShoppingListComponent do
       %{name: "Eggs", id: 5, position: 5, status: :in_progress}
     ]
 
-    {:ok, assign(socket, shopping_list: list)}
+    {:ok, assign(socket, shopping_list: list, team: team)}
   end
 end

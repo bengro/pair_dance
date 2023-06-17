@@ -33,7 +33,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
   test "get a team by slug" do
     {:ok, %Team{slug: slug}} = TeamRepository.create("comet")
 
-    team = TeamRepository.find_by_slug(slug)
+    team = TeamRepository.find_by_slug?(slug)
 
     assert team != nil
     assert team.name == "comet"
@@ -78,7 +78,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
     {:ok, team} = TeamRepository.create("comet")
 
     {:ok, _} = TeamRepository.update(team.id, %{slug: "my-slug"})
-    %Team{name: name} = TeamRepository.find_by_slug("my-slug")
+    %Team{name: name} = TeamRepository.find_by_slug?("my-slug")
 
     assert name == "comet"
   end

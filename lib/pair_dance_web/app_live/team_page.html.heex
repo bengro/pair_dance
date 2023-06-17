@@ -1,20 +1,6 @@
 <h1>Daily Pair Dance for Team <%= @team.name %></h1>
 
-<.live_component id="1" module={PairDanceWeb.AppLive.TeamPage.ShoppingListComponent} />
-
-<h2>
-  Tasks:
-</h2>
-<ul>
-  <%= for task <- @team.tasks do %>
-    <li>
-      <%= task.name %>
-      <button id={"delete_task_#{task.id}"} phx-click="delete_task" phx-value-task_id={task.id}>
-        x
-      </button>
-    </li>
-  <% end %>
-</ul>
+<.live_component id="1" team={@team} module={PairDanceWeb.AppLive.TeamPage.PairingTableComponent} />
 
 <.live_component
   id={1}

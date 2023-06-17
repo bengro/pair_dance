@@ -15,7 +15,7 @@ defmodule PairDance.Domain.Team.Repository do
 
   @callback find_by_member(member_id()) :: list(Team.t())
 
-  @callback find_by_slug(slug()) :: Team.t() | nil
+  @callback find_by_slug?(slug()) :: Team.t() | nil
 
   @callback find_all() :: list(Team.t())
 

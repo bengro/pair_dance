@@ -5,7 +5,7 @@ defmodule PairDanceWeb.AppLive.TeamPage do
 
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do
-    team = TeamRepository.find_by_slug(slug)
+    team = TeamRepository.find_by_slug?(slug)
 
     assigns =
       socket

@@ -66,7 +66,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   end
 
   @impl Team.Repository
-  def find_by_slug(slug) do
+  def find_by_slug?(slug) do
     entity =
       Repo.one(
         from t in TeamEntity,

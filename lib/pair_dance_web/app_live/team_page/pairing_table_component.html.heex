@@ -1,0 +1,19 @@
+<div id="lists" class="grid sm:grid-cols-1 md:grid-cols-3 gap-2">
+  <%= for task <- @team.tasks do %>
+    <li data-qa={"task-#{task.id}"}>
+      <.live_component
+        id={"task-#{task.id}"}
+        module={PairDanceWeb.AppLive.TeamPage.ListComponent}
+        list={@shopping_list}
+        task={task}
+      />
+      <button
+        phx-click="delete_task"
+        data-qa={"delete-task-#{task.id}"}
+        phx-value-task_id={task.id}
+      >
+        delete!
+      </button>
+    </li>
+  <% end %>
+</div>

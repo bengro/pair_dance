@@ -9,9 +9,12 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   defp setup_data(_) do
     user = user_fixture()
     {:ok, team} = TeamService.new_team("my team", user)
-    task = task_fixture(team, "Refactor something amazing")
+    task_fixture(team, "Refactor something amazing")
+    task_fixture(team, "Implement FedRamp-compliant cache")
 
-    %{tasks: [task], team: team, user: user}
+    team = PairDance.Infrastructure.Team.EctoRepository.find(team.id)
+
+    %{team: team, user: user}
   end
 
   setup [:setup_data]
@@ -39,13 +42,12 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     assert html =~ user.email
   end
 
-  test "lists all tasks", %{conn: conn, tasks: tasks, team: team, user: user} do
-    {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+  test "lists all tasks", %{conn: conn, team: team, user: user} do
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
 
-    [first_task] = tasks
+    [first_task | _] = team.tasks
 
-    assert html =~ "Tasks:"
-    assert html =~ first_task.name
+    assert view |> element("[data-qa=task-#{first_task.id}]") |> has_element?()
   end
 
   test "create a task", %{conn: conn, team: team, user: user} do
@@ -58,15 +60,15 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     assert render(view) =~ "my task name"
   end
 
-  test "delete a task", %{conn: conn, tasks: tasks, team: team, user: user} do
+  test "delete a task", %{conn: conn, team: team, user: user} do
     {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
-    task = Enum.at(tasks, 0)
+    [task | _] = team.tasks
 
     assert render(view) =~ task.name
 
     updated_view =
       view
-      |> element("#delete_task_#{task.id}")
+      |> element("[data-qa=delete-task-#{task.id}]")
       |> render_click()
 
     refute String.contains?(updated_view, task.name)
