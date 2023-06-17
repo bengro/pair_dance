@@ -1,7 +1,7 @@
-defmodule PairDanceWeb.AppLive.TeamPage.ListComponent do
+defmodule PairDanceWeb.AppLive.TeamPage.WorkTrackComponent do
   use PairDanceWeb, :live_component
 
-  def handle_event("reposition", params, socket) do
+  def handle_event("reposition", _params, socket) do
     {:noreply, socket}
   end
 

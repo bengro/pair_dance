@@ -1,10 +1,17 @@
-<div id="lists" class="grid sm:grid-cols-1 md:grid-cols-3 gap-2">
+<div id="lists" class="grid sm:grid-cols-1 md:grid-cols-3 gap-2" data-qa="pairing-table">
+
+  <ul>
+  <%= for member <- @team.members do %>
+    <%= member.user.email %>
+  <% end %>
+  </ul>
+
   <%= for task <- @team.tasks do %>
     <li data-qa={"task-#{task.id}"}>
       <.live_component
         id={"task-#{task.id}"}
-        module={PairDanceWeb.AppLive.TeamPage.ListComponent}
-        list={@shopping_list}
+        module={PairDanceWeb.AppLive.TeamPage.WorkTrackComponent}
+        list={@team.assignments}
         task={task}
       />
       <button

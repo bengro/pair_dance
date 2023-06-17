@@ -3,14 +3,11 @@
     <.header>
       <%= @task.name %>
     </.header>
-    <div id={"#{@id}-items"} phx-hook="Sortable" data-list_id={@id}>
-      <div :for={item <- @list} id={"#{@id}-#{item.id}"} class="" data-id={item.id}>
+    <div id={"#{@id}-assignments"} phx-hook="Sortable" data-list_id={@id}>
+      <div :for={assignment <- @list} id={"#{@id}-#{assignment.member.user.id}"} class="" data-id={assignment.member.user.id}>
         <div class="flex">
-          <button type="button" class="w-24">
-            <span><%= item.status %></span>
-          </button>
           <div class="flex-auto block text-sm leading-6 text-zinc-900">
-            <%= item.name %>
+            <%= assignment.member.user.email %>
           </div>
           <button type="button" class="w-10 -mt-1 flex-none">
             <span name="hero-x-mark">x</span>
