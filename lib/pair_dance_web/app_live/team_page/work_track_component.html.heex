@@ -3,11 +3,15 @@
     <.header>
       <%= @task.name %>
     </.header>
-    <div id={"#{@id}-assignments"} phx-hook="Reassign" data-task-id={@id} class="flex flex-row gap-9">
+    <div
+      id={"#{@id}-assignments"}
+      phx-hook="Reassign"
+      data-task-id={@id}
+      class="flex flex-row gap-8 min-h-[96px]"
+    >
       <div
         :for={member <- @task.assignees}
         id={"#{@id}-#{member.user.id}"}
-        class=""
         data-user-id={member.user.id}
       >
         <.live_component

@@ -4,7 +4,7 @@
     data-qa="available-members"
     phx-hook="Reassign"
     phx-target={@myself}
-    class="flex flex-row gap-2"
+    class="flex flex-row gap-8 bg-surf min-h-[96px]"
   >
     <%= for member <- @available_members do %>
       <.live_component
