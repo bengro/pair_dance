@@ -26,5 +26,15 @@ defmodule PairDance.E2E.Tests do
     |> click(Query.text("Save Task"))
     |> assert_has(data_qa("pairing-table"))
     |> assert_has(data_qa("member-avatar"))
+
+    {x, y} =
+      find(session, data_qa("workstream"))
+      |> Element.location()
+
+    session
+    |> touch_down(data_qa("member-avatar"))
+    |> touch_move(x, y)
+    |> touch_up()
+    |> assert_has(Query.css("[data-qa=workstream] [data-qa=member-avatar]"))
   end
 end

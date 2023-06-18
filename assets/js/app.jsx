@@ -16,6 +16,7 @@ let csrfToken = document
 let Hooks = {};
 Hooks.Sortable = {
   mounted() {
+    console.log('creating new sortable', this.el);
     new Sortable(this.el, {
       group: "tasks",
       animation: 150,

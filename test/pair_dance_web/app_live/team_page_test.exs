@@ -43,11 +43,11 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   end
 
   test "lists all tasks", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
 
     [first_task | _] = team.tasks
 
-    assert view |> element("[data-qa=task-#{first_task.id}]") |> has_element?()
+    assert html =~ first_task.name
   end
 
   test "create a task", %{conn: conn, team: team, user: user} do

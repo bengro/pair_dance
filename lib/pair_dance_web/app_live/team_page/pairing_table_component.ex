@@ -1,18 +1,53 @@
 defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
   use PairDanceWeb, :live_component
 
+  alias PairDance.Domain.Team.Assignment
+  alias PairDance.Infrastructure.Team.EctoRepository
+
   @impl true
   def update(assigns, socket) do
     team = assigns.team
 
-    list = [
-      %{name: "Bread", id: 1, position: 1, status: :in_progress},
-      %{name: "Butter", id: 2, position: 2, status: :in_progress},
-      %{name: "Milk", id: 3, position: 3, status: :in_progress},
-      %{name: "Bananas", id: 4, position: 4, status: :in_progress},
-      %{name: "Eggs", id: 5, position: 5, status: :in_progress}
-    ]
+    available_members =
+      Enum.filter(team.members, fn member ->
+        assigned =
+          Enum.any?(team.assignments, fn assignment ->
+            assignment.member.user.id == member.user.id
+          end)
 
-    {:ok, assign(socket, shopping_list: list, team: team)}
+        !assigned
+      end)
+
+    current_tasks =
+      Enum.map(team.tasks, fn task ->
+        %{
+          id: task.id,
+          name: task.name,
+          assignees:
+            Enum.filter(team.assignments, fn assignment -> assignment.task.id == task.id end)
+            |> Enum.map(fn assignment -> assignment.member end)
+        }
+      end)
+
+    # [%{id: "", name: "", assignees: []}]
+
+    {:ok,
+     assign(socket, available_members: available_members, current_tasks: current_tasks, team: team)}
+  end
+
+  @impl true
+  def handle_event("reposition", params, socket) do
+    IO.puts("member assigned")
+    IO.inspect(params)
+    user_id = params["userId"]
+    task_id = String.to_integer(params["to"]["task_id"])
+    team = socket.assigns.team
+    task = Enum.find(team.tasks, fn task -> task.id == task_id end)
+    member = Enum.find(team.members, fn member -> member.user.id == user_id end)
+
+    {:ok, updated_team} =
+      EctoRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
+
+    {:noreply, assign(socket, team: updated_team)}
   end
 end

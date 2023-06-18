@@ -1,6 +1,11 @@
 <div class="flex flex-col gap-2" data-qa="pairing-table">
-  <section class="flex flex-row gap-2">
-    <%= for member <- @team.members do %>
+  <section
+    id="available-members"
+    data-qa="available-members"
+    phx-hook="Sortable"
+    class="flex flex-row gap-2"
+  >
+    <%= for member <- @available_members do %>
       <.live_component
         id={"#{member.user.id}-unassigned"}
         module={PairDanceWeb.AppLive.MemberComponent}
@@ -9,12 +14,11 @@
     <% end %>
   </section>
 
-  <%= for task <- @team.tasks do %>
-    <section data-qa={"task-#{task.id}"}>
+  <%= for task <- @current_tasks do %>
+    <section data-qa="workstream">
       <.live_component
-        id={"task-#{task.id}"}
+        id={task.id}
         module={PairDanceWeb.AppLive.TeamPage.WorkTrackComponent}
-        list={@team.assignments}
         task={task}
       />
       <button

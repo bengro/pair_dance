@@ -3,19 +3,19 @@
     <.header>
       <%= @task.name %>
     </.header>
-    <div id={"#{@id}-assignments"} phx-hook="Sortable" data-list_id={@id}>
+    <div id={"#{@id}-assignments"} phx-hook="Sortable" data-task_id={@id}>
       <div
-        :for={assignment <- @list}
-        id={"#{@id}-#{assignment.member.user.id}"}
+        :for={member <- @task.assignees}
+        id={"#{@id}-#{member.user.id}"}
         class=""
-        data-id={assignment.member.user.id}
+        data-id={member.user.id}
       >
         <div class="flex">
           <div class="flex-auto block text-sm leading-6 text-zinc-900">
             <.live_component
-              id={assignment.member.user.id}
+              id={"#{member.user.id}-in-workstream-#{@task.id}-#{@id}"}
               module={PairDanceWeb.AppLive.MemberComponent}
-              member={assignment.member}
+              member={member}
             />
           </div>
           <button type="button" class="w-10 -mt-1 flex-none">

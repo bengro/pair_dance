@@ -7,6 +7,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
   alias PairDance.Domain.User
+  alias Floki
 
   test "renders work tracks" do
     team = %Team{
@@ -21,8 +22,9 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
     assert render_component(PairingTableComponent, id: 123, team: team) =~ "my task"
   end
 
-  test "renders assigned people" do
-    task = %Task{id: 1, name: "my task"}
+  test "renders assigned people in the correct workstream" do
+    task1 = %Task{id: 1, name: "my task"}
+    task2 = %Task{id: 2, name: "another task"}
     member = %Member{user: %User{id: 1, email: "bob@gmail.com"}, role: :admin}
 
     team = %Team{
@@ -30,11 +32,24 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
       name: "my team",
       slug: "my-team",
       members: [member],
-      assignments: [%Assignment{task: task, member: member}],
-      tasks: [task]
+      assignments: [%Assignment{task: task1, member: member}],
+      tasks: [task1, task2]
     }
 
-    assert render_component(PairingTableComponent, id: 123, team: team) =~ "bob"
+    html = render_component(PairingTableComponent, id: 123, team: team)
+    {:ok, document} = Floki.parse_document(html)
+
+    assert document
+           |> Floki.find("[data-qa=workstream]")
+           |> Enum.filter(fn el -> Floki.text(el) =~ "my task" end)
+           |> Floki.text() =~ "bob"
+
+    refute document
+           |> Floki.find("[data-qa=workstream]")
+           |> Enum.filter(fn el -> Floki.text(el) =~ "another task" end)
+           |> Floki.text() =~ "bob"
+
+    refute document |> Floki.find("[data-qa=available-members]") |> Floki.text() =~ "bob"
   end
 
   test "renders all unassigned members" do
@@ -50,6 +65,9 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
       tasks: [task]
     }
 
-    assert render_component(PairingTableComponent, id: 123, team: team) =~ "bob"
+    html = render_component(PairingTableComponent, id: 123, team: team)
+    {:ok, document} = Floki.parse_document(html)
+
+    assert document |> Floki.find("[data-qa=available-members]") |> Floki.text() =~ "bob"
   end
 end
