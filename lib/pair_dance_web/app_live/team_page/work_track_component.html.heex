@@ -8,7 +8,8 @@
         :for={member <- @task.assignees}
         id={"#{@id}-#{member.user.id}"}
         class=""
-        data-id={member.user.id}
+        data-user-id={member.user.id}
+        data-task-id={@task.id}
       >
         <div class="flex">
           <div class="flex-auto block text-sm leading-6 text-zinc-900">

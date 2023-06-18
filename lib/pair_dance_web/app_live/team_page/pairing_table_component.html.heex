@@ -1,33 +1,34 @@
-<div class="flex flex-col gap-2" data-qa="pairing-table">
-  <section
-    id="available-members"
-    data-qa="available-members"
-    phx-hook="Sortable"
-    class="flex flex-row gap-2"
-  >
-    <%= for member <- @available_members do %>
-      <.live_component
+<div class="flex flex-col gap-2" data-qa="pairing-table" id="pairing-table">
+    <section
+        id="available-members"
+        data-qa="available-members"
+        phx-hook="Sortable"
+        phx-target={@myself}
+        class="flex flex-row gap-2"
+    >
+        <%= for member <- @available_members do %>
+        <.live_component
         id={"#{member.user.id}-unassigned"}
         module={PairDanceWeb.AppLive.MemberComponent}
         member={member}
-      />
-    <% end %>
-  </section>
+        />
+        <% end %>
+    </section>
 
-  <%= for task <- @current_tasks do %>
+    <%= for task <- @current_tasks do %>
     <section data-qa="workstream">
-      <.live_component
+        <.live_component
         id={task.id}
         module={PairDanceWeb.AppLive.TeamPage.WorkTrackComponent}
         task={task}
-      />
-      <button
-        phx-click="delete_task"
-        data-qa={"delete-task-#{task.id}"}
-        phx-value-task_id={task.id}
-      >
-        delete!
-      </button>
+        />
+        <button
+            phx-click="delete_task"
+            data-qa={"delete-task-#{task.id}"}
+            phx-value-task_id={task.id}
+        >
+            delete!
+        </button>
     </section>
-  <% end %>
+    <% end %>
 </div>

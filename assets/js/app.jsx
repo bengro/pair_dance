@@ -31,7 +31,7 @@ Hooks.Sortable = {
           to: e.to.dataset,
           ...e.item.dataset,
         };
-        this.pushEventTo(this.el, "reposition", params);
+        this.pushEventTo('#pairing-table', "reposition", params);
       },
     });
   },

@@ -73,4 +73,69 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
 
     refute String.contains?(updated_view, task.name)
   end
+
+  test "assign member to a task", %{conn: conn, team: team, user: user} do
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+
+    [task | _] = team.tasks
+
+    payload = %{
+      "new" => 0,
+      "old" => 0,
+      "to" => %{"task_id" => "#{task.id}"},
+      "userId" => user.id
+    }
+
+    view
+    |> element("#available-members")
+    |> render_hook(:reposition, payload)
+
+    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+
+    {:ok, document} = Floki.parse_document(updated_html)
+
+    assert document
+           |> Floki.find("[data-qa=workstream]")
+           |> Enum.filter(fn el -> Floki.text(el) =~ task.name end)
+           |> Floki.text() =~ user.email
+  end
+
+  test "unassign member from a task", %{conn: conn, team: team, user: user} do
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+
+    [task | _] = team.tasks
+
+    view
+    |> element("#available-members")
+    |> render_hook(
+      :reposition,
+      %{
+        "new" => 0,
+        "old" => 0,
+        "to" => %{"task_id" => "#{task.id}"},
+        "userId" => user.id
+      }
+    )
+
+    view
+    |> element("#available-members")
+    |> render_hook(
+      :reposition,
+      %{
+        "old" => 0,
+        "new" => 1,
+        "to" => %{},
+        "taskId" => "#{task.id}",
+        "userId" => user.id
+      }
+    )
+
+    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+
+    {:ok, document} = Floki.parse_document(updated_html)
+
+    assert document
+           |> Floki.find("[data-qa=available-members]")
+           |> Floki.text() =~ user.email
+  end
 end
