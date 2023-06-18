@@ -20,7 +20,6 @@ Hooks.Sortable = {
     new Sortable(this.el, {
       group: "tasks",
       animation: 150,
-      delay: 100,
       dragClass: "drag-item",
       ghostClass: "drag-ghost",
       forceFallback: true,
