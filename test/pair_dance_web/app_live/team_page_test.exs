@@ -40,6 +40,19 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     assert html =~ user.email
   end
 
+  test "invite a new member", %{conn: conn, team: team, user: user} do
+    {:ok, view, _} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.slug}")
+
+    view
+    |> form("#add-member-form", user: %{email: "new-member@gmail.com"})
+    |> render_submit()
+
+    assert render(view) =~ "new-member@gmail.com"
+  end
+
   test "lists all tasks", %{conn: conn, team: team, user: user} do
     {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
 

@@ -64,7 +64,6 @@ defmodule PairDanceWeb.Router do
     scope "/:slug" do
       pipe_through [:auth, :team]
       live "/", AppLive.TeamPage, :index
-      live "/members", AppLive.TeamMembersPage, :index
     end
   end
 
