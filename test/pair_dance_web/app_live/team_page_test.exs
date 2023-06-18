@@ -35,10 +35,8 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
              conn |> impersonate(another_user) |> live(~p"/#{team.slug}")
   end
 
-  test "lists all members", %{conn: conn, team: team, user: user} do
+  test "lists team members", %{conn: conn, team: team, user: user} do
     {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
-
-    assert html =~ "Team members:"
     assert html =~ user.email
   end
 

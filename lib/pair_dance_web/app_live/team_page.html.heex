@@ -12,12 +12,3 @@
   team={@team}
   action={:new}
 />
-
-<h2>
-  Team members:
-</h2>
-<ul>
-  <%= for member <- @team.members do %>
-    <li><%= member.user.email %></li>
-  <% end %>
-</ul>
