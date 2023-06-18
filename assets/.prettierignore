@@ -1,0 +1,7 @@
+deps/
+_build/
+.elixir_ls
+assets
+priv
+node_modules
+vendor/

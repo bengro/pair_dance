@@ -77,7 +77,11 @@ defmodule PairDance.MixProject do
         "ecto.migrate --quiet",
         "test --only feature"
       ],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      format: ["format", "formatAssets"],
+      formatAssets: [
+        "cmd ./assets/node_modules/.bin/prettier ./assets --ignore-path ./assets/.prettierignore --loglevel silent --write"
+      ]
     ]
   end
 end

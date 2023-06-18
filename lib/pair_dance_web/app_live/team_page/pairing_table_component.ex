@@ -36,20 +36,29 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
   @impl true
   def handle_event("reposition", params, socket) do
     user_id = params["userId"]
-    op = case params["to"]["task_id"] do
-      nil -> :unassign
-      _ -> :assign
-    end
+
+    op =
+      case params["to"]["task_id"] do
+        nil -> :unassign
+        _ -> :assign
+      end
+
     task_id = String.to_integer(params["to"]["task_id"] || params["taskId"])
 
     team = socket.assigns.team
     member = Enum.find(team.members, fn member -> member.user.id == user_id end)
     task = Enum.find(team.tasks, fn task -> task.id == task_id end)
+
     {:ok, updated_team} =
       case op do
         :unassign ->
-          assignment = Enum.find(team.assignments, fn a -> a.member.user.id == user_id && a.task.id == task.id end)
+          assignment =
+            Enum.find(team.assignments, fn a ->
+              a.member.user.id == user_id && a.task.id == task.id
+            end)
+
           EctoRepository.unassign_member_from_task(team, assignment)
+
         :assign ->
           EctoRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
       end
