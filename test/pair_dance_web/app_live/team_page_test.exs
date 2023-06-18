@@ -131,4 +131,40 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
            |> Floki.find("[data-qa=available-members]")
            |> Floki.text() =~ user.email
   end
+
+  test "reassign member to another task", %{conn: conn, team: team, user: user} do
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+
+    [first_task, second_task] = team.tasks
+
+    view
+    |> element("#available-members")
+    |> render_hook(
+      :reposition,
+      %{
+        "userId" => user.id,
+        "newTaskId" => "#{first_task.id}"
+      }
+    )
+
+    view
+    |> element("#available-members")
+    |> render_hook(
+      :reposition,
+      %{
+        "userId" => user.id,
+        "oldTaskId" => "#{first_task.id}",
+        "newTaskId" => "#{second_task.id}"
+      }
+    )
+
+    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+
+    {:ok, document} = Floki.parse_document(updated_html)
+
+    assert document
+           |> Floki.find("[data-qa=workstream]")
+           |> Enum.filter(fn el -> Floki.text(el) =~ second_task.name end)
+           |> Floki.text() =~ user.email
+  end
 end

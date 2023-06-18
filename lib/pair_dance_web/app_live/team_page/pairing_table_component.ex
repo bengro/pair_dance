@@ -35,15 +35,13 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
 
   @impl true
   def handle_event("reposition", params, socket) do
-    IO.puts("reposition params")
-    IO.inspect(params)
     team = socket.assigns.team
     user_id = params["userId"]
     member = Enum.find(team.members, fn member -> member.user.id == user_id end)
     old_task_id = sanitise_task_id(params["oldTaskId"])
     new_task_id = sanitise_task_id(params["newTaskId"])
 
-    {:ok, updated_team} =
+    {:ok, team} =
       if old_task_id != nil do
         assignment =
           Enum.find(team.assignments, fn a ->
@@ -52,11 +50,18 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
 
         EctoRepository.unassign_member_from_task(team, assignment)
       else
-        task = Enum.find(team.tasks, fn task -> task.id == new_task_id end)
-        EctoRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
+        {:ok, team}
       end
 
-    {:noreply, assign(socket, team: updated_team)}
+    {:ok, team} =
+      if new_task_id != nil do
+        task = Enum.find(team.tasks, fn task -> task.id == new_task_id end)
+        EctoRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
+      else
+        {:ok, team}
+      end
+
+    {:noreply, assign(socket, team: team)}
   end
 
   defp sanitise_task_id(task_id) do
