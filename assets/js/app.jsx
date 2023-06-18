@@ -14,9 +14,8 @@ let csrfToken = document
   .getAttribute("content");
 
 let Hooks = {};
-Hooks.Sortable = {
+Hooks.Reassign = {
   mounted() {
-    console.log("creating sortable from", this.el.dataset);
     const oldTaskId = this.el.dataset.taskId;
     new Sortable(this.el, {
       group: "tasks",
