@@ -41,25 +41,10 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
     old_task_id = sanitise_task_id(params["oldTaskId"])
     new_task_id = sanitise_task_id(params["newTaskId"])
 
-    {:ok, team} =
-      if old_task_id != nil do
-        assignment =
-          Enum.find(team.assignments, fn a ->
-            a.member.user.id == user_id && a.task.id == old_task_id
-          end)
-
-        EctoRepository.unassign_member_from_task(team, assignment)
-      else
-        {:ok, team}
-      end
-
-    {:ok, team} =
-      if new_task_id != nil do
-        task = Enum.find(team.tasks, fn task -> task.id == new_task_id end)
-        EctoRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
-      else
-        {:ok, team}
-      end
+    %{team: team} =
+      %{team: team, member: member}
+      |> unassign_from_task(old_task_id)
+      |> assign_to_task(new_task_id)
 
     {:noreply, assign(socket, team: team)}
   end
@@ -68,6 +53,33 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
     case task_id do
       nil -> nil
       _ -> String.to_integer(task_id)
+    end
+  end
+
+  defp unassign_from_task(%{team: team, member: member}, task_id) do
+    if task_id != nil do
+      assignment =
+        Enum.find(team.assignments, fn a ->
+          a.member.user.id == member.user.id && a.task.id == task_id
+        end)
+
+      {:ok, team} = EctoRepository.unassign_member_from_task(team, assignment)
+      %{team: team, member: member}
+    else
+      %{team: team, member: member}
+    end
+  end
+
+  defp assign_to_task(%{team: team, member: member}, task_id) do
+    if task_id != nil do
+      task = Enum.find(team.tasks, fn task -> task.id == task_id end)
+
+      {:ok, team} =
+        EctoRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
+
+      %{team: team, member: member}
+    else
+      %{team: team, member: member}
     end
   end
 end
