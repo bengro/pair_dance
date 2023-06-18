@@ -35,34 +35,34 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
 
   @impl true
   def handle_event("reposition", params, socket) do
-    user_id = params["userId"]
-
-    op =
-      case params["to"]["task_id"] do
-        nil -> :unassign
-        _ -> :assign
-      end
-
-    task_id = String.to_integer(params["to"]["task_id"] || params["taskId"])
-
+    IO.puts("reposition params")
+    IO.inspect(params)
     team = socket.assigns.team
+    user_id = params["userId"]
     member = Enum.find(team.members, fn member -> member.user.id == user_id end)
-    task = Enum.find(team.tasks, fn task -> task.id == task_id end)
+    old_task_id = sanitise_task_id(params["oldTaskId"])
+    new_task_id = sanitise_task_id(params["newTaskId"])
 
     {:ok, updated_team} =
-      case op do
-        :unassign ->
-          assignment =
-            Enum.find(team.assignments, fn a ->
-              a.member.user.id == user_id && a.task.id == task.id
-            end)
+      if old_task_id != nil do
+        assignment =
+          Enum.find(team.assignments, fn a ->
+            a.member.user.id == user_id && a.task.id == old_task_id
+          end)
 
-          EctoRepository.unassign_member_from_task(team, assignment)
-
-        :assign ->
-          EctoRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
+        EctoRepository.unassign_member_from_task(team, assignment)
+      else
+        task = Enum.find(team.tasks, fn task -> task.id == new_task_id end)
+        EctoRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
       end
 
     {:noreply, assign(socket, team: updated_team)}
+  end
+
+  defp sanitise_task_id(task_id) do
+    case task_id do
+      nil -> nil
+      _ -> String.to_integer(task_id)
+    end
   end
 end

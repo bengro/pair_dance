@@ -80,10 +80,8 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     [task | _] = team.tasks
 
     payload = %{
-      "new" => 0,
-      "old" => 0,
-      "to" => %{"task_id" => "#{task.id}"},
-      "userId" => user.id
+      "userId" => user.id,
+      "newTaskId" => "#{task.id}"
     }
 
     view
@@ -110,10 +108,8 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     |> render_hook(
       :reposition,
       %{
-        "new" => 0,
-        "old" => 0,
-        "to" => %{"task_id" => "#{task.id}"},
-        "userId" => user.id
+        "userId" => user.id,
+        "newTaskId" => "#{task.id}"
       }
     )
 
@@ -122,11 +118,8 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     |> render_hook(
       :reposition,
       %{
-        "old" => 0,
-        "new" => 1,
-        "to" => %{},
-        "taskId" => "#{task.id}",
-        "userId" => user.id
+        "userId" => user.id,
+        "oldTaskId" => "#{task.id}"
       }
     )
 

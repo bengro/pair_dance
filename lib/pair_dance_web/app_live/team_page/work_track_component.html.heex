@@ -3,13 +3,12 @@
     <.header>
       <%= @task.name %>
     </.header>
-    <div id={"#{@id}-assignments"} phx-hook="Sortable" data-task_id={@id}>
+    <div id={"#{@id}-assignments"} phx-hook="Sortable" data-task-id={@id}>
       <div
         :for={member <- @task.assignees}
         id={"#{@id}-#{member.user.id}"}
         class=""
         data-user-id={member.user.id}
-        data-task-id={@task.id}
       >
         <div class="flex">
           <div class="flex-auto block text-sm leading-6 text-zinc-900">

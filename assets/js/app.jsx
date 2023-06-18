@@ -16,7 +16,8 @@ let csrfToken = document
 let Hooks = {};
 Hooks.Sortable = {
   mounted() {
-    console.log("creating new sortable", this.el);
+    console.log("creating sortable from", this.el.dataset);
+    const oldTaskId = this.el.dataset.taskId;
     new Sortable(this.el, {
       group: "tasks",
       animation: 150,
@@ -24,11 +25,10 @@ Hooks.Sortable = {
       ghostClass: "drag-ghost",
       forceFallback: true,
       onEnd: (e) => {
-        let params = {
-          old: e.oldIndex,
-          new: e.newIndex,
-          to: e.to.dataset,
-          ...e.item.dataset,
+        const params = {
+          userId: e.item.dataset.userId,
+          oldTaskId,
+          newTaskId: e.to.dataset.taskId,
         };
         this.pushEventTo("#pairing-table", "reposition", params);
       },
