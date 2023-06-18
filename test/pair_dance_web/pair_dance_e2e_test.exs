@@ -12,7 +12,7 @@ defmodule PairDance.E2E.Tests do
     end)
   end
 
-  feature "onboarding journey", %{session: session} do
+  feature "on-boarding journey", %{session: session} do
     Application.put_env(:wallaby, :base_url, PairDanceWeb.Endpoint.url())
 
     session
