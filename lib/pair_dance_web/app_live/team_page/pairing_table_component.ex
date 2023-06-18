@@ -34,7 +34,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
   end
 
   @impl true
-  def handle_event("reposition", params, socket) do
+  def handle_event("reassign", params, socket) do
     team = socket.assigns.team
     user_id = params["userId"]
     member = Enum.find(team.members, fn member -> member.user.id == user_id end)

@@ -30,7 +30,7 @@ Hooks.Sortable = {
           oldTaskId,
           newTaskId: e.to.dataset.taskId,
         };
-        this.pushEventTo("#pairing-table", "reposition", params);
+        this.pushEventTo("#pairing-table", "reassign", params);
       },
     });
   },

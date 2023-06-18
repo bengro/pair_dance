@@ -86,7 +86,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
 
     view
     |> element("#available-members")
-    |> render_hook(:reposition, payload)
+    |> render_hook(:reassign, payload)
 
     {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
 
@@ -106,7 +106,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     view
     |> element("#available-members")
     |> render_hook(
-      :reposition,
+      :reassign,
       %{
         "userId" => user.id,
         "newTaskId" => "#{task.id}"
@@ -116,7 +116,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     view
     |> element("#available-members")
     |> render_hook(
-      :reposition,
+      :reassign,
       %{
         "userId" => user.id,
         "oldTaskId" => "#{task.id}"
@@ -140,7 +140,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     view
     |> element("#available-members")
     |> render_hook(
-      :reposition,
+      :reassign,
       %{
         "userId" => user.id,
         "newTaskId" => "#{first_task.id}"
@@ -150,7 +150,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     view
     |> element("#available-members")
     |> render_hook(
-      :reposition,
+      :reassign,
       %{
         "userId" => user.id,
         "oldTaskId" => "#{first_task.id}",
