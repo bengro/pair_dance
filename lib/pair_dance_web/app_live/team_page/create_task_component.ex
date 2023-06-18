@@ -9,7 +9,8 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
     <div>
       <.simple_form
         :let={f}
-        for={:task}
+        for={%{}}
+        as={:task}
         id="new-task-form"
         phx-target={@myself}
         phx-submit="save"

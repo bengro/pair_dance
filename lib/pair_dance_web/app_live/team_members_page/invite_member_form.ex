@@ -9,7 +9,8 @@ defmodule PairDanceWeb.AppLive.TeamMembersPage.AddMemberForm do
     <div>
       <.simple_form
         :let={f}
-        for={:user}
+        for={%{}}
+        as={:user}
         id="add-member-form"
         phx-target={@myself}
         phx-submit="save"

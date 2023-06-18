@@ -9,7 +9,8 @@ defmodule PairDanceWeb.AppLive.AccountPage.CreateTeamComponent do
     <div>
       <.simple_form
         :let={f}
-        for={:team}
+        for={%{}}
+        as={:team}
         id="new-team-form"
         phx-target={@myself}
         phx-submit="save"
