@@ -129,14 +129,22 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
       assert updated_team == TeamRepository.find(team.id)
     end
 
-    test "delete a task" do
+    test "delete a task with assignments" do
       {:ok, team} = TeamRepository.create("comet")
+      {:ok, user} = UserRepository.create_from_email("bob@me.com")
+      {:ok, %Team{members: [member]}} =
+        TeamRepository.add_member(team, %Member{user: user, role: :admin})
 
       {:ok, %Team{tasks: [task]}} = TeamRepository.add_task(team, "login with google")
+
+      {:ok, _} =
+        TeamRepository.assign_member_to_task(team, %Assignment{member: member, task: task})
+
       TeamRepository.delete_task(team, task)
       team = TeamRepository.find(team.id)
 
       assert team.tasks == []
+      assert team.assignments == []
     end
   end
 
