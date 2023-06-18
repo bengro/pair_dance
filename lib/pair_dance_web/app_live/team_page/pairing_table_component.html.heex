@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-2" data-qa="pairing-table">
-  <section>
+  <section class="flex flex-row gap-2">
     <%= for member <- @team.members do %>
       <.live_component
         id={"#{member.user.id}-unassigned"}

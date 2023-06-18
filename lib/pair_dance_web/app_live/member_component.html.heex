@@ -1,5 +1,5 @@
-<div data-qa="member-avatar">
-  <img alt="" src={@member.user.avatar} referrerpolicy="no-referrer" />
-  <span><%= @member.user.name %></span>
-  <span><%= @member.user.email %></span>
+<div data-qa="member-avatar" class="w-[96px] h-[96px] relative">
+  <img alt="" src={@member.user.avatar || "/images/avatar.jpeg"} referrerpolicy="no-referrer" />
+  <span class="absolute bottom-0 left-0 right-0"><%= @member.user.name || @member.user.email %></span>
 </div>
+

@@ -20,6 +20,7 @@ defmodule PairDanceWeb.AppLive.MemberComponentTest do
 
     assert html =~ "Jane Doe"
     assert html =~ "https://avatar.com"
+    refute html =~ "jane@doe.com"
   end
 
   test "renders just the email when name and avatar not available" do
