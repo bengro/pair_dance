@@ -1,6 +1,7 @@
 defmodule PairDance.Infrastructure.Team.AssignmentEntity do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.SoftDelete.Schema
 
   alias PairDance.Infrastructure.TeamEntity
   alias PairDance.Infrastructure.Team.MemberEntity
@@ -13,6 +14,7 @@ defmodule PairDance.Infrastructure.Team.AssignmentEntity do
     belongs_to :member, MemberEntity, primary_key: true
 
     timestamps()
+    soft_delete_schema()
   end
 
   @doc false

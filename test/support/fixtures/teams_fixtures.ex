@@ -1,6 +1,7 @@
 defmodule PairDance.TeamsFixtures do
   alias PairDance.Domain.User
   alias PairDance.Domain.Team
+  alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
 
@@ -18,6 +19,41 @@ defmodule PairDance.TeamsFixtures do
 
   def team_fixture(name \\ "some name") do
     {:ok, team} = TeamRepository.create(name)
+    team
+  end
+
+  def create_team(%{member_names: member_names, task_names: task_names}) do
+    {:ok, team} = TeamRepository.create("Team Comet")
+
+    Enum.each(member_names, fn name ->
+      email = name <> "@test.com"
+      {:ok, user} = UserRepository.create_from_email(email)
+      UserRepository.update(user, %{name: name})
+      member_fixture(team, email)
+    end)
+
+    Enum.each(task_names, fn task_name -> TeamRepository.add_task(team, task_name) end)
+
+    TeamRepository.find(team.id)
+  end
+
+  def create_assignment(team, task_name, member_name) do
+    task = Enum.find(team.tasks, fn task -> task.name == task_name end)
+    member = Enum.find(team.members, fn member -> member.user.name == member_name end)
+
+    {:ok, team} =
+      TeamRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
+
+    team
+  end
+
+  def delete_assignment(team, task_name, member_name) do
+    assignment =
+      Enum.find(team.assignments, fn assignment ->
+        assignment.task.name == task_name && assignment.member.user.name == member_name
+      end)
+
+    {:ok, team} = TeamRepository.unassign_member_from_task(team, assignment)
     team
   end
 

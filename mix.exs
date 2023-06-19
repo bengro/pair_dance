@@ -37,6 +37,7 @@ defmodule PairDance.MixProject do
       {:phoenix_ecto, "~> 4.4.2"},
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.10.1"},
+      {:ecto_soft_delete, "~> 2.0.2"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.3.1"},
       {:phoenix_live_reload, "~> 1.4.1", only: :dev},

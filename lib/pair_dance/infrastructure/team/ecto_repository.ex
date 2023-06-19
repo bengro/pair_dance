@@ -167,7 +167,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
     user_id = assignment.member.user.id
     task_id = assignment.task.id
 
-    Repo.delete_all(
+    Repo.soft_delete_all(
       from to in AssignmentEntity,
         join: m in MemberEntity,
         on: to.member_id == m.id,

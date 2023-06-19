@@ -132,6 +132,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
     test "delete a task with assignments" do
       {:ok, team} = TeamRepository.create("comet")
       {:ok, user} = UserRepository.create_from_email("bob@me.com")
+
       {:ok, %Team{members: [member]}} =
         TeamRepository.add_member(team, %Member{user: user, role: :admin})
 
