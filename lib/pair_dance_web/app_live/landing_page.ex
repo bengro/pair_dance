@@ -2,6 +2,7 @@ defmodule PairDanceWeb.AppLive.LandingPage do
   use PairDanceWeb, :live_view
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
+  alias PairDance.Domain.WorkLog
 
   @impl true
   def mount(_params, session, socket) do
@@ -15,9 +16,18 @@ defmodule PairDanceWeb.AppLive.LandingPage do
           |> assign(:page_title, "Welcome")
 
         _ ->
+          all_teams = TeamRepository.find_by_member(user.id)
+
+          all_activities =
+            Enum.map(all_teams, fn team ->
+              task_history = WorkLog.Service.get_task_history(user, team)
+              %{team: team, task_history: task_history}
+            end)
+
           socket
           |> assign(:current_user, user)
-          |> assign(:my_teams, TeamRepository.find_by_member(user.id))
+          |> assign(:my_teams, all_teams)
+          |> assign(:all_activities, all_activities)
           |> assign(:page_title, "Welcome")
       end
 

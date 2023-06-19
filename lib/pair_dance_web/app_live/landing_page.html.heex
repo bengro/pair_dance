@@ -13,6 +13,15 @@
       </li>
     <% end %>
   </ul>
+
+  <h2>Activity</h2>
+  <p>You recently paired on the following tasks:</p>
+  <%= for team_activity <- @all_activities do %>
+    <h3><%= team_activity.team.name %></h3>
+    <%= for task_activity <- team_activity.task_history do %>
+      <%= task_activity.name %>
+    <% end %>
+  <% end %>
 <% else %>
   <p>
     You're not logged in. Check out the amazing pair.dance features and

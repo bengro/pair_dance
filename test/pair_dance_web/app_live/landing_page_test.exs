@@ -5,11 +5,16 @@ defmodule PairDanceWeb.AppLive.LandingPageTest do
   import PairDance.TeamsFixtures
 
   setup %{conn: conn} do
-    user = user_fixture("bob@pair.dance")
-    team = team_fixture("cool team")
-    member_fixture(team, "bob@pair.dance")
+    team =
+      create_team(%{
+        member_names: ["bob"],
+        task_names: ["refactor fedramp", "closed beta"]
+      })
+      |> create_assignment("refactor fedramp", "bob")
 
-    %{user: user, conn: conn}
+    user = Enum.at(team.members, 0).user
+
+    %{user: user, conn: conn, team: team}
   end
 
   test "shows feature list when not logged in", %{conn: conn} do
@@ -18,12 +23,24 @@ defmodule PairDanceWeb.AppLive.LandingPageTest do
     assert html =~ "Check out the amazing pair.dance features"
   end
 
-  test "shows teams I belong to when logged in", %{conn: conn, user: user} do
-    {:ok, _, html} =
-      conn
-      |> impersonate(user)
-      |> live(~p"/")
+  describe "when logged in" do
+    test "shows teams I belong to when logged in", %{conn: conn, user: user, team: team} do
+      {:ok, _, html} =
+        conn
+        |> impersonate(user)
+        |> live(~p"/")
 
-    assert html =~ "cool team"
+      assert html =~ team.name
+    end
+
+    test "shows recent tasks", %{conn: conn, user: user, team: team} do
+      {:ok, _, html} =
+        conn
+        |> impersonate(user)
+        |> live(~p"/")
+
+      assert html =~ "Activity"
+      assert html =~ Enum.at(team.tasks, 0).name
+    end
   end
 end
