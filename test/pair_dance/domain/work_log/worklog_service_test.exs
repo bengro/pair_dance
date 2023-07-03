@@ -1,6 +1,8 @@
 defmodule PairDance.Domain.WorkLog.ServiceTest do
   use PairDance.DataCase
 
+  alias PairDance.Domain.WorkLog.Service
+
   import PairDance.TeamsFixtures
 
   test "return assignments by user" do
@@ -13,7 +15,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
       |> create_assignment("closed beta", "ana")
 
     task_names =
-      PairDance.Domain.WorkLog.Service.get_task_history(Enum.at(team.members, 0).user, team)
+      Service.get_task_history(Enum.at(team.members, 0).user, team)
       |> Enum.map(fn assignment -> assignment.task.name end)
 
     assert ["refactor fedramp", "closed beta"] = task_names
@@ -29,7 +31,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
       |> delete_assignment("fedramp", "ana")
 
     assignments =
-      PairDance.Domain.WorkLog.Service.get_task_history(Enum.at(team.members, 0).user, team)
+      Service.get_task_history(Enum.at(team.members, 0).user, team)
 
     assert length(assignments) == 1
   end
