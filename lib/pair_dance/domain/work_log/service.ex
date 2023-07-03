@@ -12,12 +12,12 @@ defmodule PairDance.Domain.WorkLog.Service do
     Repo.all(
       from m in MemberEntity,
         join: a in AssignmentEntity,
-        join: t in TaskEntity,
         on: m.id == a.member_id,
+        join: t in TaskEntity,
         on: t.id == a.task_id,
         where: m.user_id == ^user_id,
-        select: t
+        preload: [a: :member]
     )
-    |> Enum.map(&to_task/1)
+    |> Enum.map(fn row -> IO.inspect(row) end)
   end
 end

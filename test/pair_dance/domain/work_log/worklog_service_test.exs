@@ -15,7 +15,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
 
     task_names =
       PairDance.Domain.WorkLog.Service.get_task_history(Enum.at(team.members, 0).user, team)
-      |> Enum.map(fn task -> task.name end)
+      |> Enum.map(fn assignment -> assignment.task.name end)
 
     assert ["refactor fedramp", "closed beta"] = task_names
   end
