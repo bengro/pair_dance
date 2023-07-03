@@ -10,7 +10,6 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         task_names: ["refactor fedramp", "closed beta"]
       })
       |> create_assignment("refactor fedramp", "ana")
-      |> delete_assignment("refactor fedramp", "ana")
       |> create_assignment("closed beta", "ana")
 
     task_names =
