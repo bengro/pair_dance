@@ -9,9 +9,7 @@ defmodule PairDance.Domain.WorkLog.Service do
 
   def get_task_history(user, team) do
     user_id = user.id
-
-    Repo.all(
-      from a in AssignmentEntity,
+    query = from a in AssignmentEntity,
         join: m in MemberEntity,
         on: m.id == a.member_id,
         join: u in UserEntity,
@@ -20,7 +18,7 @@ defmodule PairDance.Domain.WorkLog.Service do
         on: t.id == a.task_id,
         where: m.user_id == ^user_id,
         preload: [member: {m, [user: u]}, task: t]
-    )
-    |> Enum.map(&to_assignment/1)
+
+    Repo.all(query, with_deleted: true) |> Enum.map(&to_assignment/1)
   end
 end
