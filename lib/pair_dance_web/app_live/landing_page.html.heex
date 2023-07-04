@@ -20,7 +20,7 @@
     <h3><%= team_activity.team.name %></h3>
     <ul>
       <%= for task_activity <- team_activity.task_history do %>
-        <li><%= task_activity.name %></li>
+        <li><%= task_activity.task.name %></li>
       <% end %>
     </ul>
   <% end %>
