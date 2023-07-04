@@ -29,6 +29,11 @@ defmodule PairDance.Infrastructure.EntityConverters do
   end
 
   def to_assignment(entity) do
-    %Assignment{member: to_team_member(entity.member), task: to_task(entity.task)}
+    %Assignment{
+      member: to_team_member(entity.member),
+      task: to_task(entity.task),
+      assigned_at: entity.inserted_at,
+      unassigned_at: entity.deleted_at
+    }
   end
 end

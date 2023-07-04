@@ -1,7 +1,6 @@
 defmodule PairDance.TeamsFixtures do
   alias PairDance.Domain.User
   alias PairDance.Domain.Team
-  alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
 
@@ -41,8 +40,7 @@ defmodule PairDance.TeamsFixtures do
     task = Enum.find(team.tasks, fn task -> task.name == task_name end)
     member = Enum.find(team.members, fn member -> member.user.name == member_name end)
 
-    {:ok, team} =
-      TeamRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
+    {:ok, team} = TeamRepository.assign_member_to_task(team, member, task)
 
     team
   end
@@ -53,7 +51,7 @@ defmodule PairDance.TeamsFixtures do
         assignment.task.name == task_name && assignment.member.user.name == member_name
       end)
 
-    {:ok, team} = TeamRepository.unassign_member_from_task(team, assignment)
+    {:ok, team} = TeamRepository.unassign_member_from_task(team, assignment.member, assignment.task)
     team
   end
 

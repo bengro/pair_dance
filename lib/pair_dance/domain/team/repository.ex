@@ -1,5 +1,4 @@
 defmodule PairDance.Domain.Team.Repository do
-  alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
@@ -29,7 +28,7 @@ defmodule PairDance.Domain.Team.Repository do
 
   @callback delete_task(Team.t(), Task.t()) :: {:ok, Team.t()}
 
-  @callback assign_member_to_task(Team.t(), Assignment.t()) :: {:ok, Team.t()}
+  @callback assign_member_to_task(Team.t(), Member.t(), Task.t()) :: {:ok, Team.t()}
 
-  @callback unassign_member_from_task(Team.t(), Assignment.t()) :: {:ok, Team.t()}
+  @callback unassign_member_from_task(Team.t(), Member.t(), Task.t()) :: {:ok, Team.t()}
 end

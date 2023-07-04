@@ -148,24 +148,24 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   end
 
   @impl Team.Repository
-  def assign_member_to_task(team, assignment) do
+  def assign_member_to_task(team, member, task) do
     team_id = team.id
-    user_id = assignment.member.user.id
+    user_id = member.user.id
 
     %MemberEntity{id: member_id} =
       Repo.one(from m in MemberEntity, where: m.team_id == ^team_id and m.user_id == ^user_id)
 
-    %AssignmentEntity{team_id: team.id, member_id: member_id, task_id: assignment.task.id}
+    %AssignmentEntity{team_id: team.id, member_id: member_id, task_id: task.id}
     |> Repo.insert()
 
     {:ok, find(team.id)}
   end
 
   @impl Team.Repository
-  def unassign_member_from_task(team, assignment) do
+  def unassign_member_from_task(team, member, task) do
     team_id = team.id
-    user_id = assignment.member.user.id
-    task_id = assignment.task.id
+    user_id = member.user.id
+    task_id = task.id
 
     Repo.soft_delete_all(
       from to in AssignmentEntity,

@@ -32,7 +32,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
       name: "my team",
       slug: "my-team",
       members: [member],
-      assignments: [%Assignment{task: task1, member: member}],
+      assignments: [%Assignment{task: task1, member: member, assigned_at: DateTime.utc_now(), unassigned_at: nil}],
       tasks: [task1, task2]
     }
 

@@ -1,7 +1,6 @@
 defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
   use PairDanceWeb, :live_component
 
-  alias PairDance.Domain.Team.Assignment
   alias PairDance.Infrastructure.Team.EctoRepository
 
   @impl true
@@ -58,12 +57,8 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
 
   defp unassign_from_task(%{team: team, member: member}, task_id) do
     if task_id != nil do
-      assignment =
-        Enum.find(team.assignments, fn a ->
-          a.member.user.id == member.user.id && a.task.id == task_id
-        end)
-
-      {:ok, team} = EctoRepository.unassign_member_from_task(team, assignment)
+      task = Enum.find(team.tasks, fn task -> task.id == task_id end)
+      {:ok, team} = EctoRepository.unassign_member_from_task(team, member, task)
       %{team: team, member: member}
     else
       %{team: team, member: member}
@@ -73,10 +68,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
   defp assign_to_task(%{team: team, member: member}, task_id) do
     if task_id != nil do
       task = Enum.find(team.tasks, fn task -> task.id == task_id end)
-
-      {:ok, team} =
-        EctoRepository.assign_member_to_task(team, %Assignment{task: task, member: member})
-
+      {:ok, team} = EctoRepository.assign_member_to_task(team, member, task)
       %{team: team, member: member}
     else
       %{team: team, member: member}
