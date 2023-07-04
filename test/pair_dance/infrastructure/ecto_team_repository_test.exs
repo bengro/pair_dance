@@ -138,8 +138,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
 
       {:ok, %Team{tasks: [task]}} = TeamRepository.add_task(team, "login with google")
 
-      {:ok, _} =
-        TeamRepository.assign_member_to_task(team, member, task)
+      {:ok, _} = TeamRepository.assign_member_to_task(team, member, task)
 
       TeamRepository.delete_task(team, task)
       team = TeamRepository.find(team.id)
@@ -176,8 +175,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
 
       TeamRepository.assign_member_to_task(team, member, task)
 
-      {:ok, updated_team} =
-        TeamRepository.unassign_member_from_task(team, member, task)
+      {:ok, updated_team} = TeamRepository.unassign_member_from_task(team, member, task)
 
       assert updated_team.assignments == []
       assert updated_team == TeamRepository.find(team.id)

@@ -20,7 +20,9 @@
     <h3 class="font-bold"><%= team_activity.team.name %></h3>
     <ul>
       <%= for task_activity <- team_activity.task_history do %>
-        <li><%= task_activity.task.name %> <%= task_activity.assigned_at %> -> <%= task_activity.unassigned_at %></li>
+        <li>
+          <%= task_activity.task.name %> <%= task_activity.assigned_at %> -> <%= task_activity.unassigned_at %>
+        </li>
       <% end %>
     </ul>
   <% end %>

@@ -12,7 +12,9 @@ defmodule PairDance.Domain.WorkLog.Service do
     member = Enum.find(team.members, fn m -> m.user.id == user.id end)
     user_id = user.id
     team_id = team.id
-    query = from a in AssignmentEntity,
+
+    query =
+      from a in AssignmentEntity,
         join: m in MemberEntity,
         on: m.id == a.member_id,
         join: u in UserEntity,

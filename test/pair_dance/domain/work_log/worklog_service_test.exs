@@ -30,16 +30,17 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
       |> create_assignment("fedramp", "ana")
       |> delete_assignment("fedramp", "ana")
 
-    assignments =
-      Service.get_task_history(Enum.at(team.members, 0).user, team)
+    assignments = Service.get_task_history(Enum.at(team.members, 0).user, team)
 
     assert length(assignments) == 1
   end
 
   test "scopes assignments to the team provided" do
-    _team1 = create_team(%{ member_names: ["ana"], task_names: ["task"] })
+    _team1 =
+      create_team(%{member_names: ["ana"], task_names: ["task"]})
       |> create_assignment("task", "ana")
-    team2 = create_team(%{ member_names: ["ana"], task_names: [] })
+
+    team2 = create_team(%{member_names: ["ana"], task_names: []})
 
     assignments = Service.get_task_history(Enum.at(team2.members, 0).user, team2)
 
@@ -56,8 +57,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
       |> delete_assignment("fedramp", "ana")
       |> create_assignment("fedramp", "ana")
 
-    assignments =
-      Service.get_task_history(Enum.at(team.members, 0).user, team)
+    assignments = Service.get_task_history(Enum.at(team.members, 0).user, team)
 
     assert length(assignments) == 2
   end

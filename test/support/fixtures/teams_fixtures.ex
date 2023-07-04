@@ -51,7 +51,9 @@ defmodule PairDance.TeamsFixtures do
         assignment.task.name == task_name && assignment.member.user.name == member_name
       end)
 
-    {:ok, team} = TeamRepository.unassign_member_from_task(team, assignment.member, assignment.task)
+    {:ok, team} =
+      TeamRepository.unassign_member_from_task(team, assignment.member, assignment.task)
+
     team
   end
 
