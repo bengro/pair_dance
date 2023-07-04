@@ -27,7 +27,7 @@ defmodule PairDance.TeamsFixtures do
 
     Enum.each(member_names, fn name ->
       email = name <> "@test.com"
-      {:ok, user} = UserRepository.create_from_email(email)
+      user = UserRepository.find_by_email_or_create(email)
       UserRepository.update(user, %{name: name})
       member_fixture(team, email)
     end)

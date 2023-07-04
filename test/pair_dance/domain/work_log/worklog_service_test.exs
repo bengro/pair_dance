@@ -5,7 +5,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
 
   import PairDance.TeamsFixtures
 
-  test "return assignments by user" do
+  test "returns assignments by user" do
     team =
       create_team(%{
         member_names: ["ana"],
@@ -21,7 +21,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
     assert ["refactor fedramp", "closed beta"] = task_names
   end
 
-  test "return past assignments" do
+  test "returns past assignments" do
     team =
       create_team(%{
         member_names: ["ana"],
@@ -34,5 +34,15 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
       Service.get_task_history(Enum.at(team.members, 0).user, team)
 
     assert length(assignments) == 1
+  end
+
+  test "scopes assignments to the team provided" do
+    _team1 = create_team(%{ member_names: ["ana"], task_names: ["task"] })
+      |> create_assignment("task", "ana")
+    team2 = create_team(%{ member_names: ["ana"], task_names: [] })
+
+    assignments = Service.get_task_history(Enum.at(team2.members, 0).user, team2)
+
+    assert length(assignments) == 0
   end
 end
