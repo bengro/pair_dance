@@ -45,4 +45,20 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
 
     assert length(assignments) == 0
   end
+
+  test "returns a task multiple times when reassigned" do
+    team =
+      create_team(%{
+        member_names: ["ana"],
+        task_names: ["fedramp"]
+      })
+      |> create_assignment("fedramp", "ana")
+      |> delete_assignment("fedramp", "ana")
+      |> create_assignment("fedramp", "ana")
+
+    assignments =
+      Service.get_task_history(Enum.at(team.members, 0).user, team)
+
+    assert length(assignments) == 2
+  end
 end
