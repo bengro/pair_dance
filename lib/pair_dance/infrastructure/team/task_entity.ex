@@ -1,12 +1,14 @@
 defmodule PairDance.Infrastructure.Team.TaskEntity do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.SoftDelete.Schema
 
   schema "tasks" do
     field :name, :string
     belongs_to(:team, PairDance.Infrastructure.TeamEntity)
 
     timestamps()
+    soft_delete_schema()
   end
 
   @doc false

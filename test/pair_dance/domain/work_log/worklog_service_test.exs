@@ -2,6 +2,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.WorkLog.Service
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   import PairDance.TeamsFixtures
 
@@ -61,6 +62,20 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
       assignments = Service.get_assignments_by_user(Enum.at(team.members, 0).user, team)
 
       assert length(assignments) == 2
+    end
+
+    test "returns assignments after tasks are deleted" do
+      team =
+        create_team(%{
+          member_names: ["ana"],
+          task_names: ["fedramp"]
+        })
+        |> create_assignment("fedramp", "ana")
+
+      TeamRepository.delete_task(team, Enum.at(team.tasks, 0))
+      assignments = Service.get_assignments_by_user(Enum.at(team.members, 0).user, team)
+
+      assert length(assignments) == 1
     end
   end
 
