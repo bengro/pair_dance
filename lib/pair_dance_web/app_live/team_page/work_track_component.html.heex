@@ -1,8 +1,8 @@
-<div class="bg-white py-4 rounded-lg">
-  <div class="space-y-5 mx-auto max-w-7xl px-4 space-y-4">
-    <.header>
+<div class="bg-white py-4 rounded-lg grow">
+  <div class="space-y-5 mx-auto max-w-7xl px-4 space-y-4 flex flex-row gap-4">
+    <div class="w-40 text-center flex flex-col justify-center bg-gray-100">
       <%= @task.name %>
-    </.header>
+    </div>
     <div
       id={"#{@id}-assignments"}
       phx-hook="Reassign"
