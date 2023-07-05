@@ -67,6 +67,19 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
     assert user.id == user_id
   end
 
+  test "list teams of a member when there are deleted tasks" do
+    team =
+      create_team(%{member_names: ["ana"], task_names: ["my task"]})
+      |> create_assignment("my task", "ana")
+
+    [task] = team.tasks
+
+    TeamRepository.delete_task(team, task)
+    teams = TeamRepository.find_by_member(Enum.at(team.members, 0).user.id)
+
+    assert length(teams) == 1
+  end
+
   test "update team name" do
     {:ok, team} = TeamRepository.create("original name")
 

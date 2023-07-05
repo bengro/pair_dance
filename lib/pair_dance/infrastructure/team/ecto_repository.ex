@@ -38,7 +38,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
           [assignments: [:task, :member, member: :user]]
         ]
 
-    entity = Repo.one(query, with_deleted: true)
+    entity = Repo.one(query)
 
     if entity == nil do
       nil
@@ -143,6 +143,16 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
 
   @impl Team.Repository
   def delete_task(team, task) do
+    team_id = team.id
+    task_id = task.id
+
+    Repo.soft_delete_all(
+      from to in AssignmentEntity,
+        join: m in MemberEntity,
+        on: to.member_id == m.id,
+        where: to.team_id == ^team_id and to.task_id == ^task_id
+    )
+
     {:ok, _entity} = Repo.soft_delete(%TaskEntity{id: task.id})
     {:ok, find(team.id)}
   end
