@@ -20,7 +20,7 @@ defmodule PairDanceWeb.AppLive.LandingPage do
 
           all_activities =
             Enum.map(all_teams, fn team ->
-              task_history = WorkLog.Service.get_task_history(user, team)
+              task_history = WorkLog.Service.get_assignments_by_user(user, team)
               %{team: team, task_history: task_history}
             end)
 
