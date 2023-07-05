@@ -16,9 +16,9 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
         phx-submit="save"
         phx-change="validate"
       >
-        <.input field={{f, :name}} type="text" label="name" />
+        <.input field={{f, :name}} type="text" label="Task name" />
         <:actions>
-          <.button phx-disable-with="Saving...">Save Task</.button>
+          <.button phx-disable-with="Saving...">Add</.button>
         </:actions>
       </.simple_form>
     </div>

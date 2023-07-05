@@ -16,7 +16,7 @@ defmodule PairDanceWeb.AppLive.TeamMembersPage.AddMemberForm do
         phx-submit="save"
         phx-change="validate"
       >
-        <.input field={{f, :email}} type="email" label="email" />
+        <.input field={{f, :email}} type="email" label="Team Member E-Mail" />
         <:actions>
           <.button phx-disable-with="Adding...">Add</.button>
         </:actions>
