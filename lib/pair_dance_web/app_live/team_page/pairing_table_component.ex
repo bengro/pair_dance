@@ -17,6 +17,11 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
         !assigned and member.available == true
       end)
 
+    unavailable_members =
+      Enum.filter(team.members, fn member ->
+        member.available == false
+      end)
+
     current_tasks =
       Enum.map(team.tasks, fn task ->
         %{
@@ -29,7 +34,12 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
       end)
 
     {:ok,
-     assign(socket, available_members: available_members, current_tasks: current_tasks, team: team)}
+     assign(socket,
+       available_members: available_members,
+       unavailable_members: unavailable_members,
+       current_tasks: current_tasks,
+       team: team
+     )}
   end
 
   @impl true

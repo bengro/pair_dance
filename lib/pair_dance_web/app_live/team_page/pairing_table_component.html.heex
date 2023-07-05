@@ -1,4 +1,5 @@
 <div class="flex flex-col gap-2" data-qa="pairing-table" id="pairing-table">
+  <h2>Available to pair!</h2>
   <section
     id="available-members"
     data-qa="available-members"
@@ -9,6 +10,23 @@
     <%= for member <- @available_members do %>
       <.live_component
         id={"#{member.user.id}-unassigned"}
+        module={PairDanceWeb.AppLive.MemberComponent}
+        member={member}
+      />
+    <% end %>
+  </section>
+
+  <h2>Not pairing today!</h2>
+  <section
+    id="unavailable-members"
+    data-qa="unavailable-members"
+    phx-hook="Reassign"
+    phx-target={@myself}
+    class="flex flex-row gap-8 bg-rose-50 min-h-[96px]"
+  >
+    <%= for member <- @unavailable_members do %>
+      <.live_component
+        id={"#{member.user.id}-unavailable"}
         module={PairDanceWeb.AppLive.MemberComponent}
         member={member}
       />
