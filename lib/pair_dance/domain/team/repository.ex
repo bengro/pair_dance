@@ -31,4 +31,8 @@ defmodule PairDance.Domain.Team.Repository do
   @callback assign_member_to_task(Team.t(), Member.t(), Task.t()) :: {:ok, Team.t()}
 
   @callback unassign_member_from_task(Team.t(), Member.t(), Task.t()) :: {:ok, Team.t()}
+
+  @callback mark_member_unavailable(Team.t(), Member.t()) :: {:ok, Team.t()}
+
+  @callback mark_member_available(Team.t(), Member.t()) :: {:ok, Team.t()}
 end

@@ -17,7 +17,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
   end
 
   def to_team_member(entity) do
-    %Member{user: to_user(entity.user), role: :admin}
+    %Member{id: entity.id, user: to_user(entity.user), role: :admin, available: entity.available}
   end
 
   def to_task(entity) do

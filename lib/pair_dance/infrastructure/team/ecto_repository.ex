@@ -176,4 +176,22 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
 
     {:ok, find(team.id)}
   end
+
+  @impl Team.Repository
+  def mark_member_unavailable(team, member) do
+    %MemberEntity{id: member.id}
+    |> MemberEntity.changeset(%{user_id: member.user.id, team_id: team.id, available: false})
+    |> Repo.update()
+
+    {:ok, find(team.id)}
+  end
+
+  @impl Team.Repository
+  def mark_member_available(team, member) do
+    %MemberEntity{id: member.id}
+    |> MemberEntity.changeset(%{user_id: member.user.id, team_id: team.id, available: true})
+    |> Repo.update()
+
+    {:ok, find(team.id)}
+  end
 end

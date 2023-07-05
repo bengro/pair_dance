@@ -9,6 +9,8 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
 
+  import PairDance.TeamsFixtures
+
   test "create a team" do
     {:ok, team} = TeamRepository.create("comet")
 
@@ -107,7 +109,11 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
 
       {:ok, updated_team} = TeamRepository.add_member(team, %Member{user: user, role: :admin})
 
-      assert updated_team.members == [%Member{user: user, role: :admin}]
+      [member] = updated_team.members
+      assert member.user == user
+      assert member.role == :admin
+      assert member.available == true
+
       assert updated_team == TeamRepository.find(team.id)
     end
   end
@@ -179,6 +185,27 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
 
       assert updated_team.assignments == []
       assert updated_team == TeamRepository.find(team.id)
+    end
+
+    test "mark member unavailable and available" do
+      team =
+        create_team(%{
+          member_names: ["ana"],
+          task_names: []
+        })
+
+      [member] = team.members
+      assert member.available == true
+
+      {:ok, %Team{members: [available_member | _]}} =
+        TeamRepository.mark_member_unavailable(team, Enum.at(team.members, 0))
+
+      assert available_member.available == false
+
+      {:ok, %Team{members: [unavailable_member | _]}} =
+        TeamRepository.mark_member_available(team, Enum.at(team.members, 0))
+
+      assert unavailable_member.available == true
     end
   end
 end
