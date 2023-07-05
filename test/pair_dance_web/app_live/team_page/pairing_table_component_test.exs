@@ -59,15 +59,26 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
     refute document |> Floki.find("[data-qa=available-members]") |> Floki.text() =~ "bob"
   end
 
-  test "renders all unassigned members" do
+  test "renders all available and unassigned members" do
     task = %Task{id: 1, name: "my task"}
-    member = %Member{user: %User{id: 1, email: "bob@gmail.com"}, role: :admin}
+
+    available_member = %Member{
+      user: %User{id: 1, email: "bob@gmail.com"},
+      role: :admin,
+      available: true
+    }
+
+    unavailable_member = %Member{
+      user: %User{id: 2, email: "alice@gmail.com"},
+      role: :admin,
+      available: false
+    }
 
     team = %Team{
       id: "some-id",
       name: "my team",
       slug: "my-team",
-      members: [member],
+      members: [available_member, unavailable_member],
       assignments: [],
       tasks: [task]
     }
@@ -76,5 +87,6 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
     {:ok, document} = Floki.parse_document(html)
 
     assert document |> Floki.find("[data-qa=available-members]") |> Floki.text() =~ "bob"
+    refute document |> Floki.find("[data-qa=available-members]") |> Floki.text() =~ "alice"
   end
 end

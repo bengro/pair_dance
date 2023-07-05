@@ -14,7 +14,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
             assignment.member.user.id == member.user.id
           end)
 
-        !assigned
+        !assigned and member.available == true
       end)
 
     current_tasks =
