@@ -2,7 +2,6 @@ defmodule PairDance.Domain.Team.TeamServiceTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.Team
-  alias PairDance.Domain.Team.Member
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
 
