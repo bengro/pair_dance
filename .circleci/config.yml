@@ -39,14 +39,4 @@ workflows:
       not: << pipeline.parameters.run-schedule >>
     jobs:
       - build_phoenix
-  #      - deploy:
-  #          requires:
-  #            - build_phoenix
-  #          filters:
-  #            branches:
-  #              only:
-  #                - main
-  keep_alive:
-    when: << pipeline.parameters.run-schedule >>
-    jobs:
-      - keep_alive
+      - build_image
