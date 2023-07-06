@@ -21,6 +21,15 @@ resource "google_project_iam_binding" "push_images" {
   ]
 }
 
-output "registry_service_account" {
+output "registry_service_account_private_key" {
+  sensitive = true
+  value     = google_service_account_key.container_registry_key.private_key
+}
+
+output "registry_service_account_public_key" {
+  value = google_service_account_key.container_registry_key.public_key
+}
+
+output "registry_service_account_id" {
   value = google_service_account_key.container_registry_key.id
 }
