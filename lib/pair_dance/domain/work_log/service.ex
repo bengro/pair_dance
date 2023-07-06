@@ -4,7 +4,6 @@ defmodule PairDance.Domain.WorkLog.Service do
   alias PairDance.Infrastructure.Team.TaskEntity
   alias PairDance.Infrastructure.User.Entity, as: UserEntity
   alias PairDance.Infrastructure.Repo
-  alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team.Member
   import Ecto.Query, warn: false
   import PairDance.Infrastructure.EntityConverters
