@@ -15,7 +15,7 @@ resource "google_service_account_key" "container_registry_key" {
 
 resource "google_project_iam_binding" "push_images" {
   project = var.gcp_project_id
-  role    = "roles/artifactregistry.writer"
+  role    = "roles/storage.admin"
   members = [
     "serviceAccount:${google_service_account.container_registry_user.email}"
   ]
