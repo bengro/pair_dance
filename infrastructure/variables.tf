@@ -5,7 +5,3 @@ variable "gcp_project_id" {
 variable "gcp_main_region" {
   default = "europe-west6"
 }
-
-variable "gcp_cloud_run_region" {
-  default = "europe-west1"
-}
