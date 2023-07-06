@@ -27,23 +27,39 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
 
   @impl Team.Repository
   def find(id) do
+    tasks_query = from t in TaskEntity, where: t.team_id == ^id
+
+    tasks = Repo.all(tasks_query) |> Enum.map(&to_task/1)
+
+    members_query = from m in MemberEntity, where: m.team_id == ^id, preload: :user
+    members = Repo.all(members_query) |> Enum.map(&to_member/1)
+
+    assignments_query =
+      from a in AssignmentEntity,
+        where: a.team_id == ^id,
+        preload: [:task, :member, [member: :user]]
+
+    assignments =
+      Repo.all(assignments_query)
+      |> Enum.map(fn a -> to_assignment(a, to_member(a.member), to_task(a.task)) end)
+
     query =
       from t in TeamEntity,
-        where: t.id == ^id,
-        preload: [
-          :members,
-          [members: :user],
-          :tasks,
-          :assignments,
-          [assignments: [:task, :member, member: :user]]
-        ]
+        where: t.id == ^id
 
     entity = Repo.one(query)
 
     if entity == nil do
       nil
     else
-      to_team(entity)
+      %Team{
+        id: entity.id,
+        name: entity.name,
+        slug: entity.slug,
+        members: members,
+        tasks: tasks,
+        assignments: assignments
+      }
     end
   end
 

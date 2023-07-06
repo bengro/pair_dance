@@ -11,15 +11,15 @@ defmodule PairDance.Infrastructure.EntityConverters do
       id: entity.id,
       name: entity.name,
       slug: entity.slug,
-      members: entity.members |> Enum.map(&to_team_member/1),
+      members: entity.members |> Enum.map(&to_member/1),
       tasks: entity.tasks |> Enum.map(&to_task/1),
       assignments:
         entity.assignments
-        |> Enum.map(fn a -> to_assignment(a, to_team_member(a.member), to_task(a.task)) end)
+        |> Enum.map(fn a -> to_assignment(a, to_member(a.member), to_task(a.task)) end)
     }
   end
 
-  def to_team_member(entity) do
+  def to_member(entity) do
     %Member{id: entity.id, user: to_user(entity.user), role: :admin, available: entity.available}
   end
 

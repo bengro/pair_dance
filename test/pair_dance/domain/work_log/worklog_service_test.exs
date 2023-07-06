@@ -98,7 +98,9 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
       users_assigned_to_task =
         Enum.map(assignments, fn assignment -> assignment.member.user.name end)
 
-      assert users_assigned_to_task == ["ana", "bob"]
+      assert length(users_assigned_to_task) == 2
+      assert Enum.member?(users_assigned_to_task, "ana")
+      assert Enum.member?(users_assigned_to_task, "bob")
     end
   end
 end
