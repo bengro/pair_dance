@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@5.0.3
   gcp-gcr: circleci/gcp-gcr@0.15.1
 jobs:
-  build_phoenix:
+  test:
     docker:
       - image: circleci/elixir:1.13-node
       - image: cimg/postgres:15.0
@@ -32,5 +32,6 @@ jobs:
 workflows:
   build:
     jobs:
-      - build_phoenix
-      - build_image
+      - test
+      - build_image:
+          requires: test
