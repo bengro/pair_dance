@@ -83,23 +83,12 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
 
   @impl Team.Repository
   def find_by_slug?(slug) do
-    entity =
-      Repo.one(
-        from t in TeamEntity,
-          where: t.slug == ^slug,
-          preload: [
-            :members,
-            [members: :user],
-            :tasks,
-            :assignments,
-            [assignments: [:task, :member, member: :user]]
-          ]
-      )
+    id = Repo.one(from t in TeamEntity, where: t.slug == ^slug, select: t.id)
 
-    if entity == nil do
+    if id == nil do
       nil
     else
-      to_team(entity)
+      find(id)
     end
   end
 
