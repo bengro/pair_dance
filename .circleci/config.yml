@@ -34,4 +34,5 @@ workflows:
     jobs:
       - build_phoenix
       - build_image:
-          requires: build_phoenix
+          requires:
+            - build_phoenix
