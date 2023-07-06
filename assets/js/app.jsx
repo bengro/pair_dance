@@ -24,6 +24,15 @@ Hooks.Reassign = {
       ghostClass: "drag-ghost",
       forceFallback: true,
       onEnd: (e) => {
+        const isUnavailableMembersArea = e.to.id === "unavailable-members";
+        if (isUnavailableMembersArea) {
+          this.pushEventTo("#pairing-table", "mark_member_unavailable", {
+            userId: e.item.dataset.userId,
+            oldTaskId,
+          });
+          return;
+        }
+
         const params = {
           userId: e.item.dataset.userId,
           oldTaskId,

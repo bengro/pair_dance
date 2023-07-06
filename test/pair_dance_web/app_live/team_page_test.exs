@@ -178,4 +178,61 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
            |> Enum.filter(fn el -> Floki.text(el) =~ second_task.name end)
            |> Floki.text() =~ user.email
   end
+
+  describe "member availability" do
+    test "mark member unavailable without a prior task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+
+      view
+      |> element("#unavailable-members")
+      |> render_hook(
+        :mark_member_unavailable,
+        %{
+          "userId" => user.id
+        }
+      )
+
+      {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+
+      {:ok, document} = Floki.parse_document(updated_html)
+
+      assert document
+             |> Floki.find("[data-qa=unavailable-members]")
+             |> Floki.text() =~ user.email
+    end
+
+    test "mark member unavailable with a prior task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+
+      [first_task, _] = team.tasks
+
+      view
+      |> element("#available-members")
+      |> render_hook(
+        :reassign,
+        %{
+          "userId" => user.id,
+          "newTaskId" => "#{first_task.id}"
+        }
+      )
+
+      view
+      |> element("#unavailable-members")
+      |> render_hook(
+        :mark_member_unavailable,
+        %{
+          "userId" => user.id,
+          "oldTaskId" => "#{first_task.id}"
+        }
+      )
+
+      {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+
+      {:ok, document} = Floki.parse_document(updated_html)
+
+      assert document
+             |> Floki.find("[data-qa=unavailable-members]")
+             |> Floki.text() =~ user.email
+    end
+  end
 end
