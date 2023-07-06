@@ -93,21 +93,6 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   end
 
   @impl Team.Repository
-  def find_all() do
-    Repo.all(
-      from t in TeamEntity,
-        preload: [
-          :members,
-          [members: :user],
-          :tasks,
-          :assignments,
-          [assignments: [:task, :member, member: :user]]
-        ]
-    )
-    |> Enum.map(&to_team/1)
-  end
-
-  @impl Team.Repository
   def update(team_id, patch) do
     entity = Repo.one(from t in TeamEntity, where: t.id == ^team_id)
 

@@ -16,8 +16,6 @@ defmodule PairDance.Domain.Team.Repository do
 
   @callback find_by_slug?(slug()) :: Team.t() | nil
 
-  @callback find_all() :: list(Team.t())
-
   @callback update(team_id(), map()) :: {:ok, Team.t()}
 
   @callback delete(team_id()) :: {:ok}

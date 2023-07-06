@@ -45,15 +45,6 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
     assert TeamRepository.find(-1) == nil
   end
 
-  test "list all teams" do
-    {:ok, _} = TeamRepository.create("team 1")
-    {:ok, _} = TeamRepository.create("team 2")
-
-    [%Team{name: name}, %Team{}] = TeamRepository.find_all()
-
-    assert String.starts_with?(name, "team")
-  end
-
   test "list teams of a member" do
     {:ok, team} = TeamRepository.create("team 1")
     {:ok, user} = UserRepository.create_from_email("bob@me.com")
