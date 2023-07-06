@@ -29,24 +29,16 @@ defmodule PairDance.Domain.WorkLog.Service do
   end
 
   defp convert(assignment_entity, task_entity, member) do
-    %Assignment{
-      member: member,
-      task: to_task(task_entity),
-      assigned_at: assignment_entity.inserted_at,
-      unassigned_at: assignment_entity.deleted_at
-    }
+    to_assignment(assignment_entity, member, to_task(task_entity))
   end
 
   defp convert_for_task(assignment_entity, user_entity, task) do
-    %Assignment{
-      member: %Member{
-        user: to_user(user_entity),
-        role: :admin
-      },
-      task: task,
-      assigned_at: assignment_entity.inserted_at,
-      unassigned_at: assignment_entity.deleted_at
+    member = %Member{
+      user: to_user(user_entity),
+      role: :admin
     }
+
+    to_assignment(assignment_entity, member, task)
   end
 
   def get_assignments_by_task(task) do

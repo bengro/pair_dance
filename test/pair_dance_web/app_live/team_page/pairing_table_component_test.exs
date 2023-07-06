@@ -6,6 +6,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
   alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
+  alias PairDance.Domain.Team.TimeRange
   alias PairDance.Domain.User
   alias Floki
 
@@ -36,8 +37,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
         %Assignment{
           task: task1,
           member: member,
-          assigned_at: DateTime.utc_now(),
-          unassigned_at: nil
+          time_range: %TimeRange{start: DateTime.utc_now(), end: nil}
         }
       ],
       tasks: [task1, task2]

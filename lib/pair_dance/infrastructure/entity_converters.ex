@@ -4,6 +4,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.User
   alias PairDance.Domain.Team.Task
+  alias PairDance.Domain.Team.TimeRange
 
   def to_team(entity) do
     %Team{
@@ -12,7 +13,9 @@ defmodule PairDance.Infrastructure.EntityConverters do
       slug: entity.slug,
       members: entity.members |> Enum.map(&to_team_member/1),
       tasks: entity.tasks |> Enum.map(&to_task/1),
-      assignments: entity.assignments |> Enum.map(&to_assignment/1)
+      assignments:
+        entity.assignments
+        |> Enum.map(fn a -> to_assignment(a, to_team_member(a.member), to_task(a.task)) end)
     }
   end
 
@@ -28,12 +31,11 @@ defmodule PairDance.Infrastructure.EntityConverters do
     %User{id: entity.id, email: entity.email, name: entity.name, avatar: entity.avatar}
   end
 
-  def to_assignment(entity) do
+  def to_assignment(entity, member, task) do
     %Assignment{
-      member: to_team_member(entity.member),
-      task: to_task(entity.task),
-      assigned_at: entity.inserted_at,
-      unassigned_at: entity.deleted_at
+      member: member,
+      task: task,
+      time_range: %TimeRange{start: entity.inserted_at, end: entity.deleted_at}
     }
   end
 end

@@ -21,7 +21,7 @@
     <ul>
       <%= for task_activity <- team_activity.task_history do %>
         <li>
-          <%= task_activity.task.name %> <%= task_activity.assigned_at %> -> <%= task_activity.unassigned_at %>
+          <%= task_activity.task.name %> <%= task_activity.time_range.start %> -> <%= task_activity.time_range.end %>
         </li>
       <% end %>
     </ul>
