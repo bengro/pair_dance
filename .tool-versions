@@ -4,3 +4,4 @@ nodejs 19.2.0
 direnv 2.32.2
 gcloud 379.0.0
 chromedriver 114.0.5735.16
+terraform 1.5.2
