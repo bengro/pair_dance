@@ -36,7 +36,7 @@ jobs:
     steps:
       - gcp-cloud-run/init
       - gcp-cloud-run/deploy:
-          image: gcr.io/${GOOGLE_PROJECT_ID}/pair_dance:latest
+          image: eu.gcr.io/${GOOGLE_PROJECT_ID}/pair_dance:latest
           platform: managed
           region: ${GOOGLE_COMPUTE_ZONE}
           service-name: pair-dance-app
