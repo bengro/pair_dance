@@ -34,8 +34,8 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - cloudrun/init
-      - cloudrun/deploy:
+      - gcp-cloud-run/init
+      - gcp-cloud-run/deploy:
           image: gcr.io/${GOOGLE_PROJECT_ID}/pair_dance:latest
           platform: managed
           region: ${GOOGLE_COMPUTE_ZONE}
