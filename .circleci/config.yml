@@ -45,7 +45,7 @@ jobs:
 workflows:
   build:
     jobs:
-      - build_app:
+      - build_app
       - build_image:
           requires:
             - build_app
