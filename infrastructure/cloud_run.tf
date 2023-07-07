@@ -138,3 +138,54 @@ data "google_secret_manager_secret_version" "secret_key_base" {
 output "service_url" {
   value = google_cloud_run_service.run_service.status[0].url
 }
+
+
+resource "google_cloud_run_v2_job" "db_migration_job" {
+  name     = "pair-dance-db-migration"
+  location = var.gcp_main_region
+
+  template {
+    template {
+      containers {
+        image = "eu.gcr.io/pair-dance-370619/pair_dance:latest"
+        command = ["/app/bin/migrate"]
+
+        env {
+          name = "LIVE_VIEW_SIGNING_SALT"
+          value_source {
+            secret_key_ref {
+              secret = data.google_secret_manager_secret_version.live_view_salt.secret
+              version  = data.google_secret_manager_secret_version.live_view_salt.version
+            }
+          }
+        }
+
+        env {
+          name = "DATABASE_URL"
+          value_source {
+            secret_key_ref {
+              secret = data.google_secret_manager_secret_version.database_url.secret
+              version  = data.google_secret_manager_secret_version.database_url.version
+            }
+          }
+        }
+
+        env {
+          name = "SECRET_KEY_BASE"
+          value_source {
+            secret_key_ref {
+              secret = data.google_secret_manager_secret_version.secret_key_base.secret
+              version  = data.google_secret_manager_secret_version.secret_key_base.version
+            }
+          }
+        }
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      launch_stage,
+    ]
+  }
+}
