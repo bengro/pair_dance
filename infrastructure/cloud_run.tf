@@ -19,6 +19,11 @@ resource "google_cloud_run_service" "run_service" {
         }
 
         env {
+          name = "POOL_SIZE"
+          value = "5"
+        }
+
+        env {
           name = "PHOENIX_SESSION_SIGNING_SALT"
           value_from {
             secret_key_ref {
@@ -156,6 +161,11 @@ resource "google_cloud_run_v2_job" "db_migration_job" {
         command = ["/app/bin/migrate"]
 
         env {
+          name = "POOL_SIZE"
+          value = "1"
+        }
+
+        env {
           name = "LIVE_VIEW_SIGNING_SALT"
           value_source {
             secret_key_ref {
@@ -192,5 +202,16 @@ resource "google_cloud_run_v2_job" "db_migration_job" {
     ignore_changes = [
       launch_stage,
     ]
+  }
+}
+
+resource "google_cloud_run_domain_mapping" "default" {
+  name     = "pair.dance"
+  location = google_cloud_run_service.run_service.location
+  metadata {
+    namespace = var.gcp_project_id
+  }
+  spec {
+    route_name = google_cloud_run_service.run_service.name
   }
 }

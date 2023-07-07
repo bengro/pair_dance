@@ -33,6 +33,11 @@ resource "google_sql_database_instance" "pair_dance" {
         value = "0.0.0.0/0"
       }
     }
+
+    database_flags {
+      name  = "max_connections"
+      value = "20"
+    }
   }
 
   deletion_protection = "false"
