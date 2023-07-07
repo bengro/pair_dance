@@ -24,6 +24,15 @@ resource "google_sql_database_instance" "pair_dance" {
       record_application_tags = true
       record_client_address   = true
     }
+
+    ip_configuration {
+      ipv4_enabled = true
+
+      authorized_networks {
+        name  = "pair-dance-db-public-access"
+        value = "0.0.0.0/0"
+      }
+    }
   }
 
   deletion_protection = "false"
