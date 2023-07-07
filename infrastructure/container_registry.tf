@@ -13,14 +13,6 @@ resource "google_service_account_key" "container_registry_key" {
   service_account_id = google_service_account.container_registry_user.name
 }
 
-resource "google_project_iam_binding" "push_images" {
-  project = var.gcp_project_id
-  role    = "roles/storage.admin"
-  members = [
-    "serviceAccount:${google_service_account.container_registry_user.email}"
-  ]
-}
-
 output "registry_service_account_private_key" {
   sensitive = true
   value     = google_service_account_key.container_registry_key.private_key
