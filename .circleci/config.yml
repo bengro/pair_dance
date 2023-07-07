@@ -2,6 +2,7 @@ version: "2.1"
 orbs:
   node: circleci/node@5.0.3
   gcp-gcr: circleci/gcp-gcr@0.15.1
+  gcp-cloud-run: circleci/gcp-cloud-run@1.0.2
 jobs:
   build_phoenix:
     docker:
@@ -29,6 +30,17 @@ jobs:
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
+  deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - cloudrun/init
+      - cloudrun/deploy:
+          image: gcr.io/${GOOGLE_PROJECT_ID}/pair_dance:latest
+          platform: managed
+          region: ${GOOGLE_COMPUTE_ZONE}
+          service-name: pair-dance-app
+          unauthenticated: true
 workflows:
   build:
     jobs:
@@ -36,3 +48,6 @@ workflows:
       - build_image:
           requires:
             - build_phoenix
+      - deploy:
+          requires:
+            - build_image

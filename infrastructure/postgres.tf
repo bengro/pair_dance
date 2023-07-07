@@ -38,7 +38,7 @@ resource "google_sql_user" "db_user" {
 
 data "google_secret_manager_secret_version" "db_password" {
   secret  = "PRODUCTION_DB_PASSWORD"
-  version = "1"
+  version = "latest"
 }
 
 output "connection_ip" {
