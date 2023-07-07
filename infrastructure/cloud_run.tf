@@ -6,7 +6,7 @@ resource "google_project_service" "run_api" {
 
 resource "google_cloud_run_service" "run_service" {
   name     = "pair-dance-app"
-  location = var.gcp_main_region
+  location = "europe-west4"
 
   template {
     spec {
