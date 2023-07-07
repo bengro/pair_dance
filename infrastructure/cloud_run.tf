@@ -14,6 +14,11 @@ resource "google_cloud_run_service" "run_service" {
         image = "eu.gcr.io/pair-dance-370619/pair_dance:latest"
 
         env {
+          name = "PHX_HOST"
+          value = "pair.dance"
+        }
+
+        env {
           name = "PHOENIX_SESSION_SIGNING_SALT"
           value_from {
             secret_key_ref {
