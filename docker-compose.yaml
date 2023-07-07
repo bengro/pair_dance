@@ -10,7 +10,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: plenum_dev
+      POSTGRES_DB: pair_dance_dev
 
 volumes:
   data:

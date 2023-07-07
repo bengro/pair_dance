@@ -3,5 +3,5 @@ variable "gcp_project_id" {
 }
 
 variable "gcp_main_region" {
-  default = "europe-west6"
+  default = "europe-west4"
 }
