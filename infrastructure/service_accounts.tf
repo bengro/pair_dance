@@ -4,6 +4,7 @@ resource "google_project_iam_binding" "service-account" {
   for_each = toset([
     "roles/storage.admin",
     "roles/run.admin",
+    "roles/iam.serviceAccountUser"
   ])
   role = each.key
 
