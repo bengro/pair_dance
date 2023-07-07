@@ -4,7 +4,7 @@ orbs:
   gcp-gcr: circleci/gcp-gcr@0.15.1
   gcp-cloud-run: circleci/gcp-cloud-run@1.0.2
 jobs:
-  build_phoenix:
+  build_app:
     docker:
       - image: circleci/elixir:1.13-node
       - image: cimg/postgres:15.0
@@ -44,10 +44,10 @@ jobs:
 workflows:
   build:
     jobs:
-      - build_phoenix
+      - build_app
       - build_image:
           requires:
-            - build_phoenix
+            - build_app
       - deploy:
           requires:
             - build_image
