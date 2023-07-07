@@ -1,5 +1,5 @@
 resource "google_sql_database" "pair_dance" {
-  name     = "pair-dance"
+  name     = "pair-dance-db"
   instance = google_sql_database_instance.pair_dance.name
   project  = var.gcp_project_id
 }
