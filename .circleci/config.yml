@@ -42,20 +42,10 @@ jobs:
           service-name: pair-dance-app
           unauthenticated: true
 
-  migrate:
-    docker:
-      - image: eu.gcr.io/${GOOGLE_PROJECT_ID}/pair_dance:latest
-    steps:
-      - run:
-          command: |
-            mix ecto.migrate
 workflows:
   build:
     jobs:
-      - migrate
       - build_app:
-          requires:
-            - migrate
       - build_image:
           requires:
             - build_app
