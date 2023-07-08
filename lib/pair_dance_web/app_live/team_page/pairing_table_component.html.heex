@@ -1,20 +1,28 @@
 <div class="flex flex-row gap-2" data-qa="pairing-table" id="pairing-table">
   <section class="flex grow flex-col gap-2">
-    <h2>Available to pair!</h2>
-    <section
-      id="available-members"
-      data-qa="available-members"
-      phx-hook="Reassign"
-      phx-target={@myself}
-      class="flex flex-row gap-8 bg-white min-h-[96px]"
-    >
-      <%= for member <- @available_members do %>
-        <.live_component
-          id={"#{member.user.id}-unassigned"}
-          module={PairDanceWeb.AppLive.MemberComponent}
-          member={member}
-        />
-      <% end %>
+    <section class="flex flex-row">
+      <div class="bg-white rounded-lg grow">
+        <div class="flex flex-row gap-8 bg-white min-h-[96px]">
+          <div class="w-60 text-center flex flex-col justify-center bg-gray-100">
+            Available to pair
+          </div>
+          <section
+            id="available-members"
+            data-qa="available-members"
+            phx-hook="Reassign"
+            phx-target={@myself}
+            class="flex flex-row align-middle place-items-center w-full"
+          >
+            <%= for member <- @available_members do %>
+              <.live_component
+                id={"#{member.user.id}-unassigned"}
+                module={PairDanceWeb.AppLive.MemberComponent}
+                member={member}
+              />
+            <% end %>
+          </section>
+        </div>
+      </div>
     </section>
 
     <%= for task <- @current_tasks do %>
@@ -24,13 +32,6 @@
           module={PairDanceWeb.AppLive.TeamPage.WorkTrackComponent}
           task={task}
         />
-        <button
-          phx-click="delete_task"
-          data-qa={"delete-task-#{task.id}"}
-          phx-value-task_id={task.id}
-        >
-          delete!
-        </button>
       </section>
     <% end %>
   </section>

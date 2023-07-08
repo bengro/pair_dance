@@ -1,13 +1,20 @@
-<div class="bg-white py-4 rounded-lg grow">
-  <div class="space-y-5 mx-auto max-w-7xl px-4 space-y-4 flex flex-row gap-4">
-    <div class="w-40 text-center flex flex-col justify-center bg-gray-100">
+<div class="bg-white rounded-lg grow">
+  <div class="flex flex-row gap-8 bg-white min-h-[96px]">
+    <div class="w-60 text-center flex flex-col justify-center bg-gray-100">
       <%= @task.name %>
+      <button
+        phx-click="delete_task"
+        data-qa={"delete-task-#{@task.id}"}
+        phx-value-task_id={@task.id}
+      >
+        (x)
+      </button>
     </div>
     <div
       id={"#{@id}-assignments"}
       phx-hook="Reassign"
       data-task-id={@id}
-      class="flex flex-row gap-8 min-h-[96px]"
+      class="flex flex-row align-middle place-items-center w-full"
     >
       <div
         :for={member <- @task.assignees}
