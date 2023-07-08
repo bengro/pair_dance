@@ -13,7 +13,7 @@
   />
 
   <h2>
-    My teams:
+    My teams
   </h2>
   <ul>
     <%= for team <- @my_teams do %>
@@ -23,7 +23,7 @@
     <% end %>
   </ul>
 
-  <h2>Activity</h2>
+  <h2>My Activity</h2>
   <p>You recently paired on the following tasks:</p>
   <%= for team_activity <- @all_activities do %>
     <h3 class="font-bold"><%= team_activity.team.name %></h3>
