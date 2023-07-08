@@ -1,29 +1,28 @@
-<h1 class="text-3xl font-bold">pair.dance</h1>
-
 <%= if @current_user do %>
-  <h2>Hi, <%= @current_user.name %></h2>
-  <.link href={~p"/auth/logout"} class="button">Log out</.link>
+  <p>Hi, <%= @current_user.name %>. <.link href={~p"/auth/logout"} class="button underline">Log out</.link>.</p>
 
-  <h2>Create Team</h2>
-  <.live_component
-    id={1}
-    module={PairDanceWeb.AppLive.LandingPage.CreateTeamComponent}
-    user={@current_user}
-    action={:new}
-  />
-
-  <h2>
+<%= if length(@my_teams) > 0 do %>
+  <h2 class="text-2xl my-3">
     My teams
   </h2>
   <ul>
     <%= for team <- @my_teams do %>
       <li>
-        <.link href={team.slug} class="button"><%= team.name %></.link>
+        <.link href={team.slug} class="button underline"><%= team.name %></.link>
       </li>
     <% end %>
   </ul>
+<% end %>
 
-  <h2>My Activity</h2>
+<h2 class="text-2xl my-3">Create Team</h2>
+<.live_component
+id={1}
+module={PairDanceWeb.AppLive.LandingPage.CreateTeamComponent}
+user={@current_user}
+action={:new}
+/>
+
+  <h2 class="text-2xl my-3">My Activity</h2>
   <p>You recently paired on the following tasks:</p>
   <%= for team_activity <- @all_activities do %>
     <h3 class="font-bold"><%= team_activity.team.name %></h3>
