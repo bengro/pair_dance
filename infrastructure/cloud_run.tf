@@ -8,6 +8,8 @@ resource "google_cloud_run_service" "run_service" {
   name     = "pair-dance-app"
   location = var.gcp_main_region
 
+  autogenerate_revision_name = true
+
   template {
     spec {
       containers {
