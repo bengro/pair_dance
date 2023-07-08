@@ -35,7 +35,17 @@ action={:new}
     </ul>
   <% end %>
 <% else %>
-  <p>
-    You're not logged in, <.link href={~p"/auth/google"} class="button">log in</.link>.
-  </p>
+    <p class="my-3">Pair.dance helps smartly and swiftly allocate pairs to make pair programming  most effective.</p>
+
+  <ul class="list-disc ml-8">
+    <li>Quickly and effectively pair up to work on tasks</li>
+    <li>Detect patterns in pairings, preventing silos</li>
+    <li>Pair up most optimally to spread context</li>
+    <li>Provide each team member with insights who they should pair up with more</li>
+  </ul>
+
+<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-5">
+  <.link href={~p"/auth/google"}>Login with Google</.link>
+</button>
+
 <% end %>
