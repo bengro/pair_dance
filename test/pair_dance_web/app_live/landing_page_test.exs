@@ -17,10 +17,10 @@ defmodule PairDanceWeb.AppLive.LandingPageTest do
     %{user: user, conn: conn, team: team}
   end
 
-  test "shows feature list when not logged in", %{conn: conn} do
+  test "shows user when they are not logged in", %{conn: conn} do
     {:ok, _, html} = conn |> live(~p"/")
 
-    assert html =~ "Check out the amazing pair.dance features"
+    assert html =~ "not logged in"
   end
 
   describe "when logged in" do

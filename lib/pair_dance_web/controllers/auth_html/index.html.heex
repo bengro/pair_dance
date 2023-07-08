@@ -1,8 +1,0 @@
-<div class="px-4 py-10 sm:py-28 sm:px-6 lg:px-8 xl:py-32 xl:px-28">
-  <%= if @current_user do %>
-    <h2>Hi, <%= @current_user.name %>!</h2>
-    <.link href={~p"/auth/logout"} class="button">Logout</.link>
-  <% else %>
-    <.link href={~p"/auth/google"} class="button">Login</.link>
-  <% end %>
-</div>

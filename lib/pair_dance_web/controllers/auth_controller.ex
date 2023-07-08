@@ -6,7 +6,7 @@ defmodule PairDanceWeb.AuthController do
 
   alias Ueberauth.Auth
 
-  @redirect_url "/auth"
+  @redirect_url "/"
 
   def index(conn, _params) do
     render(conn, :index, current_user: get_session(conn, :current_user))
