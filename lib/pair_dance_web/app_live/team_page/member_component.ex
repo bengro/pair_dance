@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.AppLive.MemberComponent do
+defmodule PairDanceWeb.AppLive.TeamPage.MemberComponent do
   use PairDanceWeb, :live_component
 
   def update(assigns, socket) do

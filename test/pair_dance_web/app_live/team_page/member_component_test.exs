@@ -1,8 +1,8 @@
-defmodule PairDanceWeb.AppLive.MemberComponentTest do
+defmodule PairDanceWeb.AppLive.TeamPage.MemberComponentTest do
   use PairDance.UnitCase
   import Phoenix.LiveViewTest
 
-  alias PairDanceWeb.AppLive.MemberComponent
+  alias PairDanceWeb.AppLive.TeamPage.MemberComponent
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.User
 

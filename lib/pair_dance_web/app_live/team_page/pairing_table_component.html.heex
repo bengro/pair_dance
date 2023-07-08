@@ -24,7 +24,7 @@
         <%= for member <- @available_members do %>
           <.live_component
             id={"#{member.user.id}-unassigned"}
-            module={PairDanceWeb.AppLive.MemberComponent}
+            module={PairDanceWeb.AppLive.TeamPage.MemberComponent}
             member={member}
           />
         <% end %>
@@ -44,7 +44,7 @@
       <%= for member <- @unavailable_members do %>
         <.live_component
           id={"#{member.user.id}-unavailable"}
-          module={PairDanceWeb.AppLive.MemberComponent}
+          module={PairDanceWeb.AppLive.TeamPage.MemberComponent}
           member={member}
         />
       <% end %>
