@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.AppLive.TeamMembersPage.AddMemberForm do
+defmodule PairDanceWeb.AppLive.Settings.AddMemberForm do
   use PairDanceWeb, :live_component
 
   alias PairDance.Domain.Team.InviteService
@@ -16,7 +16,7 @@ defmodule PairDanceWeb.AppLive.TeamMembersPage.AddMemberForm do
         phx-submit="save"
         phx-change="validate"
       >
-        <.input field={{f, :email}} type="email" label="Team Member E-Mail" />
+        <.input field={{f, :email}} type="email" label="Add your team members by E-Mail." />
         <:actions>
           <.button phx-disable-with="Adding...">Add</.button>
         </:actions>

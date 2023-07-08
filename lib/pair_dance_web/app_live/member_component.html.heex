@@ -1,9 +1,14 @@
 <div
   data-qa="member-avatar"
   data-user-id={@member.user.id}
-  class="w-[96px] h-[96px] relative cursor-pointer overflow-hidden"
+  class="w-[96px] h-[96px] relative cursor-pointer overflow-hidden text-xs p-2"
 >
-  <img alt="" src={@member.user.avatar || "/images/avatar.jpeg"} referrerpolicy="no-referrer" />
+  <img
+    alt=""
+    src={@member.user.avatar || "/images/avatar.jpeg"}
+    referrerpolicy="no-referrer"
+    class="rounded-full"
+  />
   <span class="absolute bottom-0 left-0 right-0">
     <%= @member.user.name || @member.user.email %>
   </span>

@@ -1,30 +1,5 @@
 <div class="flex flex-row gap-2" data-qa="pairing-table" id="pairing-table">
   <section class="flex grow flex-col gap-2">
-    <section class="flex flex-row">
-      <div class="bg-white rounded-lg grow">
-        <div class="flex flex-row gap-8 bg-white min-h-[96px]">
-          <div class="w-60 text-center flex flex-col justify-center bg-gray-100">
-            Available to pair
-          </div>
-          <section
-            id="available-members"
-            data-qa="available-members"
-            phx-hook="Reassign"
-            phx-target={@myself}
-            class="flex flex-row align-middle place-items-center w-full"
-          >
-            <%= for member <- @available_members do %>
-              <.live_component
-                id={"#{member.user.id}-unassigned"}
-                module={PairDanceWeb.AppLive.MemberComponent}
-                member={member}
-              />
-            <% end %>
-          </section>
-        </div>
-      </div>
-    </section>
-
     <%= for task <- @current_tasks do %>
       <section class="flex flex-row" data-qa="workstream">
         <.live_component
@@ -36,8 +11,29 @@
     <% end %>
   </section>
 
-  <section class="flex flex-col bg-rose-50 p-2">
-    <h2 class="font-bold">Not pairing</h2>
+  <section class="flex flex-col bg-emerald-50 p-2 text-center">
+    <h2 class="font-bold">Available 💻</h2>
+    <div class="flex flex-row gap-8 min-h-[96px]">
+      <section
+        id="available-members"
+        data-qa="available-members"
+        phx-hook="Reassign"
+        phx-target={@myself}
+        class="flex flex-col gap-8 pt-4 grow w-[124px] align-middle place-items-center"
+      >
+        <%= for member <- @available_members do %>
+          <.live_component
+            id={"#{member.user.id}-unassigned"}
+            module={PairDanceWeb.AppLive.MemberComponent}
+            member={member}
+          />
+        <% end %>
+      </section>
+    </div>
+  </section>
+
+  <section class="flex flex-col bg-rose-50 p-2 text-center">
+    <h2 class="font-bold">Not pairing ❌</h2>
     <section
       id="unavailable-members"
       data-qa="unavailable-members"

@@ -6,7 +6,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
+    <div class="my-5">
       <.simple_form
         :let={f}
         for={%{}}
