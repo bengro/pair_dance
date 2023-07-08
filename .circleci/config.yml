@@ -3,6 +3,7 @@ orbs:
   node: circleci/node@5.0.3
   gcp-gcr: circleci/gcp-gcr@0.15.1
   gcp-cloud-run: circleci/gcp-cloud-run@1.0.2
+  gcp-cli: circleci/gcp-cli@3.1.0
 jobs:
   build_app:
     docker:
@@ -41,6 +42,14 @@ jobs:
           region: ${GOOGLE_COMPUTE_ZONE}
           service-name: pair-dance-app
           unauthenticated: true
+  migrate:
+    executor: gcp-cli/default
+    steps:
+        - gcp-cli/setup:
+            version: 435.0.1
+        - run:
+            commmand: |
+              gcloud beta run jobs execute pair-dance-db-migration
 
 workflows:
   build:
@@ -49,6 +58,9 @@ workflows:
       - build_image:
           requires:
             - build_app
-      - deploy:
+      - migrate:
           requires:
             - build_image
+      - deploy:
+          requires:
+            - migrate
