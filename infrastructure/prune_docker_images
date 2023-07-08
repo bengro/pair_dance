@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# This script prunes all docker images that are not tagged with latest, to keep our storage foot print minimal.
+
+set -ex
+
+date=$(date '+%Y-%m-%d')
+repository=eu.gcr.io/pair-dance-370619/pair_dance
+
+gcloud container images list-tags "$repository" \
+    --filter="timestamp.date('%Y-%m-%d', Z)<'$(date)'" \
+    --format="get(digest,tags)" \
+    --limit=999999 |  \
+    awk '$2 !~ /latest/ {print "$repository@" $1}' | \
+    xargs gcloud container images delete --force-delete-tags --quiet
+
+echo "Pruned $repository"
