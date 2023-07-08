@@ -36,14 +36,14 @@
     <% end %>
   </section>
 
-  <section class="flex flex-col">
-    <h2 class="font-bold">Out</h2>
+  <section class="flex flex-col bg-rose-50 p-2">
+    <h2 class="font-bold">Not pairing</h2>
     <section
       id="unavailable-members"
       data-qa="unavailable-members"
       phx-hook="Reassign"
       phx-target={@myself}
-      class="flex flex-col gap-8 bg-rose-50 pt-4 grow w-[124px] align-middle place-items-center"
+      class="flex flex-col gap-8 pt-4 grow w-[124px] align-middle place-items-center"
     >
       <%= for member <- @unavailable_members do %>
         <.live_component
