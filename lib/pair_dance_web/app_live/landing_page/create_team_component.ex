@@ -18,7 +18,12 @@ defmodule PairDanceWeb.AppLive.LandingPage.CreateTeamComponent do
       >
         <.input field={{f, :name}} type="text" label="Team name" />
         <:actions>
-          <.button phx-disable-with="Creating...">Add</.button>
+          <.button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            phx-disable-with="Creating..."
+          >
+            Add
+          </.button>
         </:actions>
       </.simple_form>
     </div>

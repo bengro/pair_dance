@@ -18,7 +18,12 @@ defmodule PairDanceWeb.AppLive.Settings.AddMemberForm do
       >
         <.input field={{f, :email}} type="email" label="Add your team members by E-Mail." />
         <:actions>
-          <.button phx-disable-with="Adding...">Add</.button>
+          <.button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            phx-disable-with="Adding..."
+          >
+            Add
+          </.button>
         </:actions>
       </.simple_form>
     </div>
