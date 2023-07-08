@@ -1,26 +1,28 @@
 <%= if @current_user do %>
-  <p>Hi, <%= @current_user.name %>. <.link href={~p"/auth/logout"} class="button underline">Log out</.link>.</p>
+  <p>
+    Hi, <%= @current_user.name %>. <.link href={~p"/auth/logout"} class="button underline">Log out</.link>.
+  </p>
 
-<%= if length(@my_teams) > 0 do %>
-  <h2 class="text-2xl my-3">
-    My teams
-  </h2>
-  <ul>
-    <%= for team <- @my_teams do %>
-      <li>
-        <.link href={team.slug} class="button underline"><%= team.name %></.link>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
+  <%= if length(@my_teams) > 0 do %>
+    <h2 class="text-2xl my-3">
+      My teams
+    </h2>
+    <ul>
+      <%= for team <- @my_teams do %>
+        <li>
+          <.link href={team.slug} class="button underline"><%= team.name %></.link>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
 
-<h2 class="text-2xl my-3">Create Team</h2>
-<.live_component
-id={1}
-module={PairDanceWeb.AppLive.LandingPage.CreateTeamComponent}
-user={@current_user}
-action={:new}
-/>
+  <h2 class="text-2xl my-3">Create Team</h2>
+  <.live_component
+    id={1}
+    module={PairDanceWeb.AppLive.LandingPage.CreateTeamComponent}
+    user={@current_user}
+    action={:new}
+  />
 
   <h2 class="text-2xl my-3">My Activity</h2>
   <p>You recently paired on the following tasks:</p>
@@ -35,7 +37,9 @@ action={:new}
     </ul>
   <% end %>
 <% else %>
-    <p class="my-3">Pair.dance helps smartly and swiftly allocate pairs to make pair programming  most effective.</p>
+  <p class="my-3">
+    Pair.dance helps smartly and swiftly allocate pairs to make pair programming  most effective.
+  </p>
 
   <ul class="list-disc ml-8">
     <li>Quickly and effectively pair up to work on tasks</li>
@@ -44,8 +48,7 @@ action={:new}
     <li>Provide each team member with insights who they should pair up with more</li>
   </ul>
 
-<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-5">
-  <.link href={~p"/auth/google"}>Login with Google</.link>
-</button>
-
+  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-5">
+    <.link href={~p"/auth/google"}>Login with Google</.link>
+  </button>
 <% end %>
