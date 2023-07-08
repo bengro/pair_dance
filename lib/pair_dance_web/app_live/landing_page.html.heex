@@ -3,6 +3,14 @@
 <%= if @current_user do %>
   <h2>Hi, <%= @current_user.name %>!</h2>
 
+  <h2>Create Team</h2>
+  <.live_component
+    id={1}
+    module={PairDanceWeb.AppLive.LandingPage.CreateTeamComponent}
+    user={@current_user}
+    action={:new}
+  />
+
   <h2>
     My teams:
   </h2>

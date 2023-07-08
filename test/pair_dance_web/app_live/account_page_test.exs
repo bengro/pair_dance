@@ -16,14 +16,4 @@ defmodule PairDanceWeb.AppLive.AccountPageTest do
 
     assert html =~ "bob@pair.dance"
   end
-
-  test "create a team", %{conn: conn, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/!/account")
-
-    view
-    |> form("#new-team-form", team: %{name: "comet"})
-    |> render_submit()
-
-    assert_redirected(view, "/comet")
-  end
 end

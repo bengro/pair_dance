@@ -42,5 +42,15 @@ defmodule PairDanceWeb.AppLive.LandingPageTest do
       assert html =~ "Activity"
       assert html =~ Enum.at(team.tasks, 0).name
     end
+
+    test "create a team", %{conn: conn, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/")
+
+      view
+      |> form("#new-team-form", team: %{name: "comet"})
+      |> render_submit()
+
+      assert_redirected(view, "/comet")
+    end
   end
 end

@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.AppLive.AccountPage.CreateTeamComponent do
+defmodule PairDanceWeb.AppLive.LandingPage.CreateTeamComponent do
   use PairDanceWeb, :live_component
 
   alias PairDance.Domain.Team
@@ -16,9 +16,9 @@ defmodule PairDanceWeb.AppLive.AccountPage.CreateTeamComponent do
         phx-submit="save"
         phx-change="validate"
       >
-        <.input field={{f, :name}} type="text" label="name" />
+        <.input field={{f, :name}} type="text" label="Team name" />
         <:actions>
-          <.button phx-disable-with="Creating...">Create</.button>
+          <.button phx-disable-with="Creating...">Add</.button>
         </:actions>
       </.simple_form>
     </div>
