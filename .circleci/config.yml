@@ -49,7 +49,7 @@ jobs:
             version: 435.0.1
         - run:
             commmand: |
-              gcloud beta run jobs execute pair-dance-db-migration
+              gcloud beta run jobs execute pair-dance-db-migration --wait
 
 workflows:
   build:
