@@ -32,14 +32,7 @@
     <ul class="list-disc ml-8">
       <%= for task_activity <- team_activity.task_history do %>
         <li>
-          <%= task_activity.task.name %>: <%= task_activity.time_range.start %> -> <%= task_activity.time_range.end %>
-          <ul>
-            <%= for time_range <- task_activity.time_ranges do %>
-              <li>
-                <%= time_range.start %> -> <%= time_range.end %>
-              </li>
-            <% end %>
-          </ul>
+          <%= task_activity.task.name %>: <%= task_activity.time_range.start %> -> <%= task_activity.time_range.end || "now" %>
         </li>
       <% end %>
     </ul>
