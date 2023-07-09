@@ -4,7 +4,6 @@ defmodule PairDance.Domain.WorkLog.Service do
   alias PairDance.Infrastructure.Team.TaskEntity
   alias PairDance.Infrastructure.User.Entity, as: UserEntity
   alias PairDance.Infrastructure.Repo
-  alias PairDance.Domain.Team.Member
   import Ecto.Query, warn: false
   import PairDance.Infrastructure.EntityConverters
 
@@ -27,16 +26,7 @@ defmodule PairDance.Domain.WorkLog.Service do
     |> Enum.map(fn [a, t] -> to_assigned_task(a, t) end)
   end
 
-  defp convert_for_task(assignment_entity, user_entity, task) do
-    member = %Member{
-      user: to_user(user_entity),
-      role: :admin
-    }
-
-    to_assignment(assignment_entity, member, task)
-  end
-
-  def get_assignments_by_task(task) do
+  def get_assigned_members_by_task(task) do
     task_id = task.id
 
     query =
@@ -46,9 +36,9 @@ defmodule PairDance.Domain.WorkLog.Service do
         join: u in UserEntity,
         on: u.id == m.user_id,
         where: a.task_id == ^task_id,
-        select: [a, u]
+        select: [a, m, u]
 
     Repo.all(query, with_deleted: true)
-    |> Enum.map(fn [a, u] -> convert_for_task(a, u, task) end)
+    |> Enum.map(fn [a, m, u] -> to_assigned_member(a, m, u) end)
   end
 end

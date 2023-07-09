@@ -79,7 +79,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
     end
   end
 
-  describe "get_assignments_by_task" do
+  describe "get_assigned_members_by_task" do
     test "returns all assignments of a task" do
       team =
         create_team(%{
@@ -91,7 +91,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("fedramp", "bob")
         |> create_assignment("UI", "bob")
 
-      assignments = Service.get_assignments_by_task(Enum.at(team.tasks, 0))
+      assignments = Service.get_assigned_members_by_task(Enum.at(team.tasks, 0))
 
       assert length(assignments) == 2
 
