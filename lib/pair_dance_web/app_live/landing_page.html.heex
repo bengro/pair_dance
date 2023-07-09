@@ -1,8 +1,4 @@
 <%= if @current_user do %>
-  <p>
-    Hi, <%= @current_user.name %>. <.link href={~p"/auth/logout"} class="button underline">Log out</.link>.
-  </p>
-
   <%= if length(@my_teams) > 0 do %>
     <h2 class="text-2xl my-3">
       My teams

@@ -4,12 +4,14 @@ defmodule PairDanceWeb.AppLive.TeamPage do
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   @impl true
-  def mount(%{"slug" => slug}, _session, socket) do
+  def mount(%{"slug" => slug}, session, socket) do
     team = TeamRepository.find_by_slug?(slug)
+    user = session["current_user"]
 
     assigns =
       socket
       |> assign(:team, team)
+      |> assign(:current_user, user)
       |> assign(:page_title, "Team #{team.name}")
 
     {:ok, assigns}
