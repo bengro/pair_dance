@@ -1,5 +1,6 @@
 defmodule PairDance.Infrastructure.EntityConverters do
   alias PairDance.Domain.Team.Assignment
+  alias PairDance.Domain.Team.AssignedTask
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.User
@@ -31,6 +32,16 @@ defmodule PairDance.Infrastructure.EntityConverters do
       member: member,
       task: task,
       time_range: %TimeRange{start: entity.inserted_at, end: entity.deleted_at}
+    }
+  end
+
+  def to_assigned_task(assignment_entity, task_entity) do
+    %AssignedTask{
+      task: to_task_descriptor(task_entity),
+      time_range: %TimeRange{
+        start: assignment_entity.inserted_at,
+        end: assignment_entity.deleted_at
+      }
     }
   end
 end

@@ -6,7 +6,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
 
   import PairDance.TeamsFixtures
 
-  describe "get_assignments_by_user" do
+  describe "get_assigned_tasks_by_user" do
     test "returns assignments by user" do
       team =
         create_team(%{
@@ -17,7 +17,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("closed beta", "ana")
 
       task_names =
-        Service.get_assignments_by_user(Enum.at(team.members, 0).user, team)
+        Service.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
         |> Enum.map(fn assignment -> assignment.task.name end)
 
       assert ["refactor fedramp", "closed beta"] = task_names
@@ -32,7 +32,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("fedramp", "ana")
         |> delete_assignment("fedramp", "ana")
 
-      assignments = Service.get_assignments_by_user(Enum.at(team.members, 0).user, team)
+      assignments = Service.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
 
       assert length(assignments) == 1
     end
@@ -44,7 +44,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
 
       team2 = create_team(%{member_names: ["ana"], task_names: []})
 
-      assignments = Service.get_assignments_by_user(Enum.at(team2.members, 0).user, team2)
+      assignments = Service.get_assigned_tasks_by_user(Enum.at(team2.members, 0).user, team2)
 
       assert length(assignments) == 0
     end
@@ -59,7 +59,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> delete_assignment("fedramp", "ana")
         |> create_assignment("fedramp", "ana")
 
-      assignments = Service.get_assignments_by_user(Enum.at(team.members, 0).user, team)
+      assignments = Service.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
 
       assert length(assignments) == 2
     end
@@ -73,7 +73,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("fedramp", "ana")
 
       TeamRepository.delete_task(team, Enum.at(team.tasks, 0))
-      assignments = Service.get_assignments_by_user(Enum.at(team.members, 0).user, team)
+      assignments = Service.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
 
       assert length(assignments) == 1
     end

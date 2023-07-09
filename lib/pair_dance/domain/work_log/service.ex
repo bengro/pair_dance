@@ -8,8 +8,7 @@ defmodule PairDance.Domain.WorkLog.Service do
   import Ecto.Query, warn: false
   import PairDance.Infrastructure.EntityConverters
 
-  def get_assignments_by_user(user, team) do
-    member = Enum.find(team.members, fn m -> m.user.id == user.id end)
+  def get_assigned_tasks_by_user(user, team) do
     user_id = user.id
     team_id = team.descriptor.id
 
@@ -24,11 +23,8 @@ defmodule PairDance.Domain.WorkLog.Service do
         where: m.user_id == ^user_id and a.team_id == ^team_id,
         select: [a, t]
 
-    Repo.all(query, with_deleted: true) |> Enum.map(fn [a, t] -> convert(a, t, member) end)
-  end
-
-  defp convert(assignment_entity, task_entity, member) do
-    to_assignment(assignment_entity, member, to_task_descriptor(task_entity))
+    Repo.all(query, with_deleted: true)
+    |> Enum.map(fn [a, t] -> to_assigned_task(a, t) end)
   end
 
   defp convert_for_task(assignment_entity, user_entity, task) do
