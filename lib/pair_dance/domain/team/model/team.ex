@@ -10,7 +10,7 @@ defmodule PairDance.Domain.Team do
   @type t() :: %__MODULE__{
           descriptor: Descriptor.t(),
           members: list(Member.t()),
-          tasks: list(Task.t()),
+          tasks: list(Task.Descriptor.t()),
           assignments: list(Assignment.t())
         }
 
