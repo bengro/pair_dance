@@ -6,17 +6,6 @@ defmodule PairDance.Infrastructure.EntityConverters do
   alias PairDance.Domain.Team.Task
   alias PairDance.Domain.Team.TimeRange
 
-  def to_team(entity) do
-    %Team{
-      descriptor: to_team_descriptor(entity),
-      members: entity.members |> Enum.map(&to_member/1),
-      tasks: entity.tasks |> Enum.map(&to_task/1),
-      assignments:
-        entity.assignments
-        |> Enum.map(fn a -> to_assignment(a, to_member(a.member), to_task(a.task)) end)
-    }
-  end
-
   def to_team_descriptor(entity) do
     %Team.Descriptor{
       id: entity.id,
