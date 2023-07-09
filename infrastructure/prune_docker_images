@@ -11,7 +11,7 @@ gcloud container images list-tags "$repository" \
     --filter="timestamp.date('%Y-%m-%d', Z)<'$(date)'" \
     --format="get(digest,tags)" \
     --limit=999999 |  \
-    awk '$2 !~ /latest/ {print "$repository@" $1}' | \
+    awk -v repository=$repository '$2 !~ /latest/ {print repository"@"$1}' | \
     xargs gcloud container images delete --force-delete-tags --quiet
 
 echo "Pruned $repository"

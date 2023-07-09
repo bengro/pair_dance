@@ -42,12 +42,25 @@ jobs:
           region: ${GOOGLE_COMPUTE_ZONE}
           service-name: pair-dance-app
           unauthenticated: true
+  prune_unused_images:
+    docker:
+      - image: google/cloud-sdk:435.0.1-alpine
+    steps:
+      - checkout
+      - run:
+          command: |
+            echo $GCLOUD_SERVICE_KEY > ./key.json
+
+            gcloud auth activate-service-account ci-service-account@pair-dance-370619.iam.gserviceaccount.com --key-file=./key.json --project=$GOOGLE_PROJECT_ID
+
+            cd ./infrastructure
+            ./prune_docker_images
   migrate:
     executor: gcp-cli/default
     steps:
-        - gcp-cli/setup:
-            version: 435.0.1
-        - run: gcloud beta run jobs execute pair-dance-db-migration --region ${GOOGLE_COMPUTE_ZONE} --wait
+      - gcp-cli/setup:
+          version: 435.0.1
+      - run: gcloud beta run jobs execute pair-dance-db-migration --region ${GOOGLE_COMPUTE_ZONE} --wait
 
 workflows:
   build:
@@ -56,6 +69,9 @@ workflows:
       - build_image:
           requires:
             - build_app
+      - prune_unused_images:
+          requires:
+            - build_image
       - migrate:
           requires:
             - build_image
