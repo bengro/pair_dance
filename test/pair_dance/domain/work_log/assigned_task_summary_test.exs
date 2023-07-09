@@ -45,6 +45,27 @@ defmodule PairDance.Domain.WorkLog.AssignedTaskSummaryTest do
     assert time_ranges == [tr1, tr2, tr3]
   end
 
+  test "shows most recent tasks first" do
+    task1 = a_task(1, "first")
+    task2 = a_task(2, "second")
+    task3 = a_task(3, "third")
+
+    tr1 = a_time_range(~U[2020-01-01 00:00:00.00Z], ~U[2020-01-01 23:59:59.00Z])
+    tr2 = a_time_range(~U[2020-01-02 00:00:00.00Z], ~U[2020-01-02 23:59:59.00Z])
+    tr3 = a_time_range(~U[2020-01-03 00:00:00.00Z], nil)
+
+    unordered_assigned_tasks = [
+      an_assigned_task(task2, tr2),
+      an_assigned_task(task3, tr3),
+      an_assigned_task(task1, tr1)
+    ]
+
+    task_names =
+      AssignedTaskSummary.build(unordered_assigned_tasks) |> Enum.map(fn s -> s.task.name end)
+
+    assert task_names == ["third", "second", "first"]
+  end
+
   def a_task(id \\ Enum.random(1..1000), name \\ "the task") do
     %Task.Descriptor{
       id: id,
