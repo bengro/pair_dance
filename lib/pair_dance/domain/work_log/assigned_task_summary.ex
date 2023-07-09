@@ -15,7 +15,7 @@ defmodule PairDance.Domain.WorkLog.AssignedTaskSummary do
   def build(assignments) do
     Enum.group_by(assignments, fn a -> a.task.id end, fn a -> a end)
     |> Enum.map(fn {_, as} -> build_for_one_task(as) end)
-    |> Enum.sort(&compare/2)
+    |> Enum.sort(AssignedTaskSummary)
     |> Enum.reverse()
   end
 
@@ -24,19 +24,16 @@ defmodule PairDance.Domain.WorkLog.AssignedTaskSummary do
 
     time_ranges =
       Enum.map(assignments, fn a -> a.time_range end)
-      |> Enum.sort(&TimeRange.compare/2)
+      |> Enum.sort(TimeRange)
 
     %AssignedTaskSummary{task: task, time_ranges: time_ranges}
   end
 
-  @doc """
-  Returns true if the first argument precedes or is in the same place as the second one.
-  Compatible with Enum.sort/2
-  """
-  @spec compare(AssignedTaskSummary.t(), AssignedTaskSummary.t()) :: boolean
+  @spec compare(AssignedTaskSummary.t(), AssignedTaskSummary.t()) :: :lt | :eq | :gt
   def compare(s1, s2) do
-    max1 = Enum.max(s1.time_ranges, &TimeRange.compare/2)
-    max2 = Enum.max(s2.time_ranges, &TimeRange.compare/2)
+    max1 = Enum.max(s1.time_ranges, TimeRange)
+    max2 = Enum.max(s2.time_ranges, TimeRange)
+
     TimeRange.compare(max1, max2)
   end
 end

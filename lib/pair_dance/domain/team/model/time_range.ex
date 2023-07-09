@@ -9,25 +9,12 @@ defmodule PairDance.Domain.Team.TimeRange do
           end: DateTime.t()
         }
 
-  @doc """
-  Returns true if the first argument precedes or is in the same place as the second one.
-  Compatible with Enum.sort/2
-  """
-  @spec compare(TimeRange.t(), TimeRange.t()) :: boolean
+  @spec compare(TimeRange.t(), TimeRange.t()) :: :lt | :eq | :gt
   def compare(tr1, tr2) do
     case compare_time(tr1.end, tr2.end) do
-      :lt ->
-        true
-
-      :gt ->
-        false
-
-      :eq ->
-        case compare_time(tr1.start, tr2.start) do
-          :lt -> true
-          :gt -> false
-          :eq -> true
-        end
+      :lt -> :lt
+      :gt -> :gt
+      :eq -> compare_time(tr1.start, tr2.start)
     end
   end
 
