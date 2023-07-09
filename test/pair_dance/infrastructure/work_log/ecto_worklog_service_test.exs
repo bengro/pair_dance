@@ -1,8 +1,8 @@
 defmodule PairDance.Domain.WorkLog.ServiceTest do
   use PairDance.DataCase
 
-  alias PairDance.Domain.WorkLog.Service
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
+  alias PairDance.Infrastructure.WorkLog.EctoService, as: WorkLogService
 
   import PairDance.TeamsFixtures
 
@@ -16,8 +16,11 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("refactor fedramp", "ana")
         |> create_assignment("closed beta", "ana")
 
+      {:ok, assigned_tasks} =
+        WorkLogService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
+
       task_names =
-        Service.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
+        assigned_tasks
         |> Enum.map(fn assignment -> assignment.task.name end)
 
       assert ["refactor fedramp", "closed beta"] = task_names
@@ -32,7 +35,8 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("fedramp", "ana")
         |> delete_assignment("fedramp", "ana")
 
-      assignments = Service.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
+      {:ok, assignments} =
+        WorkLogService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
 
       assert length(assignments) == 1
     end
@@ -44,7 +48,8 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
 
       team2 = create_team(%{member_names: ["ana"], task_names: []})
 
-      assignments = Service.get_assigned_tasks_by_user(Enum.at(team2.members, 0).user, team2)
+      {:ok, assignments} =
+        WorkLogService.get_assigned_tasks_by_user(Enum.at(team2.members, 0).user, team2)
 
       assert length(assignments) == 0
     end
@@ -59,7 +64,8 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> delete_assignment("fedramp", "ana")
         |> create_assignment("fedramp", "ana")
 
-      assignments = Service.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
+      {:ok, assignments} =
+        WorkLogService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
 
       assert length(assignments) == 2
     end
@@ -73,7 +79,9 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("fedramp", "ana")
 
       TeamRepository.delete_task(team, Enum.at(team.tasks, 0))
-      assignments = Service.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
+
+      {:ok, assignments} =
+        WorkLogService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
 
       assert length(assignments) == 1
     end
@@ -91,7 +99,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("fedramp", "bob")
         |> create_assignment("UI", "bob")
 
-      assignments = Service.get_assigned_members_by_task(Enum.at(team.tasks, 0))
+      {:ok, assignments} = WorkLogService.get_assigned_members_by_task(Enum.at(team.tasks, 0))
 
       assert length(assignments) == 2
 

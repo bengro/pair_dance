@@ -2,7 +2,7 @@ defmodule PairDanceWeb.AppLive.LandingPage do
   use PairDanceWeb, :live_view
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
-  alias PairDance.Domain.WorkLog
+  alias PairDance.Infrastructure.WorkLog.EctoService, as: WorkLogService
 
   @impl true
   def mount(_params, session, socket) do
@@ -21,7 +21,7 @@ defmodule PairDanceWeb.AppLive.LandingPage do
           all_activities =
             Enum.map(all_teams, fn team_descriptor ->
               team = TeamRepository.find(team_descriptor.id)
-              task_history = WorkLog.Service.get_assigned_tasks_by_user(user, team)
+              {:ok, task_history} = WorkLogService.get_assigned_tasks_by_user(user, team)
               %{team: team, task_history: task_history}
             end)
 
