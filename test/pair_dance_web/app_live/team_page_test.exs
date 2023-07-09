@@ -25,7 +25,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   end
 
   test "requires authentication", %{conn: conn, team: team} do
-    assert {:error, {:redirect, %{to: "/auth"}}} = live(conn, ~p"/#{team.descriptor.slug}")
+    assert {:error, {:redirect, %{to: "/"}}} = live(conn, ~p"/#{team.descriptor.slug}")
   end
 
   test "non-members get redirected away", %{conn: conn, team: team} do
