@@ -3,8 +3,8 @@ defmodule PairDance.Domain.WorkLog.AssignedTaskSummary do
 
   alias PairDance.Domain.Team.TimeRange
 
-  @enforce_keys [:task, :time_ranges]
-  defstruct [:task, :time_ranges]
+  @enforce_keys [:task, :time_range, :time_ranges]
+  defstruct [:task, :time_range, :time_ranges]
 
   @type t() :: %__MODULE__{
           task: Task.Descriptor.t(),
@@ -26,14 +26,13 @@ defmodule PairDance.Domain.WorkLog.AssignedTaskSummary do
       Enum.map(assignments, fn a -> a.time_range end)
       |> Enum.sort(TimeRange)
 
-    %AssignedTaskSummary{task: task, time_ranges: time_ranges}
+    time_range = TimeRange.merge(time_ranges)
+
+    %AssignedTaskSummary{task: task, time_range: time_range, time_ranges: time_ranges}
   end
 
   @spec compare(AssignedTaskSummary.t(), AssignedTaskSummary.t()) :: :lt | :eq | :gt
   def compare(s1, s2) do
-    max1 = Enum.max(s1.time_ranges, TimeRange)
-    max2 = Enum.max(s2.time_ranges, TimeRange)
-
-    TimeRange.compare(max1, max2)
+    TimeRange.compare(s1.time_range, s2.time_range)
   end
 end

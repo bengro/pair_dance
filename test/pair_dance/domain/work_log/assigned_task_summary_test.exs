@@ -45,6 +45,23 @@ defmodule PairDance.Domain.WorkLog.AssignedTaskSummaryTest do
     assert time_ranges == [tr1, tr2, tr3]
   end
 
+  test "summarises individual assignments with a single time range" do
+    task = a_task()
+    tr1 = a_time_range(~U[2020-01-01 00:00:00.00Z], ~U[2020-01-01 23:59:59.00Z])
+    tr2 = a_time_range(~U[2020-01-02 00:00:00.00Z], ~U[2020-01-02 23:59:59.00Z])
+
+    unordered_assigned_tasks = [
+      an_assigned_task(task, tr1),
+      an_assigned_task(task, tr2)
+    ]
+
+    [%AssignedTaskSummary{time_range: time_range}] =
+      AssignedTaskSummary.build(unordered_assigned_tasks)
+
+    assert time_range.start == ~U[2020-01-01 00:00:00.00Z]
+    assert time_range.end == ~U[2020-01-02 23:59:59.00Z]
+  end
+
   test "shows most recent tasks first" do
     task1 = a_task(1, "first")
     task2 = a_task(2, "second")

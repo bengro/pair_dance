@@ -32,17 +32,14 @@ defmodule PairDance.Infrastructure.EntityConverters do
     %Assignment{
       member: member,
       task: task,
-      time_range: %TimeRange{start: entity.inserted_at, end: entity.deleted_at}
+      time_range: to_time_range(entity)
     }
   end
 
   def to_assigned_task(assignment_entity, task_entity) do
     %AssignedTask{
       task: to_task_descriptor(task_entity),
-      time_range: %TimeRange{
-        start: assignment_entity.inserted_at,
-        end: assignment_entity.deleted_at
-      }
+      time_range: to_time_range(assignment_entity)
     }
   end
 
@@ -54,10 +51,19 @@ defmodule PairDance.Infrastructure.EntityConverters do
         role: :admin,
         available: member_entity.available
       },
-      time_range: %TimeRange{
-        start: assignment_entity.inserted_at,
-        end: assignment_entity.deleted_at
-      }
+      time_range: to_time_range(assignment_entity)
     }
+  end
+
+  def to_time_range(entity) do
+    {:ok, start_time} = DateTime.from_naive(entity.inserted_at, "Etc/UTC")
+
+    {:ok, end_time} =
+      case entity.deleted_at do
+        nil -> {:ok, nil}
+        time -> DateTime.from_naive(time, "Etc/UTC")
+      end
+
+    %TimeRange{start: start_time, end: end_time}
   end
 end
