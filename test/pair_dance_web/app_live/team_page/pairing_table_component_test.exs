@@ -23,15 +23,15 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
       descriptor: aDescriptor(),
       members: [],
       assignments: [],
-      tasks: [%Task{id: 1, name: "my task"}]
+      tasks: [%Task.Descriptor{id: 1, name: "my task"}]
     }
 
     assert render_component(PairingTableComponent, id: 123, team: team) =~ "my task"
   end
 
   test "renders assigned people in the correct workstream" do
-    task1 = %Task{id: 1, name: "my task"}
-    task2 = %Task{id: 2, name: "another task"}
+    task1 = %Task.Descriptor{id: 1, name: "my task"}
+    task2 = %Task.Descriptor{id: 2, name: "another task"}
     member = %Member{user: %User{id: 1, email: "bob@gmail.com"}, role: :admin}
 
     team = %Team{
@@ -64,7 +64,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
   end
 
   test "renders all available and unassigned members" do
-    task = %Task{id: 1, name: "my task"}
+    task = %Task.Descriptor{id: 1, name: "my task"}
 
     available_member = %Member{
       user: %User{id: 1, email: "bob@gmail.com"},
@@ -93,7 +93,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
   end
 
   test "renders all unavailable members" do
-    task = %Task{id: 1, name: "my task"}
+    task = %Task.Descriptor{id: 1, name: "my task"}
 
     available_member = %Member{
       user: %User{id: 1, email: "bob@gmail.com"},

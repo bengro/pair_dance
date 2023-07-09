@@ -8,7 +8,7 @@ defmodule PairDance.Domain.Team.Assignment do
 
   @type t() :: %__MODULE__{
           member: Member.t(),
-          task: Task.t(),
+          task: Task.Descriptor.t(),
           time_range: TimeRange.t()
         }
 end

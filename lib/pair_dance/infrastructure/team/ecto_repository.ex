@@ -29,7 +29,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   def find(id) do
     tasks_query = from t in TaskEntity, where: t.team_id == ^id
 
-    tasks = Repo.all(tasks_query) |> Enum.map(&to_task/1)
+    tasks = Repo.all(tasks_query) |> Enum.map(&to_task_descriptor/1)
 
     members_query = from m in MemberEntity, where: m.team_id == ^id, preload: :user
     members = Repo.all(members_query) |> Enum.map(&to_member/1)
@@ -41,7 +41,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
 
     assignments =
       Repo.all(assignments_query)
-      |> Enum.map(fn a -> to_assignment(a, to_member(a.member), to_task(a.task)) end)
+      |> Enum.map(fn a -> to_assignment(a, to_member(a.member), to_task_descriptor(a.task)) end)
 
     query =
       from t in TeamEntity,

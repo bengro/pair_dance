@@ -134,7 +134,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
 
       {:ok, updated_team} = TeamRepository.add_task(team, "login with google")
 
-      assert [%Task{name: name}] = updated_team.tasks
+      assert [%Task.Descriptor{name: name}] = updated_team.tasks
       assert name == "login with google"
       assert updated_team == TeamRepository.find(team.descriptor.id)
     end

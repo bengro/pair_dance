@@ -28,7 +28,7 @@ defmodule PairDance.Domain.WorkLog.Service do
   end
 
   defp convert(assignment_entity, task_entity, member) do
-    to_assignment(assignment_entity, member, to_task(task_entity))
+    to_assignment(assignment_entity, member, to_task_descriptor(task_entity))
   end
 
   defp convert_for_task(assignment_entity, user_entity, task) do

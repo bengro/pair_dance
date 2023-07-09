@@ -1,4 +1,4 @@
-defmodule PairDance.Domain.Team.Task do
+defmodule PairDance.Domain.Team.Task.Descriptor do
   @enforce_keys [:id, :name]
   defstruct [:id, :name]
 
