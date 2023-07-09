@@ -220,7 +220,7 @@ defmodule PairDanceWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
+        "phx-submit-loading:opacity-75 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
         @class
       ]}
