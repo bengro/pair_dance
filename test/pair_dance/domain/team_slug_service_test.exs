@@ -10,8 +10,8 @@ defmodule PairDance.Domain.TeamSlugServiceTest do
 
       {:ok, team} = SlugService.set_slug(team, "my new slug")
 
-      assert team.slug == "my-new-slug"
-      assert TeamRepository.find(team.id) == team
+      assert team.descriptor.slug == "my-new-slug"
+      assert TeamRepository.find(team.descriptor.id) == team
     end
 
     test "nothing changes in case of conflict" do
@@ -23,7 +23,7 @@ defmodule PairDance.Domain.TeamSlugServiceTest do
 
       {:conflict, "infra"} = SlugService.set_slug(team, "infra")
 
-      assert TeamRepository.find(team.id) == team
+      assert TeamRepository.find(team.descriptor.id) == team
     end
   end
 

@@ -6,7 +6,9 @@
     <ul class="list-disc ml-8">
       <%= for team <- @my_teams do %>
         <li>
-          <.link href={team.slug} class="button underline"><%= team.name %></.link>
+          <.link href={team.descriptor.slug} class="button underline">
+            <%= team.descriptor.name %>
+          </.link>
         </li>
       <% end %>
     </ul>
@@ -23,7 +25,7 @@
   <h2 class="text-2xl my-3">My Activity</h2>
   <p>You recently paired on the following tasks:</p>
   <%= for team_activity <- @all_activities do %>
-    <h3 class="font-bold my-3"><%= team_activity.team.name %></h3>
+    <h3 class="font-bold my-3"><%= team_activity.team.descriptor.name %></h3>
     <%= if length(team_activity.task_history) == 0 do %>
       <p>No activity yet 😔.</p>
     <% end %>

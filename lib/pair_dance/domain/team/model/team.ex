@@ -1,15 +1,14 @@
 defmodule PairDance.Domain.Team do
   alias PairDance.Domain.Team.Assignment
+  alias PairDance.Domain.Team.Descriptor
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
 
-  @enforce_keys [:id, :name, :slug, :members, :tasks, :assignments]
-  defstruct [:id, :name, :slug, :members, :tasks, :assignments]
+  @enforce_keys [:descriptor, :members, :tasks, :assignments]
+  defstruct [:descriptor, :members, :tasks, :assignments]
 
   @type t() :: %__MODULE__{
-          id: integer(),
-          name: String.t(),
-          slug: String.t(),
+          descriptor: Descriptor.t(),
           members: list(Member.t()),
           tasks: list(Task.t()),
           assignments: list(Assignment.t())

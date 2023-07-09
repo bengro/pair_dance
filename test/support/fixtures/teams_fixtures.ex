@@ -33,7 +33,7 @@ defmodule PairDance.TeamsFixtures do
 
     Enum.each(task_names, fn task_name -> TeamRepository.add_task(team, task_name) end)
 
-    TeamRepository.find(team.id)
+    TeamRepository.find(team.descriptor.id)
   end
 
   def create_assignment(team, task_name, member_name) do

@@ -18,7 +18,7 @@ defmodule PairDanceWeb.AppLive.LandingPage.CreateTeamComponent do
       >
         <.input field={{f, :name}} type="text" label="Team name" />
         <:actions>
-          <.button phx-disable-with="Creating...">
+          <.button data-qa="new-team-submit" phx-disable-with="Creating...">
             Add
           </.button>
         </:actions>
@@ -41,6 +41,6 @@ defmodule PairDanceWeb.AppLive.LandingPage.CreateTeamComponent do
   def handle_event("save", params, socket) do
     {:ok, team} = Team.TeamService.new_team(params["team"]["name"], socket.assigns.user)
     send(self(), {:team_changed, team})
-    {:noreply, push_navigate(socket, to: "/" <> team.slug)}
+    {:noreply, push_navigate(socket, to: "/" <> team.descriptor.slug)}
   end
 end

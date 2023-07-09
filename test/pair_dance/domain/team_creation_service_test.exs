@@ -15,20 +15,20 @@ defmodule PairDance.Domain.Team.TeamServiceTest do
   test "teams are persisted", %{user: user} do
     {:ok, team} = Team.TeamService.new_team("infra", user)
 
-    assert team == TeamRepository.find(team.id)
+    assert team == TeamRepository.find(team.descriptor.id)
   end
 
   test "teams are created with simple URL slugs", %{user: user} do
     {:ok, team} = Team.TeamService.new_team("infra", user)
 
-    assert team.slug == "infra"
+    assert team.descriptor.slug == "infra"
   end
 
   test "teams have uuids as slugs in case of name conflicts", %{user: user} do
     {:ok, _} = Team.TeamService.new_team("infra", user)
     {:ok, team} = Team.TeamService.new_team("infra", user)
 
-    assert team.slug =~ ~r/[0-9a-f]{8}-/i
+    assert team.descriptor.slug =~ ~r/[0-9a-f]{8}-/i
   end
 
   test "the team creator gets added as member", %{user: user} do

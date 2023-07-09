@@ -30,7 +30,7 @@ defmodule PairDanceWeb.AppLive.LandingPageTest do
         |> impersonate(user)
         |> live(~p"/")
 
-      assert html =~ team.name
+      assert html =~ team.descriptor.name
     end
 
     test "shows recent tasks", %{conn: conn, user: user, team: team} do

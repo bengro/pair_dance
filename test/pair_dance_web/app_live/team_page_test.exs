@@ -12,7 +12,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     task_fixture(team, "Refactor something amazing")
     task_fixture(team, "Implement FedRamp-compliant cache")
 
-    team = PairDance.Infrastructure.Team.EctoRepository.find(team.id)
+    team = PairDance.Infrastructure.Team.EctoRepository.find(team.descriptor.id)
 
     %{team: team, user: user}
   end
@@ -25,18 +25,18 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   end
 
   test "requires authentication", %{conn: conn, team: team} do
-    assert {:error, {:redirect, %{to: "/auth"}}} = live(conn, ~p"/#{team.slug}")
+    assert {:error, {:redirect, %{to: "/auth"}}} = live(conn, ~p"/#{team.descriptor.slug}")
   end
 
   test "non-members get redirected away", %{conn: conn, team: team} do
     another_user = user_fixture("another@user.com")
 
     assert {:error, {:redirect, %{to: "/"}}} =
-             conn |> impersonate(another_user) |> live(~p"/#{team.slug}")
+             conn |> impersonate(another_user) |> live(~p"/#{team.descriptor.slug}")
   end
 
   test "lists team members", %{conn: conn, team: team, user: user} do
-    {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
     assert html =~ user.email
   end
 
@@ -44,7 +44,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     {:ok, view, _} =
       conn
       |> impersonate(user)
-      |> live(~p"/#{team.slug}")
+      |> live(~p"/#{team.descriptor.slug}")
 
     view
     |> form("#add-member-form", user: %{email: "new-member@gmail.com"})
@@ -54,7 +54,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   end
 
   test "lists all tasks", %{conn: conn, team: team, user: user} do
-    {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
     [first_task | _] = team.tasks
 
@@ -62,7 +62,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   end
 
   test "create a task", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
     view
     |> form("#new-task-form", task: %{name: "my task name"})
@@ -72,7 +72,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   end
 
   test "delete a task", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
     [task | _] = team.tasks
 
     assert render(view) =~ task.name
@@ -86,7 +86,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   end
 
   test "assign member to a task", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
     [task | _] = team.tasks
 
@@ -99,7 +99,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     |> element("#available-members")
     |> render_hook(:reassign, payload)
 
-    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
     {:ok, document} = Floki.parse_document(updated_html)
 
@@ -110,7 +110,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   end
 
   test "unassign member from a task", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
     [task | _] = team.tasks
 
@@ -134,7 +134,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
       }
     )
 
-    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
     {:ok, document} = Floki.parse_document(updated_html)
 
@@ -144,7 +144,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   end
 
   test "reassign member to another task", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
     [first_task, second_task] = team.tasks
 
@@ -169,7 +169,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
       }
     )
 
-    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
     {:ok, document} = Floki.parse_document(updated_html)
 
@@ -181,7 +181,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
 
   describe "member availability" do
     test "mark member unavailable without a prior task", %{conn: conn, team: team, user: user} do
-      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
       view
       |> element("#unavailable-members")
@@ -192,7 +192,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
         }
       )
 
-      {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+      {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
       {:ok, document} = Floki.parse_document(updated_html)
 
@@ -202,7 +202,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     end
 
     test "mark member unavailable with a prior task", %{conn: conn, team: team, user: user} do
-      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
       [first_task, _] = team.tasks
 
@@ -226,7 +226,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
         }
       )
 
-      {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.slug}")
+      {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
       {:ok, document} = Floki.parse_document(updated_html)
 

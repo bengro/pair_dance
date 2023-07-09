@@ -10,11 +10,17 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
   alias PairDance.Domain.User
   alias Floki
 
-  test "renders work tracks" do
-    team = %Team{
+  def aDescriptor() do
+    %Team.Descriptor{
       id: "some-id",
       name: "my team",
-      slug: "my-team",
+      slug: "my-team"
+    }
+  end
+
+  test "renders work tracks" do
+    team = %Team{
+      descriptor: aDescriptor(),
       members: [],
       assignments: [],
       tasks: [%Task{id: 1, name: "my task"}]
@@ -29,9 +35,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
     member = %Member{user: %User{id: 1, email: "bob@gmail.com"}, role: :admin}
 
     team = %Team{
-      id: "some-id",
-      name: "my team",
-      slug: "my-team",
+      descriptor: aDescriptor(),
       members: [member],
       assignments: [
         %Assignment{
@@ -75,9 +79,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
     }
 
     team = %Team{
-      id: "some-id",
-      name: "my team",
-      slug: "my-team",
+      descriptor: aDescriptor(),
       members: [available_member, unavailable_member],
       assignments: [],
       tasks: [task]
@@ -106,9 +108,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
     }
 
     team = %Team{
-      id: "some-id",
-      name: "my team",
-      slug: "my-team",
+      descriptor: aDescriptor(),
       members: [available_member, unavailable_member],
       assignments: [],
       tasks: [task]

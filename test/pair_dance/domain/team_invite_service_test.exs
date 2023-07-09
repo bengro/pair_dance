@@ -12,6 +12,6 @@ defmodule PairDance.Domain.Team.InviteServiceTest do
 
     assert %Team{members: [member]} = team
     assert member.user.email == "bobby@pair.dance"
-    assert TeamRepository.find(team.id) == team
+    assert TeamRepository.find(team.descriptor.id) == team
   end
 end

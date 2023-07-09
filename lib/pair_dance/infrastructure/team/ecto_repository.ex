@@ -53,9 +53,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
       nil
     else
       %Team{
-        id: entity.id,
-        name: entity.name,
-        slug: entity.slug,
+        descriptor: to_team_descriptor(entity),
         members: members,
         tasks: tasks,
         assignments: assignments
@@ -115,25 +113,25 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   def add_member(team, member) do
     {:ok, _} =
       %MemberEntity{}
-      |> MemberEntity.changeset(%{user_id: member.user.id, team_id: team.id})
+      |> MemberEntity.changeset(%{user_id: member.user.id, team_id: team.descriptor.id})
       |> Repo.insert()
 
-    {:ok, find(team.id)}
+    {:ok, find(team.descriptor.id)}
   end
 
   @impl Team.Repository
   def add_task(team, task_name) do
     {:ok, _} =
       %TaskEntity{}
-      |> TaskEntity.changeset(%{team_id: team.id, name: task_name})
+      |> TaskEntity.changeset(%{team_id: team.descriptor.id, name: task_name})
       |> Repo.insert()
 
-    {:ok, find(team.id)}
+    {:ok, find(team.descriptor.id)}
   end
 
   @impl Team.Repository
   def delete_task(team, task) do
-    team_id = team.id
+    team_id = team.descriptor.id
     task_id = task.id
 
     Repo.soft_delete_all(
@@ -144,26 +142,26 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
     )
 
     {:ok, _entity} = Repo.soft_delete(%TaskEntity{id: task.id})
-    {:ok, find(team.id)}
+    {:ok, find(team.descriptor.id)}
   end
 
   @impl Team.Repository
   def assign_member_to_task(team, member, task) do
-    team_id = team.id
+    team_id = team.descriptor.id
     user_id = member.user.id
 
     %MemberEntity{id: member_id} =
       Repo.one(from m in MemberEntity, where: m.team_id == ^team_id and m.user_id == ^user_id)
 
-    %AssignmentEntity{team_id: team.id, member_id: member_id, task_id: task.id}
+    %AssignmentEntity{team_id: team.descriptor.id, member_id: member_id, task_id: task.id}
     |> Repo.insert()
 
-    {:ok, find(team.id)}
+    {:ok, find(team.descriptor.id)}
   end
 
   @impl Team.Repository
   def unassign_member_from_task(team, member, task) do
-    team_id = team.id
+    team_id = team.descriptor.id
     user_id = member.user.id
     task_id = task.id
 
@@ -174,24 +172,32 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
         where: to.team_id == ^team_id and m.user_id == ^user_id and to.task_id == ^task_id
     )
 
-    {:ok, find(team.id)}
+    {:ok, find(team.descriptor.id)}
   end
 
   @impl Team.Repository
   def mark_member_unavailable(team, member) do
     %MemberEntity{id: member.id}
-    |> MemberEntity.changeset(%{user_id: member.user.id, team_id: team.id, available: false})
+    |> MemberEntity.changeset(%{
+      user_id: member.user.id,
+      team_id: team.descriptor.id,
+      available: false
+    })
     |> Repo.update()
 
-    {:ok, find(team.id)}
+    {:ok, find(team.descriptor.id)}
   end
 
   @impl Team.Repository
   def mark_member_available(team, member) do
     %MemberEntity{id: member.id}
-    |> MemberEntity.changeset(%{user_id: member.user.id, team_id: team.id, available: true})
+    |> MemberEntity.changeset(%{
+      user_id: member.user.id,
+      team_id: team.descriptor.id,
+      available: true
+    })
     |> Repo.update()
 
-    {:ok, find(team.id)}
+    {:ok, find(team.descriptor.id)}
   end
 end

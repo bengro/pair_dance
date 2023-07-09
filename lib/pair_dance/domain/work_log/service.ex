@@ -11,7 +11,7 @@ defmodule PairDance.Domain.WorkLog.Service do
   def get_assignments_by_user(user, team) do
     member = Enum.find(team.members, fn m -> m.user.id == user.id end)
     user_id = user.id
-    team_id = team.id
+    team_id = team.descriptor.id
 
     query =
       from a in AssignmentEntity,

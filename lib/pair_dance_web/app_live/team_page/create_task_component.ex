@@ -18,7 +18,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
       >
         <.input field={{f, :name}} type="text" label="Task name" />
         <:actions>
-          <.button phx-disable-with="Saving...">
+          <.button data-qa="new-task-submit" phx-disable-with="Saving...">
             Add
           </.button>
         </:actions>

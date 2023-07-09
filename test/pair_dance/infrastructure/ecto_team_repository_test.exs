@@ -14,31 +14,31 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
   test "create a team" do
     {:ok, team} = TeamRepository.create("comet")
 
-    assert team.name == "comet"
+    assert team.descriptor.name == "comet"
   end
 
   test "teams are created with uuid slugs" do
     {:ok, team} = TeamRepository.create("pair dance")
 
-    assert team.slug =~ ~r/[0-9a-f]{8}-/i
+    assert team.descriptor.slug =~ ~r/[0-9a-f]{8}-/i
   end
 
   test "get a team by id" do
-    {:ok, %Team{id: id}} = TeamRepository.create("comet")
+    {:ok, %Team{descriptor: %Team.Descriptor{id: id}}} = TeamRepository.create("comet")
 
     team = TeamRepository.find(id)
 
     assert team != nil
-    assert team.name == "comet"
+    assert team.descriptor.name == "comet"
   end
 
   test "get a team by slug" do
-    {:ok, %Team{slug: slug}} = TeamRepository.create("comet")
+    {:ok, %Team{descriptor: %Team.Descriptor{slug: slug}}} = TeamRepository.create("comet")
 
     team = TeamRepository.find_by_slug?(slug)
 
     assert team != nil
-    assert team.name == "comet"
+    assert team.descriptor.name == "comet"
   end
 
   test "get a non-existing team" do
@@ -74,36 +74,37 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
   test "update team name" do
     {:ok, team} = TeamRepository.create("original name")
 
-    {:ok, _} = TeamRepository.update(team.id, %{name: "new name"})
-    %Team{name: name} = TeamRepository.find(team.id)
+    {:ok, _} = TeamRepository.update(team.descriptor.id, %{name: "new name"})
+    team = TeamRepository.find(team.descriptor.id)
 
-    assert name == "new name"
+    assert team.descriptor.name == "new name"
   end
 
   test "update team slug" do
     {:ok, team} = TeamRepository.create("comet")
 
-    {:ok, _} = TeamRepository.update(team.id, %{slug: "my-slug"})
-    %Team{name: name} = TeamRepository.find_by_slug?("my-slug")
+    {:ok, _} = TeamRepository.update(team.descriptor.id, %{slug: "my-slug"})
+    team = TeamRepository.find_by_slug?("my-slug")
 
-    assert name == "comet"
+    assert team.descriptor.name == "comet"
   end
 
   test "slugs must be unique" do
     {:ok, team1} = TeamRepository.create("team 1")
     {:ok, team2} = TeamRepository.create("team 2")
 
-    {:error, {:conflict, detail}} = TeamRepository.update(team2.id, %{slug: team1.slug})
+    {:error, {:conflict, detail}} =
+      TeamRepository.update(team2.descriptor.id, %{slug: team1.descriptor.slug})
 
     assert detail =~ "slug has already been taken"
   end
 
   test "delete a team" do
-    {:ok, %Team{id: id}} = TeamRepository.create("comet")
+    {:ok, team} = TeamRepository.create("comet")
 
-    {:ok} = TeamRepository.delete(id)
+    {:ok} = TeamRepository.delete(team.descriptor.id)
 
-    assert TeamRepository.find(id) == nil
+    assert TeamRepository.find(team.descriptor.id) == nil
   end
 
   describe "members" do
@@ -118,7 +119,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
       assert member.role == :admin
       assert member.available == true
 
-      assert updated_team == TeamRepository.find(team.id)
+      assert updated_team == TeamRepository.find(team.descriptor.id)
     end
   end
 
@@ -136,7 +137,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
 
       assert [%Task{name: name}] = updated_team.tasks
       assert name == "login with google"
-      assert updated_team == TeamRepository.find(team.id)
+      assert updated_team == TeamRepository.find(team.descriptor.id)
     end
 
     test "delete a task with assignments" do
@@ -151,7 +152,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
       {:ok, _} = TeamRepository.assign_member_to_task(team, member, task)
 
       TeamRepository.delete_task(team, task)
-      team = TeamRepository.find(team.id)
+      team = TeamRepository.find(team.descriptor.id)
 
       assert team.tasks == []
       assert team.assignments == []
@@ -171,7 +172,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
       {:ok, updated_team} = TeamRepository.assign_member_to_task(team, member, task)
 
       assert [%Assignment{member: ^member, task: ^task}] = updated_team.assignments
-      assert updated_team == TeamRepository.find(team.id)
+      assert updated_team == TeamRepository.find(team.descriptor.id)
     end
 
     test "unassign a member from a task" do
@@ -188,7 +189,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
       {:ok, updated_team} = TeamRepository.unassign_member_from_task(team, member, task)
 
       assert updated_team.assignments == []
-      assert updated_team == TeamRepository.find(team.id)
+      assert updated_team == TeamRepository.find(team.descriptor.id)
     end
 
     test "mark member unavailable and available" do

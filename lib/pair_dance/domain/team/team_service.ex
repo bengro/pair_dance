@@ -16,7 +16,7 @@ defmodule PairDance.Domain.Team.TeamService do
 
   @spec try_set_simple_slug(Team.t()) :: Team.t()
   defp try_set_simple_slug(team) do
-    case SlugService.set_slug(team, team.name) do
+    case SlugService.set_slug(team, team.descriptor.name) do
       {:ok, updated_team} -> updated_team
       {:conflict, _} -> team
     end

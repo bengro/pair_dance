@@ -12,7 +12,7 @@ defmodule PairDanceWeb.AppLive.TeamPage do
       socket
       |> assign(:team, team)
       |> assign(:current_user, user)
-      |> assign(:page_title, "Team #{team.name}")
+      |> assign(:page_title, "Team #{team.descriptor.name}")
 
     {:ok, assigns}
   end

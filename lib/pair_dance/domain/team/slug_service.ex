@@ -16,7 +16,7 @@ defmodule PairDance.Domain.Team.SlugService do
   def set_slug(team, slug) do
     slug = slugify(slug)
 
-    case TeamRepository.update(team.id, %{slug: slug}) do
+    case TeamRepository.update(team.descriptor.id, %{slug: slug}) do
       {:ok, team} -> {:ok, team}
       {:error, {:conflict, _}} -> {:conflict, slug}
     end

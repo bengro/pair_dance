@@ -16,14 +16,13 @@ defmodule PairDance.E2E.Tests do
     Application.put_env(:wallaby, :base_url, PairDanceWeb.Endpoint.url())
 
     session
-    |> visit("/auth")
+    |> visit("/")
     |> click(Query.text("Login"))
-    |> assert_text("Hi, Joe Dough!")
-    |> visit("/!/account")
+    |> assert_text("Hi, Joe Dough")
     |> fill_in(Query.css("#new-team-form_name"), with: "Comet")
-    |> click(Query.text("Create"))
+    |> click(data_qa("new-team-submit"))
     |> fill_in(Query.css("#new-task-form_name"), with: "Refactor the code")
-    |> click(Query.text("Add"))
+    |> click(data_qa("new-task-submit"))
     |> assert_has(data_qa("pairing-table"))
     |> assert_has(data_qa("member-avatar"))
 
