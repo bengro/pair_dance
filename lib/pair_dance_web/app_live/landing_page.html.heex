@@ -6,8 +6,8 @@
     <ul class="list-disc ml-8">
       <%= for team <- @my_teams do %>
         <li>
-          <.link href={team.descriptor.slug} class="button underline">
-            <%= team.descriptor.name %>
+          <.link href={team.slug} class="button underline">
+            <%= team.name %>
           </.link>
         </li>
       <% end %>

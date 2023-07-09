@@ -5,7 +5,6 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
-  alias PairDance.Domain.User
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
 
@@ -53,9 +52,9 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
 
     teams = TeamRepository.find_by_member(user.id)
 
-    [%Team{members: [%Member{user: %User{id: user_id}}]}] = teams
+    [%Team.Descriptor{name: name}] = teams
 
-    assert user.id == user_id
+    assert name == "team 1"
   end
 
   test "list teams of a member when there are deleted tasks" do

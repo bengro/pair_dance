@@ -12,7 +12,7 @@ defmodule PairDance.Domain.Team.Repository do
 
   @callback find(team_id()) :: Team.t() | nil
 
-  @callback find_by_member(member_id()) :: list(Team.t())
+  @callback find_by_member(member_id()) :: list(Team.Descriptor.t())
 
   @callback find_by_slug?(slug()) :: Team.t() | nil
 

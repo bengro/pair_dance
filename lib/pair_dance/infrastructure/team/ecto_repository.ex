@@ -67,16 +67,9 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
       from t in TeamEntity,
         join: m in MemberEntity,
         on: t.id == m.team_id,
-        where: m.user_id == ^member_id,
-        preload: [
-          :members,
-          [members: :user],
-          :tasks,
-          :assignments,
-          [assignments: [:task, :member, member: :user]]
-        ]
+        where: m.user_id == ^member_id
     )
-    |> Enum.map(&to_team/1)
+    |> Enum.map(&to_team_descriptor/1)
   end
 
   @impl Team.Repository
