@@ -26,4 +26,20 @@ defmodule PairDance.Domain.Team.TimeRange do
       true -> DateTime.compare(t1, t2)
     end
   end
+
+  @spec merge(list(TimeRange.t())) :: TimeRange.t()
+  def merge(time_ranges) do
+    starts = Enum.map(time_ranges, fn tr -> tr.start end)
+    ends = Enum.map(time_ranges, fn tr -> tr.end end)
+
+    %TimeRange{
+      start: Enum.min(starts, DateTime),
+      end:
+        if Enum.member?(ends, nil) do
+          nil
+        else
+          Enum.max(ends, DateTime)
+        end
+    }
+  end
 end
