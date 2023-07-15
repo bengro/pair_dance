@@ -12,13 +12,20 @@
 <ul>
   <%= for member <- @team.members do %>
     <li>
+      <%= if member.user.last_login != nil do %>
+        <Heroicons.check_circle mini class="h-5 w-5 inline" data-qa="user-has-logged-in" />
+      <% else %>
+        <Heroicons.x_circle mini class="h-5 w-5 inline" data-qa="user-has-never-logged-in" />
+      <% end %>
+
       <%= member.user.email %>
+
       <button
         phx-click="delete_member"
         data-qa={"member-#{member.id}"}
         phx-value-member_id={member.id}
       >
-        (x)
+        <Heroicons.trash mini class="h-5 w-5 inline" />
       </button>
     </li>
   <% end %>

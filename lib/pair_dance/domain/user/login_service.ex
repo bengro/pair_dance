@@ -6,7 +6,12 @@ defmodule PairDance.Domain.User.LoginService do
   def login(email, name, avatar) do
     user = UserRepository.find_by_email_or_create(email)
 
-    {:ok, updated_user} = UserRepository.update(user, %{name: name, avatar: avatar})
+    {:ok, updated_user} =
+      UserRepository.update(user, %{
+        name: name,
+        avatar: avatar,
+        last_login: NaiveDateTime.utc_now()
+      })
 
     updated_user
   end

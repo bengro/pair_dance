@@ -17,7 +17,12 @@ defmodule PairDance.Infrastructure.EntityConverters do
   end
 
   def to_member(entity) do
-    %Member{id: entity.id, user: to_user(entity.user), role: :admin, available: entity.available}
+    %Member{
+      id: entity.id,
+      user: to_user(entity.user),
+      role: :admin,
+      available: entity.available
+    }
   end
 
   def to_task_descriptor(entity) do
@@ -25,7 +30,13 @@ defmodule PairDance.Infrastructure.EntityConverters do
   end
 
   def to_user(entity) do
-    %User{id: entity.id, email: entity.email, name: entity.name, avatar: entity.avatar}
+    %User{
+      id: entity.id,
+      email: entity.email,
+      name: entity.name,
+      avatar: entity.avatar,
+      last_login: entity.last_login
+    }
   end
 
   def to_assignment(entity, member, task) do

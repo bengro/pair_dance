@@ -46,4 +46,15 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
 
     refute render(view) =~ "someone@world.com"
   end
+
+  test "shows that current user has never logged in", %{conn: conn, team: team, user: user} do
+    {:ok, _, html} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.descriptor.slug}/settings")
+
+    {:ok, document} = Floki.parse_document(html)
+
+    assert length(document |> Floki.find("[data-qa=user-has-never-logged-in]")) == 1
+  end
 end

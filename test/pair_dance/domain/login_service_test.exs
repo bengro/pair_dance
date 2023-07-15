@@ -1,4 +1,4 @@
-defmodule PairDance.Domain.LoginServiceTest do
+defmodule PairDance.Domain.User.LoginServiceTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.User
@@ -25,5 +25,7 @@ defmodule PairDance.Domain.LoginServiceTest do
     assert name == "Bob Dylan"
     assert avatar == "http://avatar.com"
     assert user == UserRepository.find_by_id(id)
+
+    assert user.last_login != nil
   end
 end
