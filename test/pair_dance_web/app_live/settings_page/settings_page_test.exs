@@ -4,15 +4,14 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
   import Phoenix.LiveViewTest
   import PairDance.TeamsFixtures
 
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Domain.Team.TeamService
 
   defp setup_data(_) do
     user = user_fixture()
     {:ok, team} = TeamService.new_team("my team", user)
-    task_fixture(team, "Refactor something amazing")
-    task_fixture(team, "Implement FedRamp-compliant cache")
 
-    team = PairDance.Infrastructure.Team.EctoRepository.find(team.descriptor.id)
+    team = TeamRepository.find(team.descriptor.id)
 
     %{team: team, user: user}
   end
@@ -30,5 +29,21 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
     |> render_submit()
 
     assert render(view) =~ "new-member@gmail.com"
+  end
+
+  test "delete team member", %{conn: conn, team: team, user: user} do
+    to_be_deleted_member = member_fixture(team, "someone@world.com")
+    member_fixture(team, "someone-else@world.com")
+
+    {:ok, view, _} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.descriptor.slug}/settings")
+
+    view
+    |> element("[data-qa=member-#{to_be_deleted_member.id}]")
+    |> render_click()
+
+    refute render(view) =~ "someone@world.com"
   end
 end

@@ -22,6 +22,8 @@ defmodule PairDance.Domain.Team.Repository do
 
   @callback add_member(Team.t(), Member.t()) :: {:ok, Team.t()}
 
+  @callback delete_member(Team.t(), Member.t()) :: {:ok, Team.t()}
+
   @callback add_task(Team.t(), task_name()) :: {:ok, Team.t()}
 
   @callback delete_task(Team.t(), Task.t()) :: {:ok, Team.t()}

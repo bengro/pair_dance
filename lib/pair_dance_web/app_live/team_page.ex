@@ -36,7 +36,6 @@ defmodule PairDanceWeb.AppLive.TeamPage do
 
   @impl true
   def handle_info({:team_changed, team}, socket) do
-    IO.puts("handle team_changed in team page")
     {:noreply, assign(socket, :team, team)}
   end
 end

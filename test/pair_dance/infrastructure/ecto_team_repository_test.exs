@@ -108,8 +108,8 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
 
   describe "members" do
     test "add a new member" do
-      {:ok, team} = TeamRepository.create("comet")
-      {:ok, user} = UserRepository.create_from_email("bob@me.com")
+      team = create_team(%{member_names: [], task_names: ["my task"]})
+      user = user_fixture("bob@me.com")
 
       {:ok, updated_team} = TeamRepository.add_member(team, %Member{user: user, role: :admin})
 
@@ -119,6 +119,15 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
       assert member.available == true
 
       assert updated_team == TeamRepository.find(team.descriptor.id)
+    end
+
+    test "remove member" do
+      team = create_team(%{member_names: [], task_names: ["my task"]})
+      member = member_fixture(team, "bob@test.com")
+
+      {:ok, updated_team} = TeamRepository.delete_member(team, member)
+
+      assert length(updated_team.members) == 0
     end
   end
 

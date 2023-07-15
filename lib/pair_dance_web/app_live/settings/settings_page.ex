@@ -19,7 +19,18 @@ defmodule PairDanceWeb.AppLive.SettingsPage do
 
   @impl true
   def handle_info({:team_changed, team}, socket) do
-    IO.puts("handle team_changed in settings")
     {:noreply, assign(socket, :team, team)}
+  end
+
+  @impl true
+  def handle_event("delete_member", params, socket) do
+    team = socket.assigns.team
+    member_id = String.to_integer(params["member_id"])
+
+    member_to_be_deleted = Enum.find(team.members, fn member -> member.id == member_id end)
+
+    {:ok, updated_team} = TeamRepository.delete_member(team, member_to_be_deleted)
+
+    {:noreply, assign(socket, :team, updated_team)}
   end
 end
