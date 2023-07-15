@@ -18,6 +18,9 @@ module.exports = {
     minHeight: {
       "130px": "130px",
     },
+    variants: {
+      display: ["group-hover"],
+    },
   },
   plugins: [
     require("@tailwindcss/forms"),

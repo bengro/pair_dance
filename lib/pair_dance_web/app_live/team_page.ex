@@ -5,13 +5,15 @@ defmodule PairDanceWeb.AppLive.TeamPage do
 
   @impl true
   def mount(%{"slug" => slug}, session, socket) do
-    team = TeamRepository.find_by_slug?(slug)
     user = session["current_user"]
+    team = TeamRepository.find_by_slug?(slug)
+    all_teams = TeamRepository.find_by_member(user.id)
 
     assigns =
       socket
-      |> assign(:team, team)
       |> assign(:current_user, user)
+      |> assign(:team, team)
+      |> assign(:all_teams, all_teams)
       |> assign(:page_title, "Team #{team.descriptor.name}")
 
     {:ok, assigns}

@@ -20,6 +20,7 @@ defmodule PairDanceWeb.AppLive.LandingPage do
           if length(all_teams) == 0 do
             socket
             |> assign(:current_user, user)
+            |> assign(:all_teams, all_teams)
             |> assign(:page_title, "Create Team")
           else
             team_descriptor = Enum.at(all_teams, 0)
