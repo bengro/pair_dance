@@ -1,10 +1,21 @@
 <div class="flex flex-row justify-between">
   <h1 class="text-2xl mb-5">Team <%= @team.descriptor.name %></h1>
-  <p>
-    <.link href={~p"/#{@team.descriptor.slug}/settings"} class="button underline">
-      Team Settings
-    </.link>
-  </p>
+  <ul class="flex flex-row justify-between w-60">
+    <li>
+      <p>
+        <.link href={~p"/#{@team.descriptor.slug}/insights"} class="button underline">
+          Insights
+        </.link>
+      </p>
+    </li>
+    <li>
+      <p>
+        <.link href={~p"/#{@team.descriptor.slug}/settings"} class="button underline">
+          Team Settings
+        </.link>
+      </p>
+    </li>
+  </ul>
 </div>
 
 <.live_component

@@ -1,6 +1,13 @@
-<h2 class="text-2xl my-3">Insights</h2>
+<div class="flex flex-row justify-between">
+  <h1 class="text-2xl mb-5">Insights</h1>
+  <p>
+    <.link href={~p"/#{@team.descriptor.slug}"} class="button underline">
+      Back
+    </.link>
+  </p>
+</div>
 
-<h3 class="font-bold my-3">Your activity on Team <%= @team.descriptor.name %></h3>
+<h2 class="text-lg mb-4">Your activity on Team <%= @team.descriptor.name %></h2>
 <%= if length(@activities) == 0 do %>
   <p>No activity yet 😔.</p>
 <% else %>
