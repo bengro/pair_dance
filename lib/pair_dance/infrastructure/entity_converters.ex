@@ -35,7 +35,12 @@ defmodule PairDance.Infrastructure.EntityConverters do
       email: entity.email,
       name: entity.name,
       avatar: entity.avatar,
-      last_login: entity.last_login
+      last_login: entity.last_login,
+      initials:
+        case entity.name do
+          nil -> nil
+          _ -> User.Name.initials(entity.name)
+        end
     }
   end
 
