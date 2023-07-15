@@ -1,7 +1,7 @@
 <div class="flex flex-row gap-2" data-qa="pairing-table" id="pairing-table">
   <section class="flex grow flex-col gap-2">
     <%= for task <- @current_tasks do %>
-      <section class="flex flex-row h-40" data-qa="workstream">
+      <section class="flex flex-row h-full" data-qa="workstream">
         <.live_component
           id={task.id}
           module={PairDanceWeb.AppLive.TeamPage.WorkTrackComponent}
@@ -13,13 +13,13 @@
 
   <section class="flex flex-col bg-emerald-50 p-2 text-center">
     <h2 class="font-bold">Available 💻</h2>
-    <div class="flex flex-row gap-8 h-full">
+    <div class="flex flex-row h-full pb-8">
       <section
         id="available-members"
         data-qa="available-members"
         phx-hook="Reassign"
         phx-target={@myself}
-        class="flex flex-col gap-8 pt-4 grow w-40 align-middle place-items-center"
+        class="flex flex-col gap-2 pt-4 grow w-40 align-middle place-items-center"
       >
         <%= for member <- @available_members do %>
           <.live_component
@@ -39,7 +39,7 @@
       data-qa="unavailable-members"
       phx-hook="Reassign"
       phx-target={@myself}
-      class="flex flex-col gap-8 pt-4 grow w-40 align-middle place-items-center h-full"
+      class="flex flex-col gap-2 pt-4 grow w-40 align-middle place-items-center h-full pb-8"
     >
       <%= for member <- @unavailable_members do %>
         <.live_component

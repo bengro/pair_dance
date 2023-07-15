@@ -39,10 +39,6 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
   end
 
   def handle_event("save", %{"task" => task_params}, socket) do
-    save_task(socket, task_params)
-  end
-
-  defp save_task(socket, task_params) do
     %{"name" => task_name} = task_params
 
     case TeamRepository.add_task(socket.assigns.team, task_name) do

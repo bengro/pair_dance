@@ -61,7 +61,6 @@ jobs:
       - gcp-cli/setup:
           version: 435.0.1
       - run: gcloud beta run jobs execute pair-dance-db-migration --region ${GOOGLE_COMPUTE_ZONE} --wait
-
 workflows:
   build:
     jobs:

@@ -39,7 +39,9 @@ defmodule PairDanceWeb.AppLive.LandingPage.CreateTeamComponent do
   end
 
   def handle_event("save", params, socket) do
-    {:ok, team} = Team.TeamService.new_team(params["team"]["name"], socket.assigns.user)
+    new_team = params["team"]["name"]
+    current_user = socket.assigns.user
+    {:ok, team} = Team.TeamService.new_team(new_team, current_user)
     send(self(), {:team_changed, team})
     {:noreply, push_navigate(socket, to: "/" <> team.descriptor.slug)}
   end

@@ -1,0 +1,17 @@
+<h2 class="text-2xl mb-5">Settings ⚙️</h2>
+
+<h3>Team Members</h3>
+
+<ul>
+  <%= for member <- @team.members do %>
+    <li><%= member.user.email %></li>
+  <% end %>
+</ul>
+
+<div class="mt-8">
+  <.live_component
+    id="add-member-form"
+    module={PairDanceWeb.AppLive.Settings.CreateMemberComponent}
+    team={@team}
+  />
+</div>

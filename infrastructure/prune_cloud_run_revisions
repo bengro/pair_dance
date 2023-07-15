@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# This script prunes unused Cloud Run revisions which are known to hog the database connections.
+
+set -ex
+
+gcloud run revisions list --region=$GOOGLE_COMPUTE_ZONE --format="get(REVISION,ACTIVE)" --limit=999999 \
+  | awk '$2 ~ /False/ {print $1}' \
+  | xargs -L1 gcloud run revisions delete --quiet --region=$GOOGLE_COMPUTE_ZONE
+
+echo "Pruned Cloud Run revisions"

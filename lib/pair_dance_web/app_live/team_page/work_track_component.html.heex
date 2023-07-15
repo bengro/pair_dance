@@ -14,7 +14,7 @@
       id={"#{@id}-assignments"}
       phx-hook="Reassign"
       data-task-id={@id}
-      class="flex flex-row align-middle place-items-center w-full"
+      class="flex flex-row flex-wrap w-full py-4"
     >
       <div
         :for={member <- @task.assignees}

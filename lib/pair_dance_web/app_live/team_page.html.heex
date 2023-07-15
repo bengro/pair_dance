@@ -1,4 +1,11 @@
-<h1 class="text-2xl mb-5"><%= @team.descriptor.name %>'s Pair Dance 💃</h1>
+<div class="flex flex-row justify-between">
+  <h1 class="text-2xl mb-5"><%= @team.descriptor.name %>'s Pair Dance 💃</h1>
+  <p>
+    <.link href={~p"/#{@team.descriptor.slug}/settings"} class="button underline">
+      Team Settings
+    </.link>
+  </p>
+</div>
 
 <.live_component
   id="pairing-table-wrapper"
@@ -11,12 +18,4 @@
   module={PairDanceWeb.AppLive.TeamPage.CreateTaskComponent}
   team={@team}
   action={:new}
-/>
-
-<h2 class="text-xl my-5">Settings ⚙️</h2>
-
-<.live_component
-  id="add-member-form"
-  module={PairDanceWeb.AppLive.Settings.AddMemberForm}
-  team={@team}
 />
