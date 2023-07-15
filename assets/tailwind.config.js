@@ -15,6 +15,9 @@ module.exports = {
         crown: "#fdb833ff",
       },
     },
+    minHeight: {
+      "130px": "130px",
+    },
   },
   plugins: [
     require("@tailwindcss/forms"),

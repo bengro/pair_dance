@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg grow">
+<div class="bg-white rounded-lg grow min-h-[130px]">
   <div class="flex flex-row gap-8 bg-white h-full">
     <div class="w-60 text-center flex flex-col justify-center bg-gray-100">
       <%= @task.name %>
@@ -14,7 +14,7 @@
       id={"#{@id}-assignments"}
       phx-hook="Reassign"
       data-task-id={@id}
-      class="flex flex-row flex-wrap w-full py-4"
+      class="flex flex-row flex-wrap w-full h-full h-min-height py-4"
     >
       <div
         :for={member <- @task.assignees}
