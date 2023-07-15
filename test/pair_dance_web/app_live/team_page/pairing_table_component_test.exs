@@ -32,7 +32,11 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
   test "renders assigned people in the correct workstream" do
     task1 = %Task.Descriptor{id: 1, name: "my task"}
     task2 = %Task.Descriptor{id: 2, name: "another task"}
-    member = %Member{user: %User{id: 1, email: "bob@gmail.com"}, role: :admin}
+
+    member = %Member{
+      user: %User{id: 1, email: "bob@gmail.com", approximate_name: "bob"},
+      role: :admin
+    }
 
     team = %Team{
       descriptor: aDescriptor(),
@@ -67,13 +71,13 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
     task = %Task.Descriptor{id: 1, name: "my task"}
 
     available_member = %Member{
-      user: %User{id: 1, email: "bob@gmail.com"},
+      user: %User{id: 1, email: "bob@gmail.com", approximate_name: "bob"},
       role: :admin,
       available: true
     }
 
     unavailable_member = %Member{
-      user: %User{id: 2, email: "alice@gmail.com"},
+      user: %User{id: 2, email: "alice@gmail.com", approximate_name: "alice"},
       role: :admin,
       available: false
     }
@@ -96,13 +100,13 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
     task = %Task.Descriptor{id: 1, name: "my task"}
 
     available_member = %Member{
-      user: %User{id: 1, email: "bob@gmail.com"},
+      user: %User{id: 1, email: "bob@gmail.com", approximate_name: "bob"},
       role: :admin,
       available: true
     }
 
     unavailable_member = %Member{
-      user: %User{id: 2, email: "alice@gmail.com"},
+      user: %User{id: 2, email: "alice@gmail.com", approximate_name: "alice"},
       role: :admin,
       available: false
     }

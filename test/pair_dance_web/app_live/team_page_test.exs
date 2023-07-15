@@ -37,7 +37,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
 
   test "lists team members", %{conn: conn, team: team, user: user} do
     {:ok, _index_live, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
-    assert html =~ user.email
+    assert html =~ user.approximate_name
   end
 
   test "lists all tasks", %{conn: conn, team: team, user: user} do
@@ -93,7 +93,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     assert document
            |> Floki.find("[data-qa=workstream]")
            |> Enum.filter(fn el -> Floki.text(el) =~ task.name end)
-           |> Floki.text() =~ user.email
+           |> Floki.text() =~ user.approximate_name
   end
 
   test "unassign member from a task", %{conn: conn, team: team, user: user} do
@@ -127,7 +127,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
 
     assert document
            |> Floki.find("[data-qa=available-members]")
-           |> Floki.text() =~ user.email
+           |> Floki.text() =~ user.approximate_name
   end
 
   test "reassign member to another task", %{conn: conn, team: team, user: user} do
@@ -163,7 +163,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     assert document
            |> Floki.find("[data-qa=workstream]")
            |> Enum.filter(fn el -> Floki.text(el) =~ second_task.name end)
-           |> Floki.text() =~ user.email
+           |> Floki.text() =~ user.approximate_name
   end
 
   describe "member availability" do
@@ -185,7 +185,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
 
       assert document
              |> Floki.find("[data-qa=unavailable-members]")
-             |> Floki.text() =~ user.email
+             |> Floki.text() =~ user.approximate_name
     end
 
     test "mark member unavailable with a prior task", %{conn: conn, team: team, user: user} do
@@ -219,7 +219,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
 
       assert document
              |> Floki.find("[data-qa=unavailable-members]")
-             |> Floki.text() =~ user.email
+             |> Floki.text() =~ user.approximate_name
     end
   end
 end

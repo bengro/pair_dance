@@ -14,7 +14,7 @@
   <body class="bg-ghost text-gloom antialiased mx-auto max-w-6xl">
     <header class="my-10 flex flex-row justify-between">
       <.link href={~p"/"} class="button">
-        <h1 class="text-3xl">Pair Dance</h1>
+        <h1 class="text-3xl">Pair Dance 💃</h1>
       </.link>
       <div class="py-2">
         <%= if @current_user do %>
@@ -47,7 +47,7 @@
   <footer class="text-center my-20">
     <p class="text-xs">
       <Heroicons.heart mini class="h-3 w-3 inline" />
-      Pair.dance 2023, source on <a
+      Pair.dance <%= DateTime.utc_now().year %>, code on <a
         target="_blank"
         href="https://github.com/TresAmigosLtd/pair_dance"
       >Github</a>.

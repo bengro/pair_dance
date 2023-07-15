@@ -17,8 +17,8 @@
       </span>
     </div>
   <% else %>
-  <div class="absolute bottom-0 right-0 left-0 h-10">
-    <span class="text-xs"><%= Enum.at(String.split(@member.user.email, "@"), 0) %></span>
-  </div>
+    <div class="absolute bottom-0 right-0 left-0 h-10 text-center">
+      <span class="text-xs"><%= @member.user.approximate_name %></span>
+    </div>
   <% end %>
 </div>

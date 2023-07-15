@@ -34,6 +34,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
       id: entity.id,
       email: entity.email,
       name: entity.name,
+      approximate_name: Enum.at(String.split(entity.email, "@"), 0),
       avatar: entity.avatar,
       last_login: entity.last_login,
       initials:

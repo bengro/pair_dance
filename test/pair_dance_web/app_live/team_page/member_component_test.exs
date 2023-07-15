@@ -26,13 +26,14 @@ defmodule PairDanceWeb.AppLive.TeamPage.MemberComponentTest do
   test "renders just the email when name and avatar not available" do
     user = %User{
       id: 1,
-      email: "jane@doe.com"
+      email: "jane@doe.com",
+      approximate_name: "jane"
     }
 
     member = %Member{user: user, role: :admin}
 
     html = render_component(MemberComponent, member: member)
 
-    assert html =~ "jane@doe.com"
+    assert html =~ "jane"
   end
 end
