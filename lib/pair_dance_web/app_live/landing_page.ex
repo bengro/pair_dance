@@ -18,18 +18,9 @@ defmodule PairDanceWeb.AppLive.LandingPage do
         _ ->
           all_teams = TeamRepository.find_by_member(user.id)
 
-          all_activities =
-            Enum.map(all_teams, fn team_descriptor ->
-              team = TeamRepository.find(team_descriptor.id)
-              {:ok, assigned_tasks} = WorkLogService.get_assigned_tasks_by_user(user, team)
-              task_summary = PairDance.Domain.WorkLog.AssignedTaskSummary.build(assigned_tasks)
-              %{team: team, task_history: task_summary}
-            end)
-
           socket
           |> assign(:current_user, user)
           |> assign(:my_teams, all_teams)
-          |> assign(:all_activities, all_activities)
           |> assign(:page_title, "Welcome")
       end
 

@@ -33,16 +33,6 @@ defmodule PairDanceWeb.AppLive.LandingPageTest do
       assert html =~ team.descriptor.name
     end
 
-    test "shows recent tasks", %{conn: conn, user: user, team: team} do
-      {:ok, _, html} =
-        conn
-        |> impersonate(user)
-        |> live(~p"/")
-
-      assert html =~ "Activity"
-      assert html =~ Enum.at(team.tasks, 0).name
-    end
-
     test "create a team", %{conn: conn, user: user} do
       {:ok, view, _} = conn |> impersonate(user) |> live(~p"/")
 

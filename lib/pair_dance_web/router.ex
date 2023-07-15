@@ -65,6 +65,7 @@ defmodule PairDanceWeb.Router do
       pipe_through [:auth, :team]
       live "/", AppLive.TeamPage, :index
       live "/settings", AppLive.SettingsPage, :index
+      live "/insights", AppLive.InsightsPage, :index
     end
   end
 

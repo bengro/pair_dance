@@ -1,0 +1,15 @@
+<h2 class="text-2xl my-3">Insights</h2>
+
+<h3 class="font-bold my-3">Your activity on Team <%= @team.descriptor.name %></h3>
+<%= if length(@activities) == 0 do %>
+  <p>No activity yet 😔.</p>
+<% else %>
+  <ul class="list-disc ml-8">
+    <%= for activity <- @activities do %>
+      <li>
+        <%= activity.task.name %>: <%= activity.time_range.start %> -> <%= activity.time_range.end ||
+          "now" %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
