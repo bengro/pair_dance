@@ -1,19 +1,4 @@
 <%= if @current_user do %>
-  <%= if length(@my_teams) > 0 do %>
-    <h2 class="text-2xl my-3">
-      My teams
-    </h2>
-    <ul class="list-disc ml-8">
-      <%= for team <- @my_teams do %>
-        <li>
-          <.link href={team.slug} class="button underline">
-            <%= team.name %>
-          </.link>
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
-
   <h2 class="text-2xl my-3">Create Team</h2>
   <.live_component
     id={1}
@@ -23,14 +8,13 @@
   />
 <% else %>
   <p class="my-3">
-    Pair.dance helps smartly and swiftly allocate pairs to make pair programming  most effective.
+    Pair.dance helps XP teams to make pair programming most effective. Pairing up has never been easier.
   </p>
 
   <ul class="list-disc ml-8">
-    <li>Quickly and effectively pair up to work on tasks</li>
-    <li>Detect patterns in pairings, preventing silos</li>
-    <li>Pair up most optimally to spread context</li>
-    <li>Provide each team member with insights who they should pair up with more</li>
+    <li>Optimally pair up for the tasks at hand</li>
+    <li>Detect patterns, and prevent silos</li>
+    <li>Maximise context spread</li>
   </ul>
 
   <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-5">

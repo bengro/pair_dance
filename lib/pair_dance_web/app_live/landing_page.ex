@@ -2,7 +2,6 @@ defmodule PairDanceWeb.AppLive.LandingPage do
   use PairDanceWeb, :live_view
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
-  alias PairDance.Infrastructure.WorkLog.EctoService, as: WorkLogService
 
   @impl true
   def mount(_params, session, socket) do
@@ -18,10 +17,14 @@ defmodule PairDanceWeb.AppLive.LandingPage do
         _ ->
           all_teams = TeamRepository.find_by_member(user.id)
 
-          socket
-          |> assign(:current_user, user)
-          |> assign(:my_teams, all_teams)
-          |> assign(:page_title, "Welcome")
+          if length(all_teams) == 0 do
+            socket
+            |> assign(:current_user, user)
+            |> assign(:page_title, "Create Team")
+          else
+            team_descriptor = Enum.at(all_teams, 0)
+            push_navigate(socket, to: "/" <> team_descriptor.slug)
+          end
       end
 
     {:ok, assigns}
