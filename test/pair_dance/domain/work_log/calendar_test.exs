@@ -9,7 +9,7 @@ defmodule PairDance.Domain.WorkLog.Calendar.CalendarTest do
   alias PairDance.Domain.Team.TimeRange
 
   test "returns a list of weeks" do
-    assert [%Week{}] = Calendar.build([], num_weeks: 1)
+    assert %Calendar{weeks: [%Week{}]} = Calendar.build([], num_weeks: 1)
   end
 
   test "returns requested number of weeks" do
@@ -19,7 +19,8 @@ defmodule PairDance.Domain.WorkLog.Calendar.CalendarTest do
   end
 
   test "weeks are ordered by start dates" do
-    [week1, week2, week3] = Calendar.build([], num_weeks: 3, end_date: ~D[2023-07-11])
+    %Calendar{weeks: [week1, week2, week3]} =
+      Calendar.build([], num_weeks: 3, end_date: ~D[2023-07-11])
 
     assert week1.start_date == ~D[2023-06-26]
     assert week2.start_date == ~D[2023-07-03]
@@ -27,7 +28,7 @@ defmodule PairDance.Domain.WorkLog.Calendar.CalendarTest do
   end
 
   test "last week is shorter according to the end date" do
-    [week1, week2] = Calendar.build([], num_weeks: 2, end_date: ~D[2023-07-12])
+    %Calendar{weeks: [week1, week2]} = Calendar.build([], num_weeks: 2, end_date: ~D[2023-07-12])
 
     assert week1.num_days == 7
     assert week2.num_days == 3
@@ -36,6 +37,7 @@ defmodule PairDance.Domain.WorkLog.Calendar.CalendarTest do
   describe "task ids" do
     defp setup_data(_) do
       %{
+        end_date: ~D[2023-07-15],
         long_task: %AssignedTask{
           task: %Task.Descriptor{id: 1, name: ""},
           time_range: %TimeRange{
@@ -55,23 +57,27 @@ defmodule PairDance.Domain.WorkLog.Calendar.CalendarTest do
 
     setup [:setup_data]
 
-    test "when assignment longer than week", %{long_task: task} do
-      [%Week{task_ids: task_ids}] = Calendar.build([task], num_weeks: 1, end_date: ~D[2023-07-15])
+    test "when assignment longer than week", %{long_task: task, end_date: end_date} do
+      %Calendar{weeks: [week]} = Calendar.build([task], num_weeks: 1, end_date: end_date)
 
-      assert [[1], [1], [1], [1], [1], [1]] = task_ids
+      assert [[1], [1], [1], [1], [1], [1]] = week.task_ids
     end
 
-    test "when assignment smaller than week", %{short_task: task} do
-      [%Week{task_ids: task_ids}] = Calendar.build([task], num_weeks: 1, end_date: ~D[2023-07-15])
+    test "when assignment smaller than week", %{short_task: task, end_date: end_date} do
+      %Calendar{weeks: [week]} = Calendar.build([task], num_weeks: 1, end_date: end_date)
 
-      assert [[], [2], [2], [2], [], []] = task_ids
+      assert [[], [2], [2], [2], [], []] = week.task_ids
     end
 
-    test "when multiple tasks", %{short_task: short_task, long_task: long_task} do
-      [%Week{task_ids: task_ids}] =
-        Calendar.build([short_task, long_task], num_weeks: 1, end_date: ~D[2023-07-15])
+    test "when multiple tasks", %{
+      short_task: short_task,
+      long_task: long_task,
+      end_date: end_date
+    } do
+      %Calendar{weeks: [week]} =
+        Calendar.build([short_task, long_task], num_weeks: 1, end_date: end_date)
 
-      assert [[1], [_, _], [_, _], [_, _], [1], [1]] = task_ids
+      assert [[1], [_, _], [_, _], [_, _], [1], [1]] = week.task_ids
     end
   end
 end

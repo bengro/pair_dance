@@ -21,6 +21,8 @@ defmodule PairDance.Domain.WorkLog.Calendar do
         {week, Date.add(week.start_date, -1)}
       end)
 
-    Enum.reverse(weeks)
+    %Calendar{
+      weeks: Enum.reverse(weeks)
+    }
   end
 end
