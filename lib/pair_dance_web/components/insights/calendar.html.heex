@@ -1,12 +1,12 @@
 <%= if length(@activities) == 0 do %>
-<p>No activity yet 😔.</p>
+  <p>No activity yet 😔.</p>
 <% else %>
-<ul class="list-disc ml-8">
+  <ul class="list-disc ml-8">
     <%= for activity <- @activities do %>
-    <li>
+      <li>
         <%= activity.task.name %>: <%= activity.time_range.start %> -> <%= activity.time_range.end ||
-        "now" %>
-    </li>
+          "now" %>
+      </li>
     <% end %>
-</ul>
+  </ul>
 <% end %>
