@@ -3,6 +3,7 @@ defmodule PairDanceWeb.AppLive.InsightsPage do
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.WorkLog.EctoService, as: WorkLogService
+  alias PairDance.Domain.WorkLog.Calendar
 
   import PairDanceWeb.InsightComponents
 
@@ -13,12 +14,14 @@ defmodule PairDanceWeb.AppLive.InsightsPage do
 
     {:ok, assigned_tasks} = WorkLogService.get_assigned_tasks_by_user(user, team)
     task_summary = PairDance.Domain.WorkLog.AssignedTaskSummary.build(assigned_tasks)
+    calendar = Calendar.build(assigned_tasks)
 
     assigns =
       socket
       |> assign(:current_user, user)
       |> assign(:team, team)
       |> assign(:activities, task_summary)
+      |> assign(:calendar, calendar)
       |> assign(:page_title, "Insights")
 
     {:ok, assigns}

@@ -13,7 +13,7 @@ defmodule PairDance.Domain.WorkLog.Calendar.CalendarTest do
   end
 
   test "returns requested number of weeks" do
-    weeks = Calendar.build([], num_weeks: 4)
+    %Calendar{weeks: weeks} = Calendar.build([], num_weeks: 4)
 
     assert length(weeks) == 4
   end
@@ -42,7 +42,7 @@ defmodule PairDance.Domain.WorkLog.Calendar.CalendarTest do
           task: %Task.Descriptor{id: 1, name: ""},
           time_range: %TimeRange{
             start: ~U[2023-07-01 00:01:00.00Z],
-            end: ~U[2023-07-23 00:01:00.00Z]
+            end: nil
           }
         },
         short_task: %AssignedTask{

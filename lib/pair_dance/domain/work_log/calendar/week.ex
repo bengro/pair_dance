@@ -25,7 +25,13 @@ defmodule PairDance.Domain.WorkLog.Calendar.Week do
     tasks =
       Enum.map(assignments, fn assignment ->
         start_index = Date.diff(assignment.time_range.start, start_date)
-        end_index = Date.diff(assignment.time_range.end, start_date)
+
+        end_index =
+          case assignment.time_range.end do
+            nil -> 7
+            end_time -> Date.diff(end_time, start_date)
+          end
+
         {assignment.task.id, start_index, end_index}
       end)
       |> Enum.filter(fn {_, start_index, end_index} -> start_index < 7 && end_index >= 0 end)
