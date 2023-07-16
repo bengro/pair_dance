@@ -1,0 +1,44 @@
+<div>
+  <div class="dropdown inline-block relative bg-gray-300">
+    <button class="text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center">
+      <span class="mr-1">Hi, <%= @current_user.name %></span>
+      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+      </svg>
+    </button>
+
+    <ul class="dropdown-menu absolute hidden text-gray-700 bg-gray-200">
+      <li>
+        <p>Your Teams</p>
+        <ul>
+          <%= for team_descriptor <- @all_teams do %>
+            <li>
+              <.link
+                class="bg-gray-200 hover:bg-gray-400 block whitespace-no-wrap"
+                href={~p"/#{team_descriptor.slug}"}
+              >
+                <Heroicons.eye mini class="h-5 w-5 inline" />
+                <%= team_descriptor.name %>
+              </.link>
+            </li>
+          <% end %>
+          <li>
+            <.link href={~p"/"} class="hover:bg-gray-400 block whitespace-no-wrap">
+              <Heroicons.plus_circle mini class="h-5 w-5 inline" /> Create team
+            </.link>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>Account</p>
+        <ul>
+          <li>
+            <.link href={~p"/auth/logout"} class="hover:bg-gray-400 block whitespace-no-wrap">
+              <Heroicons.arrow_right_on_rectangle mini class="h-5 w-5 inline" /> Log out
+            </.link>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>

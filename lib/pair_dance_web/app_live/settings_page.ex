@@ -7,13 +7,11 @@ defmodule PairDanceWeb.AppLive.SettingsPage do
   def mount(%{"slug" => slug}, session, socket) do
     user = session["current_user"]
     team = TeamRepository.find_by_slug?(slug)
-    all_teams = TeamRepository.find_by_member(user.id)
 
     assigns =
       socket
       |> assign(:team, team)
       |> assign(:current_user, user)
-      |> assign(:all_teams, all_teams)
       |> assign(:page_title, "Settings")
 
     {:ok, assigns}

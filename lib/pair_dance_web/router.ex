@@ -35,7 +35,7 @@ defmodule PairDanceWeb.Router do
   end
 
   pipeline :app do
-    plug :put_root_layout, {PairDanceWeb.Layouts, :app}
+    plug :put_root_layout, {PairDanceWeb.Layouts, :root}
   end
 
   pipeline :team do
