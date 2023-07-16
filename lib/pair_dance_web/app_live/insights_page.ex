@@ -4,6 +4,8 @@ defmodule PairDanceWeb.AppLive.InsightsPage do
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.WorkLog.EctoService, as: WorkLogService
 
+  import PairDanceWeb.InsightComponents
+
   @impl true
   def mount(%{"slug" => slug}, session, socket) do
     user = session["current_user"]
