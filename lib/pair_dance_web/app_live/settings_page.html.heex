@@ -15,7 +15,12 @@
   <%= for member <- @team.members do %>
     <li class="pb-1">
       <%= if member.user.last_login != nil do %>
-        <Heroicons.check_circle mini class="h-5 w-5 inline" data-qa="user-has-logged-in" />
+        <Heroicons.check_circle
+          mini
+          class="h-5 w-5 inline"
+          fill="green"
+          data-qa="user-has-logged-in"
+        />
       <% else %>
         <Heroicons.x_circle mini class="h-5 w-5 inline" data-qa="user-has-never-logged-in" />
       <% end %>

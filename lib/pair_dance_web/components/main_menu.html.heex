@@ -1,5 +1,5 @@
 <div>
-  <div class="dropdown inline-block relative bg-gray-300">
+  <div class="dropdown inline-block relative bg-gray-300 min-w-[220px]">
     <button class="text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center">
       <span class="mr-1">Hi, <%= @current_user.name %></span>
       <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -7,12 +7,12 @@
       </svg>
     </button>
 
-    <ul class="dropdown-menu absolute hidden text-gray-700 bg-gray-200">
+    <ul class="dropdown-menu absolute hidden text-gray-700 bg-gray-200 p-4 min-w-[220px]">
       <li>
-        <p>Your Teams</p>
+        <p class="uppercase text-sm mb-1">Your Teams</p>
         <ul>
           <%= for team_descriptor <- @all_teams do %>
-            <li>
+            <li class="p-[1px]">
               <.link
                 class="bg-gray-200 hover:bg-gray-400 block whitespace-no-wrap"
                 href={~p"/#{team_descriptor.slug}"}
@@ -22,7 +22,7 @@
               </.link>
             </li>
           <% end %>
-          <li>
+          <li class="mt-4">
             <.link
               class="hover:bg-gray-400 block whitespace-no-wrap"
               phx-click={show_modal("create_team_modal")}
@@ -33,8 +33,8 @@
           </li>
         </ul>
       </li>
-      <li>
-        <p>Account</p>
+      <li class="mt-4">
+        <p class="uppercase text-sm mb-1">Account</p>
         <ul>
           <li>
             <.link href={~p"/auth/logout"} class="hover:bg-gray-400 block whitespace-no-wrap">
