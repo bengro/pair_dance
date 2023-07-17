@@ -4,11 +4,6 @@ defmodule PairDanceWeb.MainMenu do
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   @impl true
-  def mount(socket) do
-    {:ok, socket}
-  end
-
-  @impl true
   def update(assigns, socket) do
     user = assigns.current_user
     all_teams = TeamRepository.find_by_member(user.id)

@@ -1,11 +1,11 @@
 <%= if @current_user do %>
-  <h2 class="text-2xl my-3">Create Team</h2>
-  <.live_component
-    id={1}
-    module={PairDanceWeb.AppLive.LandingPage.CreateTeamComponent}
-    user={@current_user}
-    action={:new}
-  />
+  <h2 class="text-2xl my-3">Welcome aboard</h2>
+  <p>Create a team, invite your team members and enjoy better pair programming. For free.</p>
+  <.link phx-click={show_modal("create_team_modal")}>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-5">
+      <Heroicons.plus_circle mini class="h-5 w-5 inline" /> Create team
+    </button>
+  </.link>
 <% else %>
   <p class="my-3">
     Pair.dance helps XP teams to make pair programming most effective. Pairing up has never been easier.

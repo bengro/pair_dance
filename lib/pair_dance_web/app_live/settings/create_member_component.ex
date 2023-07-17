@@ -14,7 +14,6 @@ defmodule PairDanceWeb.AppLive.Settings.CreateMemberComponent do
         id="add-member-form"
         phx-target={@myself}
         phx-submit="save"
-        phx-change="validate"
       >
         <.input field={{f, :email}} type="email" label="Add your team members by E-Mail." />
         <:actions>
@@ -31,11 +30,6 @@ defmodule PairDanceWeb.AppLive.Settings.CreateMemberComponent do
   def update(assigns, socket) do
     team = assigns[:team]
     {:ok, assign(socket, :team, team)}
-  end
-
-  @impl true
-  def handle_event("validate", _, socket) do
-    {:noreply, socket}
   end
 
   def handle_event("save", %{"user" => user}, socket) do

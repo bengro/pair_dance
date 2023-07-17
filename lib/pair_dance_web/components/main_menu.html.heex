@@ -23,7 +23,11 @@
             </li>
           <% end %>
           <li>
-            <.link href={~p"/"} class="hover:bg-gray-400 block whitespace-no-wrap">
+            <.link
+              class="hover:bg-gray-400 block whitespace-no-wrap"
+              phx-click={show_modal("create_team_modal")}
+              phx-target={@myself}
+            >
               <Heroicons.plus_circle mini class="h-5 w-5 inline" /> Create team
             </.link>
           </li>
@@ -41,4 +45,14 @@
       </li>
     </ul>
   </div>
+
+  <.modal id="create_team_modal">
+    <h2 class="text-lg mb-4">Create Team</h2>
+    <.live_component
+      id="create_team_component_modal"
+      module={PairDanceWeb.AppLive.LandingPage.CreateTeamComponent}
+      user={@current_user}
+      action={:new}
+    />
+  </.modal>
 </div>

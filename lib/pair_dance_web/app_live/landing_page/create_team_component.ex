@@ -14,7 +14,6 @@ defmodule PairDanceWeb.AppLive.LandingPage.CreateTeamComponent do
         id="new-team-form"
         phx-target={@myself}
         phx-submit="save"
-        phx-change="validate"
       >
         <.input field={{f, :name}} type="text" label="Team name" />
         <:actions>
