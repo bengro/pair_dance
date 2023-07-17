@@ -2,21 +2,23 @@
 
 [![Pair Dance CI status](https://circleci.com/gh/TresAmigosLtd/pair_dance.svg?style=svg)](https://github.com/TresAmigosLtd/pair_dance)
 
-A tool to encourage and orchestrate pair programming.
+A tool to elevate pair programming by making pair rotations smooth and effective.
 
 ## Pairing Domain
 
 ### Model
 
-- User: a person who has logged in to pair.dance via SSO.
-- Team: A group of team members.
-- Member: a user associated with a team.
-- Task: Piece of work a team member is working on. May be linked to an entity in a backlog management tool (e.g. Jira, Pivotal Tracker).
-- Assignment: An assignment links a member with a task.
+- **User**: Entity, a person who has logged in to pair.dance via SSO. Can be a member of multiple teams.
+- **Member**: Entity, a user associated with a team.
+- **Task**: Entity, for a piece of work a team member is working on. May be linked to an entity in a backlog management
+  tool (e.g. Jira, Pivotal Tracker).
+- **Assignment**: Value obejct, links a member with a task.
+- **Team**: Aggregate root linking: members, tasks and assignment. Has also a name and a slug.
 
 ### Business rules
 
-The Pair Dance consists of optimally allocating team members to tasks.
+The Pair Dance is when the pair rotations are decided. The rotatiosn should be optimising for spreading context and not
+sticking too long.
 
 #### Teams
 
@@ -30,16 +32,24 @@ The Pair Dance consists of optimally allocating team members to tasks.
 
 ## Feature ideas
 
-- Obtain tickets from Jira
+- Obtain tasks from Ticket management system like Jira
 - Allocations could happen off-platform on Slack
 - Insights into pairing patterns can surface Retro conversations
 - Tuple API to get actual allocations
+- Google Calendar is taken into account to signal "pairability" of an individual on a given day
 - Their personal choice is taken into account where possible
 - Knowledge is optimally shared among the team members
-- Skills are applied and transferred
-- Team members may have specialist areas but have worked an all aspects of the system
 
 ## Development
+
+Initial setup:
+
+- Assumes you have a Mac and brew
+- ⚠️May not support M1s
+
+```
+./setup
+```
 
 Check types:
 
@@ -62,7 +72,11 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+Install latest phx:
+
+```
+mix archive.install hex phx_new
+```
 
 ### Notes
 
@@ -76,3 +90,5 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 - Docs: https://hexdocs.pm/phoenix
 - Forum: https://elixirforum.com/c/phoenix-forum
 - Source: https://github.com/phoenixframework/phoenix
+- Components: https://hexdocs.pm/phoenix/1.7.0-rc.0/components.html
+- Live Components: https://hexdocs.pm/phoenix_live_view/Phoenix.LiveComponent.html
