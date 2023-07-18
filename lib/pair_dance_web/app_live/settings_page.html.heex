@@ -38,10 +38,44 @@
   <% end %>
 </ul>
 
-<div class="mt-8">
+<div class="mt-4">
   <.live_component
     id="add-member-form"
     module={PairDanceWeb.AppLive.Settings.CreateMemberComponent}
     team={@team}
   />
 </div>
+
+<h2 class="text-lg mb-4 mt-8">Team management</h2>
+
+<button
+  phx-click={show_modal("delete_team_modal")}
+  data-qa="delete-team"
+  class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+>
+  <Heroicons.trash mini class="h-5 w-5 inline" /> Delete Team
+</button>
+
+<.modal id="delete_team_modal" on_confirm="delete_team">
+  <h2 class="text-lg mb-4">Delete Team</h2>
+
+  <p>Are you sure you want to delete <strong>Team <%= @team.descriptor.name %></strong>?</p>
+
+  <p class="my-2">
+    <strong class="uppercase text-sm">Warning</strong>:
+  </p>
+
+  <ul class="text-sm mb-8">
+    <li>
+      This will delete all team members, tasks and assignments.
+    </li>
+    <li>
+      This action cannot be undone.
+    </li>
+  </ul>
+
+  <:confirm data-qa="delete-team-confirm">
+    Yes, delete Team <%= @team.descriptor.name %>.
+  </:confirm>
+  <:cancel>No, take me back.</:cancel>
+</.modal>

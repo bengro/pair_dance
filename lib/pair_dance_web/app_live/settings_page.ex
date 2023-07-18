@@ -33,4 +33,13 @@ defmodule PairDanceWeb.AppLive.SettingsPage do
 
     {:noreply, assign(socket, :team, updated_team)}
   end
+
+  @impl true
+  def handle_event("delete_team", _, socket) do
+    team = socket.assigns.team
+
+    {:ok} = TeamRepository.delete(team.descriptor.id)
+
+    {:noreply, push_navigate(socket, to: "/")}
+  end
 end

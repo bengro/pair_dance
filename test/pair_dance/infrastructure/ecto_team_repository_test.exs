@@ -99,7 +99,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
   end
 
   test "delete a team" do
-    {:ok, team} = TeamRepository.create("comet")
+    team = create_team(%{member_names: ["member_a"], task_names: ["my task"]})
 
     {:ok} = TeamRepository.delete(team.descriptor.id)
 

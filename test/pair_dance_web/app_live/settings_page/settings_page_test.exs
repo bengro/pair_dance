@@ -57,4 +57,18 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
 
     assert length(document |> Floki.find("[data-qa=user-has-never-logged-in]")) == 1
   end
+
+  test "delete team", %{conn: conn, team: team, user: user} do
+    {:ok, view, _} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.descriptor.slug}/settings")
+
+    {:error, {:live_redirect, redirect_opts}} =
+      view
+      |> element("#delete_team_modal-confirm")
+      |> render_click()
+
+    assert redirect_opts.to == "/"
+  end
 end
