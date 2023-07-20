@@ -26,11 +26,14 @@ defmodule PairDance.Domain.Team.Repository do
 
   @callback add_task(Team.t(), task_name()) :: {:ok, Team.t()}
 
-  @callback delete_task(Team.t(), Task.t()) :: {:ok, Team.t()}
+  @callback get_tasks(Team.t()) :: {:ok, list(Task.t())}
 
-  @callback assign_member_to_task(Team.t(), Member.t(), Task.t()) :: {:ok, Team.t()}
+  @callback delete_task(Team.t(), Task.Descriptor.t()) :: {:ok, Team.t()}
 
-  @callback unassign_member_from_task(Team.t(), Member.t(), Task.t()) :: {:ok, Team.t()}
+  @callback assign_member_to_task(Team.t(), Member.t(), Task.Descriptor.t()) :: {:ok, Team.t()}
+
+  @callback unassign_member_from_task(Team.t(), Member.t(), Task.Descriptor.t()) ::
+              {:ok, Team.t()}
 
   @callback mark_member_unavailable(Team.t(), Member.t()) :: {:ok, Team.t()}
 

@@ -2,6 +2,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.Team.Assignment
+  alias PairDance.Domain.Team.AssignedMember
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
@@ -146,6 +147,88 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
       assert [%Task.Descriptor{name: name}] = updated_team.tasks
       assert name == "login with google"
       assert updated_team == TeamRepository.find(team.descriptor.id)
+    end
+
+    test "list all tasks" do
+      team =
+        create_team(%{
+          member_names: ["ana", "bob"],
+          task_names: ["task 1", "task 2"]
+        })
+        |> create_assignment("task 1", "ana")
+        |> create_assignment("task 1", "bob")
+
+      {:ok, tasks} = TeamRepository.get_tasks(team)
+
+      task_names =
+        tasks
+        |> Enum.map(fn task -> task.descriptor.name end)
+
+      assert length(tasks) == 2
+      assert Enum.member?(task_names, "task 1")
+      assert Enum.member?(task_names, "task 2")
+    end
+
+    test "list unassigned tasks" do
+      team =
+        create_team(%{
+          member_names: ["ana"],
+          task_names: ["task"]
+        })
+        |> create_assignment("task", "ana")
+        |> delete_assignment("task", "ana")
+
+      {:ok, [task]} = TeamRepository.get_tasks(team)
+
+      assert length(task.assigned_members) == 1
+    end
+
+    test "list tasks without assignments" do
+      team =
+        create_team(%{
+          member_names: [],
+          task_names: ["task 1"]
+        })
+
+      {:ok, [task]} = TeamRepository.get_tasks(team)
+
+      assert task.assigned_members == []
+    end
+
+    test "list assigned members for task" do
+      team =
+        create_team(%{
+          member_names: ["ana", "bob"],
+          task_names: ["task 1"]
+        })
+        |> create_assignment("task 1", "ana")
+        |> create_assignment("task 1", "bob")
+
+      {:ok, [task]} = TeamRepository.get_tasks(team)
+
+      assert length(task.assigned_members) == 2
+
+      members_of_task =
+        Enum.map(task.assigned_members, fn %AssignedMember{member: member} -> member.user.name end)
+
+      assert Enum.member?(members_of_task, "ana")
+      assert Enum.member?(members_of_task, "bob")
+    end
+
+    test "list assigned members for task per team" do
+      team =
+        create_team(%{
+          member_names: ["ana"],
+          task_names: []
+        })
+
+      create_team(%{
+        member_names: ["bob"],
+        task_names: ["task 2"]
+      })
+      |> create_assignment("task 2", "bob")
+
+      assert {:ok, []} = TeamRepository.get_tasks(team)
     end
 
     test "delete a task with assignments" do

@@ -1,7 +1,9 @@
 defmodule PairDance.Infrastructure.Team.EctoRepository do
   alias PairDance.Domain.Team
+  alias PairDance.Domain.Team.Task
 
   alias PairDance.Infrastructure.TeamEntity
+  alias PairDance.Infrastructure.User
   alias PairDance.Infrastructure.Team.MemberEntity
   alias PairDance.Infrastructure.Team.TaskEntity
   alias PairDance.Infrastructure.Team.AssignmentEntity
@@ -127,6 +129,44 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
       |> Repo.insert()
 
     {:ok, find(team.descriptor.id)}
+  end
+
+  @impl Team.Repository
+  def get_tasks(team) do
+    id = team.descriptor.id
+
+    tasks_query =
+      from t in TaskEntity,
+        left_join: a in AssignmentEntity,
+        on: a.task_id == t.id,
+        left_join: m in MemberEntity,
+        on: a.member_id == m.id,
+        left_join: u in User.Entity,
+        on: m.user_id == u.id,
+        where: t.team_id == ^id,
+        select: [a, t, m, u]
+
+    tasks =
+      Repo.all(tasks_query)
+      |> Enum.map(fn [a, t, m, u] ->
+        {to_task_descriptor(t),
+         case m do
+           nil -> nil
+           _ -> to_assigned_member(a, m, u)
+         end}
+      end)
+      |> Enum.group_by(fn {t, _} -> t.id end)
+      |> Enum.map(fn {_, grouped_assignments} ->
+        {descriptor, _} = Enum.at(grouped_assignments, 0)
+
+        assigned_members =
+          Enum.map(grouped_assignments, fn {_, member} -> member end)
+          |> Enum.filter(fn member -> member != nil end)
+
+        %Task{descriptor: descriptor, assigned_members: assigned_members}
+      end)
+
+    {:ok, tasks}
   end
 
   @impl Team.Repository
