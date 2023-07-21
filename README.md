@@ -1,6 +1,6 @@
 # Pair Dance
 
-[![Pair Dance CI status](https://circleci.com/gh/TresAmigosLtd/pair_dance.svg?style=svg)](https://github.com/TresAmigosLtd/pair_dance)
+[![Pair Dance CI status](https://circleci.com/gh/TresAmigosLtd/pair_dance.svg?style=svg)](https://app.circleci.com/pipelines/github/TresAmigosLtd/pair_dance)
 
 A tool to elevate pair programming by making pair rotations smooth and effective.
 
