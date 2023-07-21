@@ -44,7 +44,7 @@ jobs:
           unauthenticated: true
   prune_unused_images:
     docker:
-      - image: google/cloud-sdk:435.0.1-alpine
+      - image: google/cloud-sdk:438.0.0-alpine
     steps:
       - checkout
       - run:
@@ -57,7 +57,7 @@ jobs:
             ./prune_docker_images
   prune_unused_cloud_run_revisions:
     docker:
-      - image: google/cloud-sdk:435.0.1
+      - image: google/cloud-sdk:438.0.0
     steps:
       - checkout
       - run:
@@ -72,7 +72,7 @@ jobs:
     executor: gcp-cli/default
     steps:
       - gcp-cli/setup:
-          version: 435.0.1
+          version: 438.0.0
       - run: gcloud beta run jobs execute pair-dance-db-migration --region ${GOOGLE_COMPUTE_ZONE} --wait
 workflows:
   build:
