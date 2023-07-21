@@ -55,6 +55,19 @@ jobs:
 
             cd ./infrastructure
             ./prune_docker_images
+  prune_unused_cloud_run_revisions:
+    docker:
+      - image: google/cloud-sdk:435.0.1
+    steps:
+      - checkout
+      - run:
+          command: |
+            echo $GCLOUD_SERVICE_KEY > ./key.json
+
+            gcloud auth activate-service-account ci-service-account@pair-dance-370619.iam.gserviceaccount.com --key-file=./key.json --project=$GOOGLE_PROJECT_ID
+
+            cd ./infrastructure
+            ./prune_cloud_run_revisions
   migrate:
     executor: gcp-cli/default
     steps:
@@ -77,3 +90,6 @@ workflows:
       - deploy:
           requires:
             - migrate
+      - prune_unused_cloud_run_revisions:
+          requires:
+            - deploy
