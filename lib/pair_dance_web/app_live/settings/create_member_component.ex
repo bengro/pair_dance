@@ -1,6 +1,6 @@
 defmodule PairDanceWeb.AppLive.Settings.CreateMemberComponent do
   use PairDanceWeb, :live_component
-
+  alias PairDance.Infrastructure.EventBus
   alias PairDance.Domain.Team.InviteService
 
   @impl true
@@ -32,9 +32,10 @@ defmodule PairDanceWeb.AppLive.Settings.CreateMemberComponent do
     {:ok, assign(socket, :team, team)}
   end
 
+  @impl true
   def handle_event("save", %{"user" => user}, socket) do
     team = InviteService.invite(socket.assigns.team, user["email"])
-    send(self(), {:team_changed, team})
+    EventBus.broadcast(%{team: team})
     {:noreply, assign(socket, team: team)}
   end
 end

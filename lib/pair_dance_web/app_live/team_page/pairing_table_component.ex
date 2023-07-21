@@ -1,6 +1,6 @@
 defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
   use PairDanceWeb, :live_component
-
+  alias PairDance.Infrastructure.EventBus
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   @impl true
@@ -56,6 +56,8 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
       |> assign_to_task(new_task_id)
 
     {:ok, updated_team} = TeamRepository.mark_member_available(team, member)
+
+    EventBus.broadcast(%{team: updated_team})
 
     {:noreply, assign(socket, team: updated_team)}
   end

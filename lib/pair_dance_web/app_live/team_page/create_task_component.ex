@@ -1,6 +1,6 @@
 defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
   use PairDanceWeb, :live_component
-
+  alias PairDance.Infrastructure.EventBus
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   @impl true
@@ -43,7 +43,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
 
     case TeamRepository.add_task(socket.assigns.team, task_name) do
       {:ok, team} ->
-        send(self(), {:team_changed, team})
+        EventBus.broadcast(%{team: team})
 
         {:noreply,
          socket
