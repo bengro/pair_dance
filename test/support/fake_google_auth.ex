@@ -25,7 +25,7 @@ defmodule PairDance.TestSupport.FakeGoogleAuth do
       info: %Ueberauth.Auth.Info{
         birthday: nil,
         description: nil,
-        email: "Joe Dough",
+        email: "joe@dough.com",
         first_name: "Joe",
         image:
           "https://lh3.googleusercontent.com/a/AAcHTtdKvB8nhNR8FhsrADRGpM4Pvohuu9KJg11gkjA5vAw=s96-c",

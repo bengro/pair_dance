@@ -28,7 +28,7 @@
               phx-click={show_modal("create_team_modal")}
               phx-target={@myself}
             >
-              <Heroicons.plus_circle mini class="h-5 w-5 inline" /> Create team
+              <Heroicons.plus_circle mini class="h-5 w-5 inline" /> Create Team
             </.link>
           </li>
         </ul>
@@ -38,7 +38,8 @@
         <ul>
           <li>
             <.link href={~p"/auth/logout"} class="hover:bg-gray-400 block whitespace-no-wrap">
-              <Heroicons.arrow_right_on_rectangle mini class="h-5 w-5 inline" /> Log out
+              <Heroicons.arrow_right_on_rectangle mini class="h-5 w-5 inline" />
+              <span>Log out</span>
             </.link>
           </li>
         </ul>

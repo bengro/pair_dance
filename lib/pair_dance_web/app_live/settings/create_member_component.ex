@@ -17,7 +17,7 @@ defmodule PairDanceWeb.AppLive.Settings.CreateMemberComponent do
       >
         <.input field={{f, :email}} type="email" label="Add your team members by E-Mail." />
         <:actions>
-          <.button phx-disable-with="Adding...">
+          <.button phx-disable-with="Adding..." data-qa="add-member-submit">
             Add
           </.button>
         </:actions>
