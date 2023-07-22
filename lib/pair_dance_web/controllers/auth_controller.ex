@@ -42,11 +42,14 @@ defmodule PairDanceWeb.AuthController do
       ) do
     case extract_user(auth) do
       {:ok, user} ->
+        redirect_request_path = get_session(conn, :redirect_request_path)
+        delete_session(conn, :redirect_request_path)
+
         conn
         |> put_flash(:info, "Successfully authenticated.")
         |> put_session(:current_user, user)
         |> configure_session(renew: true)
-        |> redirect(to: @redirect_url)
+        |> redirect(to: redirect_request_path || "/")
 
       {:error, reason} ->
         conn

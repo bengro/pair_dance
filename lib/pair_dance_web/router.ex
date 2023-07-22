@@ -3,8 +3,13 @@ defmodule PairDanceWeb.Router do
 
   def ensure_authenticated(conn, _opts) do
     case get_session(conn, :current_user) do
-      nil -> redirect(conn, to: "/") |> halt
-      _ -> conn
+      nil ->
+        put_session(conn, :redirect_request_path, conn.request_path)
+        |> redirect(to: "/")
+        |> halt
+
+      _ ->
+        conn
     end
   end
 
