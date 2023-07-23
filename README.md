@@ -44,8 +44,9 @@ sticking too long.
 
 Initial setup:
 
-- Assumes you have a Mac and brew
-- ⚠️May not support M1s
+- Assumes you have a pre M1 Mac and brew
+
+> ⚠️ Setup does not support M1s. Contributions welcome!
 
 ```
 ./setup
