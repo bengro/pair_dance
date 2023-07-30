@@ -36,6 +36,6 @@ defmodule PairDanceWeb.AppLive.Settings.CreateMemberComponent do
   def handle_event("save", %{"user" => user}, socket) do
     team = InviteService.invite(socket.assigns.team, user["email"])
     EventBus.broadcast(%{team: team})
-    {:noreply, assign(socket, team: team)}
+    {:noreply, assign(socket, team: team, user: nil)}
   end
 end

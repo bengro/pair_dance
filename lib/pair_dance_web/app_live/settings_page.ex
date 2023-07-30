@@ -1,6 +1,8 @@
 defmodule PairDanceWeb.AppLive.SettingsPage do
   use PairDanceWeb, :live_view
 
+  alias PairDance.Domain.Team
+  alias PairDance.Domain.Team.SlugService
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.EventBus
 
@@ -38,6 +40,34 @@ defmodule PairDanceWeb.AppLive.SettingsPage do
     {:ok} = TeamRepository.delete(team.descriptor.id)
 
     {:noreply, push_navigate(socket, to: "/")}
+  end
+
+  def handle_event("save_team_details", %{"team" => %{"name" => team_name}}, socket) do
+    case Team.is_valid_team_name(team_name) do
+      true ->
+        new_slug = SlugService.slugify(team_name)
+
+        {:ok, team} =
+          TeamRepository.update(socket.assigns.team.descriptor.id, %{
+            name: team_name,
+            slug: new_slug
+          })
+
+        assigns =
+          socket
+          |> assign(:team, team)
+          |> put_flash(:info, "Team name changed")
+          |> redirect(to: "/#{new_slug}/settings")
+
+        {:noreply, assigns}
+
+      false ->
+        socket =
+          socket
+          |> put_flash(:error, "Invalid team name")
+
+        {:noreply, socket}
+    end
   end
 
   @impl true

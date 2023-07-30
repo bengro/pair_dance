@@ -17,4 +17,13 @@ defmodule PairDance.Domain.Team do
   def has_member(team, user) do
     Enum.any?(team.members, fn m -> m.user.id == user.id end)
   end
+
+  def is_valid_team_name(team_name) do
+    team_name_length = String.length(team_name)
+
+    case team_name_length do
+      0 -> false
+      _ -> team_name_length >= 3 and team_name_length <= 20
+    end
+  end
 end

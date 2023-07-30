@@ -12,10 +12,10 @@ defmodule PairDance.E2E.Tests do
     end)
   end
 
-  feature "pair.dance on-boarding journey", %{session: session} do
+  feature "pair.dance journey", %{session: session} do
     Application.put_env(:wallaby, :base_url, PairDanceWeb.Endpoint.url())
 
-    # sign up
+    # sign up and log in
     session
     |> visit("/")
     |> click(Query.text("Login with Google"))
@@ -39,13 +39,13 @@ defmodule PairDance.E2E.Tests do
     |> click(Query.text("Hi, Joe Dough"))
     |> click(Query.text("Log out"))
 
-    # login and redirect to team page directly
+    # redirect to team page directly after login
     session
     |> visit("/comet")
     |> click(Query.text("Login with Google"))
     |> assert_text("Hi, Joe Dough")
 
-    # team settings
+    # change team settings, invite team members
     session
     |> click(Query.text("Team Settings"))
     |> assert_text("joe@dough.com")
@@ -53,11 +53,20 @@ defmodule PairDance.E2E.Tests do
     |> click(data_qa("add-member-submit"))
     |> assert_text("alice@wonderland.com")
 
-    # insights
+    # use insights
     session
     |> visit("/comet")
     |> click(Query.text("Insights"))
     |> assert_text("Your activity")
+
+    # delete the team
+    session
+    |> visit("/comet")
+    |> click(Query.text("Settings"))
+    |> click(Query.text("Delete Team"))
+    |> assert_text("Danger Zone")
+    |> click(Query.text("I want to permanently delete Team Comet"))
+    |> assert_text("Welcome")
 
     # pair rotations - drag & drop is difficult to simulate :/
 

@@ -87,13 +87,13 @@ defmodule PairDanceWeb.CoreComponents do
                   </p>
                 </header>
                 <%= render_slot(@inner_block) %>
-                <div :if={@confirm != [] or @cancel != []} class="ml-6 mb-4 flex items-center gap-5">
+                <div :if={@confirm != [] or @cancel != []} class="mb-4 flex items-center gap-5">
                   <.button
                     :for={confirm <- @confirm}
                     id={"#{@id}-confirm"}
                     phx-click={@on_confirm}
                     phx-disable-with
-                    class="py-2 px-3"
+                    class="py-2 mx-0 bg-red-500 hover:bg-red-700"
                   >
                     <%= render_slot(confirm) %>
                   </.button>

@@ -48,34 +48,57 @@
 
 <h2 class="text-lg mb-4 mt-8">Team management</h2>
 
-<button
-  phx-click={show_modal("delete_team_modal")}
-  data-qa="delete-team"
-  class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
->
-  <Heroicons.trash mini class="h-5 w-5 inline" /> Delete Team
-</button>
+<div class="flex flex-row">
+  <div>
+    <.simple_form :let={f} for={%{}} as={:team} id="edit-team-form" phx-submit="save_team_details">
+      <.input
+        field={{f, :name}}
+        type="text"
+        label="Team name"
+        value={@team.descriptor.name}
+        minlength="3"
+        maxlength="20"
+        width="20"
+      />
+      <:actions>
+        <.button data-qa="new-team-submit" phx-disable-with="Updating...">
+          Save
+        </.button>
+      </:actions>
+    </.simple_form>
+  </div>
+</div>
 
-<.modal id="delete_team_modal" on_confirm="delete_team">
-  <h2 class="text-lg mb-4">Delete Team</h2>
+<div class="mt-16">
+  <button
+    phx-click={show_modal("delete_team_modal")}
+    data-qa="delete-team"
+    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+  >
+    <Heroicons.trash mini class="h-5 w-5 inline" /> <span>Delete Team</span>
+  </button>
 
-  <p>Are you sure you want to delete <strong>Team <%= @team.descriptor.name %></strong>?</p>
+  <.modal id="delete_team_modal" on_confirm="delete_team">
+    <h2 class="text-lg mb-4">Delete Team</h2>
 
-  <p class="my-2">
-    <strong class="uppercase text-sm">Warning</strong>:
-  </p>
+    <p>
+      Are you sure you want to permanently delete <strong>Team <%= @team.descriptor.name %></strong>?
+    </p>
 
-  <ul class="text-sm mb-8">
-    <li>
-      This will delete all team members, tasks and assignments.
-    </li>
-    <li>
-      This action cannot be undone.
-    </li>
-  </ul>
+    <div role="alert" class="mb-8 mt-4">
+      <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+        Danger Zone
+      </div>
+      <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+        <p>
+          This action cannot be undone. All team members, tasks and past assignments will be permanently deleted.
+        </p>
+      </div>
+    </div>
 
-  <:confirm data-qa="delete-team-confirm">
-    Yes, delete Team <%= @team.descriptor.name %>.
-  </:confirm>
-  <:cancel>No, take me back.</:cancel>
-</.modal>
+    <:confirm data-qa="delete-team-confirm">
+      I want to permanently delete Team <%= @team.descriptor.name %>
+    </:confirm>
+    <:cancel>Cancel.</:cancel>
+  </.modal>
+</div>

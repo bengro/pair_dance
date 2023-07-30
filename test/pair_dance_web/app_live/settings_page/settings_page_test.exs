@@ -71,4 +71,22 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
 
     assert redirect_opts.to == "/"
   end
+
+  test "change team name and slug", %{conn: conn, team: team, user: user} do
+    {:ok, view, _} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.descriptor.slug}/settings")
+
+    {_,
+     {_,
+      %{
+        to: redirect_path
+      }}} =
+      view
+      |> form("#edit-team-form", team: %{name: "changed-team"})
+      |> render_submit()
+
+    assert redirect_path == "/changed-team/settings"
+  end
 end
