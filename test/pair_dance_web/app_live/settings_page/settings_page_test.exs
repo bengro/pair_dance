@@ -84,7 +84,7 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
         to: redirect_path
       }}} =
       view
-      |> form("#edit-team-form", team: %{name: "changed-team"})
+      |> form("#edit-team-form", team_form: %{name: "changed-team"})
       |> render_submit()
 
     assert redirect_path == "/changed-team/settings"

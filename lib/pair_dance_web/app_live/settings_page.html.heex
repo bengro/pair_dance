@@ -50,16 +50,22 @@
 
 <div class="flex flex-row">
   <div>
-    <.simple_form :let={f} for={%{}} as={:team} id="edit-team-form" phx-submit="save_team_details">
+    <.simple_form
+      :let={f}
+      for={@team_form}
+      as={:team_form}
+      id="edit-team-form"
+      phx-submit={:save_team_details}
+    >
       <.input
         field={{f, :name}}
         type="text"
         label="Team name"
-        value={@team.descriptor.name}
-        minlength="3"
-        maxlength="20"
+        value={f.params["name"]}
         width="20"
+        errors={@team_form_errors[:name]}
       />
+
       <:actions>
         <.button data-qa="new-team-submit" phx-disable-with="Updating...">
           Save
