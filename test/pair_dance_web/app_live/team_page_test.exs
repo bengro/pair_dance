@@ -40,130 +40,144 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     assert html =~ user.approximate_name
   end
 
-  test "lists all tasks", %{conn: conn, team: team, user: user} do
-    {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+  describe "tasks" do
+    test "create a task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
-    [first_task | _] = team.tasks
-
-    assert html =~ first_task.name
-  end
-
-  test "create a task", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
-
-    view
-    |> form("#new-task-form", task: %{name: "my task name"})
-    |> render_submit()
-
-    assert render(view) =~ "my task name"
-  end
-
-  test "delete a task", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
-    [task | _] = team.tasks
-
-    assert render(view) =~ task.name
-
-    updated_view =
       view
-      |> element("[data-qa=delete-task-#{task.id}]")
-      |> render_click()
+      |> form("#new-task-form", new_task_form: %{name: "my task name"})
+      |> render_submit()
 
-    refute String.contains?(updated_view, task.name)
+      assert render(view) =~ "my task name"
+    end
+
+    test "cannot create an invalid task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+
+      view
+      |> form("#new-task-form", new_task_form: %{name: "1"})
+      |> render_submit()
+
+      assert render(view) =~ "should be at least"
+    end
+
+    test "delete a task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+      [task | _] = team.tasks
+
+      assert render(view) =~ task.name
+
+      updated_view =
+        view
+        |> element("[data-qa=delete-task-#{task.id}]")
+        |> render_click()
+
+      refute String.contains?(updated_view, task.name)
+    end
+
+    test "lists all tasks", %{conn: conn, team: team, user: user} do
+      {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+
+      [first_task | _] = team.tasks
+
+      assert html =~ first_task.name
+    end
   end
 
-  test "assign member to a task", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+  describe "assigments" do
+    test "assign member to a task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
-    [task | _] = team.tasks
+      [task | _] = team.tasks
 
-    payload = %{
-      "userId" => user.id,
-      "newTaskId" => "#{task.id}"
-    }
-
-    view
-    |> element("#available-members")
-    |> render_hook(:reassign, payload)
-
-    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
-
-    {:ok, document} = Floki.parse_document(updated_html)
-
-    assert document
-           |> Floki.find("[data-qa=workstream]")
-           |> Enum.filter(fn el -> Floki.text(el) =~ task.name end)
-           |> Floki.text() =~ user.approximate_name
-  end
-
-  test "unassign member from a task", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
-
-    [task | _] = team.tasks
-
-    view
-    |> element("#available-members")
-    |> render_hook(
-      :reassign,
-      %{
+      payload = %{
         "userId" => user.id,
         "newTaskId" => "#{task.id}"
       }
-    )
 
-    view
-    |> element("#available-members")
-    |> render_hook(
-      :reassign,
-      %{
-        "userId" => user.id,
-        "oldTaskId" => "#{task.id}"
-      }
-    )
+      view
+      |> element("#available-members")
+      |> render_hook(:reassign, payload)
 
-    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+      {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
-    {:ok, document} = Floki.parse_document(updated_html)
+      {:ok, document} = Floki.parse_document(updated_html)
 
-    assert document
-           |> Floki.find("[data-qa=available-members]")
-           |> Floki.text() =~ user.approximate_name
-  end
+      assert document
+             |> Floki.find("[data-qa=workstream]")
+             |> Enum.filter(fn el -> Floki.text(el) =~ task.name end)
+             |> Floki.text() =~ user.approximate_name
+    end
 
-  test "reassign member to another task", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+    test "unassign member from a task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
-    [first_task, second_task] = team.tasks
+      [task | _] = team.tasks
 
-    view
-    |> element("#available-members")
-    |> render_hook(
-      :reassign,
-      %{
-        "userId" => user.id,
-        "newTaskId" => "#{first_task.id}"
-      }
-    )
+      view
+      |> element("#available-members")
+      |> render_hook(
+        :reassign,
+        %{
+          "userId" => user.id,
+          "newTaskId" => "#{task.id}"
+        }
+      )
 
-    view
-    |> element("#available-members")
-    |> render_hook(
-      :reassign,
-      %{
-        "userId" => user.id,
-        "oldTaskId" => "#{first_task.id}",
-        "newTaskId" => "#{second_task.id}"
-      }
-    )
+      view
+      |> element("#available-members")
+      |> render_hook(
+        :reassign,
+        %{
+          "userId" => user.id,
+          "oldTaskId" => "#{task.id}"
+        }
+      )
 
-    {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+      {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
-    {:ok, document} = Floki.parse_document(updated_html)
+      {:ok, document} = Floki.parse_document(updated_html)
 
-    assert document
-           |> Floki.find("[data-qa=workstream]")
-           |> Enum.filter(fn el -> Floki.text(el) =~ second_task.name end)
-           |> Floki.text() =~ user.approximate_name
+      assert document
+             |> Floki.find("[data-qa=available-members]")
+             |> Floki.text() =~ user.approximate_name
+    end
+
+    test "reassign member to another task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+
+      [first_task, second_task] = team.tasks
+
+      view
+      |> element("#available-members")
+      |> render_hook(
+        :reassign,
+        %{
+          "userId" => user.id,
+          "newTaskId" => "#{first_task.id}"
+        }
+      )
+
+      view
+      |> element("#available-members")
+      |> render_hook(
+        :reassign,
+        %{
+          "userId" => user.id,
+          "oldTaskId" => "#{first_task.id}",
+          "newTaskId" => "#{second_task.id}"
+        }
+      )
+
+      {:ok, _view, updated_html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+
+      {:ok, document} = Floki.parse_document(updated_html)
+
+      assert document
+             |> Floki.find("[data-qa=workstream]")
+             |> Enum.filter(fn el -> Floki.text(el) =~ second_task.name end)
+             |> Floki.text() =~ user.approximate_name
+    end
   end
 
   describe "member availability" do
