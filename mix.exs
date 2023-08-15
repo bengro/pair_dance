@@ -39,7 +39,7 @@ defmodule PairDance.MixProject do
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
       {:finch, "~> 0.16"},
       {:floki, ">= 0.30.0", only: :test},
-      {:gettext, "~> 0.22.2"},
+      {:gettext, "~> 0.23.0"},
       {:heroicons, "~> 0.5.3"},
       {:jason, "~> 1.4"},
       {:phoenix, "~> 1.7.6", override: true},
