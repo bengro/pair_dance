@@ -29,7 +29,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
 
   @impl Team.Repository
   def find(id) do
-    tasks_query = from t in TaskEntity, where: t.team_id == ^id
+    tasks_query = from t in TaskEntity, where: t.team_id == ^id, order_by: t.inserted_at
 
     tasks = Repo.all(tasks_query) |> Enum.map(&to_task_descriptor/1)
 
