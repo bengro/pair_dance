@@ -149,6 +149,18 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
       assert updated_team == TeamRepository.find(team.descriptor.id)
     end
 
+    test "update task name" do
+      {:ok, team} = TeamRepository.create("comet")
+      {:ok, team_with_task} = TeamRepository.add_task(team, "login with google")
+
+      task = Enum.at(team_with_task.tasks, 0) |> struct(%{name: "new-task-name"})
+
+      {:ok, updated_team} = TeamRepository.update_task(team, task)
+
+      assert [%Task.Descriptor{name: name}] = updated_team.tasks
+      assert name == "new-task-name"
+    end
+
     test "list all tasks" do
       team =
         create_team(%{

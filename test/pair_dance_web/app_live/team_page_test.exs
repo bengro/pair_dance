@@ -51,6 +51,22 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
       assert render(view) =~ "my task name"
     end
 
+    test "edit a task", %{conn: conn, team: team, user: user} do
+      [task | _] = team.tasks
+
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+
+      view
+      |> element("[data-qa=action-to-edit-task-#{task.id}]")
+      |> render_click()
+
+      view
+      |> form("#edit-task-form-#{task.id}", edit_task_form: %{name: "Much better named task"})
+      |> render_submit()
+
+      assert render(view) =~ "Much better named task"
+    end
+
     test "cannot create an invalid task", %{conn: conn, team: team, user: user} do
       {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
@@ -67,12 +83,11 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
 
       assert render(view) =~ task.name
 
-      updated_view =
-        view
-        |> element("[data-qa=delete-task-#{task.id}]")
-        |> render_click()
+      view
+      |> element("[data-qa=delete-task-#{task.id}]")
+      |> render_click()
 
-      refute String.contains?(updated_view, task.name)
+      refute render(view) =~ task.name
     end
 
     test "lists all tasks", %{conn: conn, team: team, user: user} do

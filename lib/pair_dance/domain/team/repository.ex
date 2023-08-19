@@ -26,6 +26,8 @@ defmodule PairDance.Domain.Team.Repository do
 
   @callback add_task(Team.t(), task_name()) :: {:ok, Team.t()}
 
+  @callback update_task(Team.t(), Task.Descriptor.t()) :: {:ok, Team.t()}
+
   @callback get_tasks(Team.t()) :: {:ok, list(Task.t())}
 
   @callback delete_task(Team.t(), Task.Descriptor.t()) :: {:ok, Team.t()}

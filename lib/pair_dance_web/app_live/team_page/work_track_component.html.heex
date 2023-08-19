@@ -1,14 +1,12 @@
 <div class="bg-white rounded-lg grow min-h-[130px]">
   <div class="flex flex-row gap-8 bg-white h-full">
     <div class="w-60 text-center flex flex-col justify-center bg-gray-100">
-      <%= @task.name %>
-      <button
-        phx-click="delete_task"
-        data-qa={"delete-task-#{@task.id}"}
-        phx-value-task_id={@task.id}
-      >
-        <Heroicons.trash mini class="h-5 w-5 inline" />
-      </button>
+      <.live_component
+        id={"task-tile-#{@task.id}"}
+        module={PairDanceWeb.AppLive.TeamPage.EditableTask}
+        task={@task}
+        team={@team}
+      />
     </div>
     <div
       id={"#{@id}-assignments"}

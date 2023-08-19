@@ -21,13 +21,17 @@ defmodule PairDance.E2E.Tests do
     |> click(Query.text("Login with Google"))
     |> assert_text("Hi, Joe Dough")
 
-    # create a team and task
+    # create a team
     session
     |> click(Query.text("Create Team"))
     |> assert_text("Team name")
     |> fill_in(Query.css("#new-team-form_name"), with: "Comet")
     |> click(data_qa("new-team-submit"))
     |> assert_text("Comet")
+
+    # create task
+    session
+    |> visit("/comet")
     |> fill_in(Query.css("#new-task-form_name"), with: "Refactor the code")
     |> click(data_qa("new-task-submit"))
     |> assert_text("Refactor the code")

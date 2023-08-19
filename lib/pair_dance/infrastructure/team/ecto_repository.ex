@@ -132,6 +132,16 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   end
 
   @impl Team.Repository
+  def update_task(team, task_descriptor) do
+    {:ok, _} =
+      %TaskEntity{id: task_descriptor.id}
+      |> TaskEntity.changeset(%{team_id: team.descriptor.id, name: task_descriptor.name})
+      |> Repo.update()
+
+    {:ok, find(team.descriptor.id)}
+  end
+
+  @impl Team.Repository
   def get_tasks(team) do
     id = team.descriptor.id
 

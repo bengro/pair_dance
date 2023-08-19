@@ -1,0 +1,50 @@
+<div>
+  <%= if @edit_mode == false do %>
+    <p
+      phx-target={@myself}
+      phx-click={JS.push("edit")}
+      phx-value-task_id={@task.id}
+      data-qa={"action-to-edit-task-#{@task.id}"}
+      class="cursor-pointer"
+    >
+      <%= @task.name %>
+    </p>
+    <button
+      phx-click="delete_task"
+      phx-value-task_id={@task.id}
+      phx-target={@myself}
+      data-qa={"delete-task-#{@task.id}"}
+      class="mt-1"
+    >
+      <Heroicons.trash mini class="h-5 w-5 inline" />
+    </button>
+  <% else %>
+    <div class="flex flex-row">
+      <.simple_form
+        :let={f}
+        phx-submit="save"
+        phx-target={@myself}
+        id={"edit-task-form-#{@task.id}"}
+        for={@edit_task_form}
+        as={:edit_task_form}
+      >
+        <.input
+          field={{f, :name}}
+          type="text"
+          label="Task name"
+          errors={@edit_task_form_errors[:name]}
+          phx-click-away={JS.push("cancel_edit")}
+          phx-target={@myself}
+          phx-window-keydown={JS.push("cancel_edit")}
+          phx-key="escape"
+        />
+        <button data-qa="edit-task-submit">
+          <Heroicons.check mini class="h-5 w-5 inline" />
+        </button>
+        <button phx-click="cancel_edit" phx-target={@myself} type="button">
+          <Heroicons.x_circle mini class="h-5 w-5 inline" />
+        </button>
+      </.simple_form>
+    </div>
+  <% end %>
+</div>

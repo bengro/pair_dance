@@ -26,19 +26,6 @@ defmodule PairDanceWeb.AppLive.TeamPage do
   end
 
   @impl true
-  def handle_event("delete_task", %{"task_id" => task_id}, socket) do
-    team = socket.assigns.team
-    task = Enum.find(team.tasks, fn task -> task.id == String.to_integer(task_id) end)
-
-    {:ok, updated_team} = TeamRepository.delete_task(team, task)
-    EventBus.broadcast(%{team: updated_team})
-
-    {:noreply,
-     socket
-     |> assign(:team, updated_team)}
-  end
-
-  @impl true
   @doc """
   Handler receives broadcasts from various place where team state is updated. E.g. rotations changed, task added/deleted.
   It then checks whether the event is relevant for the currently viewed team page. If so, it updates the team state.
