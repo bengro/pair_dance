@@ -3,10 +3,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.EditableTask do
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.EventBus
-
-  @types %{
-    name: :string
-  }
+  alias PairDance.Domain.Team.Task
 
   @impl true
   def update(assigns, socket) do
@@ -41,12 +38,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.EditableTask do
         %{"edit_task_form" => %{"name" => task_name}},
         socket
       ) do
-    changeset =
-      {%{name: ""}, @types}
-      |> Ecto.Changeset.cast(%{name: task_name}, [:name])
-      |> Ecto.Changeset.validate_required(:name)
-      |> Ecto.Changeset.validate_length(:name, min: 4, max: 20)
-
+    changeset = Task.changeset(task_name)
     edit_task_form = Phoenix.HTML.FormData.to_form(changeset, as: "edit_task_form")
 
     case changeset.valid? do
@@ -113,13 +105,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.EditableTask do
   end
 
   defp task_edit_form(task) do
-    changeset =
-      {
-        %{name: task.name},
-        @types
-      }
-      |> Ecto.Changeset.cast(%{}, [:name])
-
+    changeset = Task.changeset(task.name)
     Phoenix.HTML.FormData.to_form(changeset, as: "edit_task_form")
   end
 end

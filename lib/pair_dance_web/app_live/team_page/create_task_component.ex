@@ -2,10 +2,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
   use PairDanceWeb, :live_component
   alias PairDance.Infrastructure.EventBus
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
-
-  @types %{
-    name: :string
-  }
+  alias PairDance.Domain.Team.Task
 
   @impl true
   def render(assigns) do
@@ -37,13 +34,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
 
   @impl true
   def mount(socket) do
-    changeset =
-      {
-        %{name: ""},
-        @types
-      }
-      |> Ecto.Changeset.cast(%{}, [:name])
-
+    changeset = Task.changeset("")
     new_task_form = Phoenix.HTML.FormData.to_form(changeset, as: "new_task_form")
 
     assigns =
@@ -66,12 +57,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
   end
 
   def handle_event("save", %{"new_task_form" => %{"name" => task_name}}, socket) do
-    changeset =
-      {%{name: ""}, @types}
-      |> Ecto.Changeset.cast(%{name: task_name}, [:name])
-      |> Ecto.Changeset.validate_required(:name)
-      |> Ecto.Changeset.validate_length(:name, min: 4, max: 20)
-
+    changeset = Task.changeset(task_name)
     new_task_form = Phoenix.HTML.FormData.to_form(changeset, as: "new_task_form")
 
     case changeset.valid? do
