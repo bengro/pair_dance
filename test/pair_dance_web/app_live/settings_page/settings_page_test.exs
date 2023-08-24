@@ -18,58 +18,59 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
 
   setup [:setup_data]
 
-  test "invite a new member", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} =
-      conn
-      |> impersonate(user)
-      |> live(~p"/#{team.descriptor.slug}/settings")
+  describe "member management" do
+    test "invite a new member", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} =
+        conn
+        |> impersonate(user)
+        |> live(~p"/#{team.descriptor.slug}/settings")
 
-    view
-    |> form("#add-member-form", user: %{email: "new-member@gmail.com"})
-    |> render_submit()
-
-    assert render(view) =~ "new-member@gmail.com"
-  end
-
-  test "delete team member", %{conn: conn, team: team, user: user} do
-    to_be_deleted_member = member_fixture(team, "someone@world.com")
-    member_fixture(team, "someone-else@world.com")
-
-    {:ok, view, _} =
-      conn
-      |> impersonate(user)
-      |> live(~p"/#{team.descriptor.slug}/settings")
-
-    view
-    |> element("[data-qa=member-#{to_be_deleted_member.id}]")
-    |> render_click()
-
-    refute render(view) =~ "someone@world.com"
-  end
-
-  test "shows that current user has never logged in", %{conn: conn, team: team, user: user} do
-    {:ok, _, html} =
-      conn
-      |> impersonate(user)
-      |> live(~p"/#{team.descriptor.slug}/settings")
-
-    {:ok, document} = Floki.parse_document(html)
-
-    assert length(document |> Floki.find("[data-qa=user-has-never-logged-in]")) == 1
-  end
-
-  test "delete team", %{conn: conn, team: team, user: user} do
-    {:ok, view, _} =
-      conn
-      |> impersonate(user)
-      |> live(~p"/#{team.descriptor.slug}/settings")
-
-    {:error, {:live_redirect, redirect_opts}} =
       view
-      |> element("#delete_team_modal-confirm")
+      |> form("#add-member-form", new_member_form: %{email: "new-member@gmail.com"})
+      |> render_submit()
+
+      assert render(view) =~ "new-member@gmail.com"
+    end
+
+    test "invites must be a legit email", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} =
+        conn
+        |> impersonate(user)
+        |> live(~p"/#{team.descriptor.slug}/settings")
+
+      view
+      |> form("#add-member-form", new_member_form: %{email: "some name"})
+      |> render_submit()
+
+      assert render(view) =~ "invalid format"
+    end
+
+    test "delete team member", %{conn: conn, team: team, user: user} do
+      to_be_deleted_member = member_fixture(team, "someone@world.com")
+      member_fixture(team, "someone-else@world.com")
+
+      {:ok, view, _} =
+        conn
+        |> impersonate(user)
+        |> live(~p"/#{team.descriptor.slug}/settings")
+
+      view
+      |> element("[data-qa=member-#{to_be_deleted_member.id}]")
       |> render_click()
 
-    assert redirect_opts.to == "/"
+      refute render(view) =~ "someone@world.com"
+    end
+
+    test "shows that current user has never logged in", %{conn: conn, team: team, user: user} do
+      {:ok, _, html} =
+        conn
+        |> impersonate(user)
+        |> live(~p"/#{team.descriptor.slug}/settings")
+
+      {:ok, document} = Floki.parse_document(html)
+
+      assert length(document |> Floki.find("[data-qa=user-has-never-logged-in]")) == 1
+    end
   end
 
   describe "team management" do
@@ -102,6 +103,20 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
       |> render_submit()
 
       assert render(view) =~ "should be at least"
+    end
+
+    test "delete team", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} =
+        conn
+        |> impersonate(user)
+        |> live(~p"/#{team.descriptor.slug}/settings")
+
+      {:error, {:live_redirect, redirect_opts}} =
+        view
+        |> element("#delete_team_modal-confirm")
+        |> render_click()
+
+      assert redirect_opts.to == "/"
     end
   end
 end

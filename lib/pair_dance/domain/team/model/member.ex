@@ -13,4 +13,16 @@ defmodule PairDance.Domain.Team.Member do
           available: boolean,
           last_login: Phoenix.HTML.Safe.DateTime.t()
         }
+
+  def changeset(email) do
+    types = %{
+      email: :string
+    }
+
+    {%{email: ""}, types}
+    |> Ecto.Changeset.cast(%{email: email}, [:email])
+    |> Ecto.Changeset.validate_required(:email)
+    |> Ecto.Changeset.validate_format(:email, ~r/@/)
+    |> Ecto.Changeset.validate_length(:email, min: 5, max: 150)
+  end
 end
