@@ -2,7 +2,7 @@
     <section class="flex grow flex-col gap-2">
         <%= for {task, index} <- Enum.with_index(@current_tasks) do %>
         <.live_component
-        id={index}
+        id={task.id}
         module={PairDanceWeb.AppLive.TeamPage.WorkTrackComponent}
         task={task}
         team={@team}
