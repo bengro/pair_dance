@@ -5,7 +5,7 @@
       phx-click={JS.push("edit")}
       phx-value-task_id={@task.id}
       data-qa={"action-to-edit-task-#{@task.id}"}
-      class="cursor-pointer"
+      class="cursor-pointer hover:underline hover:decoration-dashed"
     >
       <%= @task.name %>
     </p>
