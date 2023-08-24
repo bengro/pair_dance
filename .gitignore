@@ -28,6 +28,9 @@ pair_dance-*.tar
 # Ignore digested assets cache.
 /priv/static/cache_manifest.json
 
+# os x files
+priv/.DS_Store
+
 # In case you use Node.js/npm, you want to ignore these.
 npm-debug.log
 /assets/node_modules/

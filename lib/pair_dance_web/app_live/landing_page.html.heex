@@ -3,21 +3,65 @@
   <p>Create a team, invite your team members and make most out of pair programming. For free.</p>
   <.link phx-click={show_modal("create_team_modal")}>
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-5">
-      <Heroicons.plus_circle mini class="h-5 w-5 inline" /> <span>Create Team</span>
+      <Heroicons.plus_circle mini class="h-5 w-5 inline" />
+      <span>Create Team</span>
     </button>
   </.link>
 <% else %>
   <p class="my-3">
-    Pair.dance helps XP teams to make pair programming most effective. Pairing up has never been easier.
+    <strong>Do you want to get most out of pair programming?</strong>
+    But for some reason you have sticky pairs, your team suffers from context
+    silos, and you lost the overview of who worked on what.
   </p>
+  <div class="text-center my-10">
+    <h3 class="text-2xl mb-3">Sign up to Pair Dance today, for free.</h3>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-5">
+      <.link href={~p"/auth/google"}>Login with Google</.link>
+    </button>
+  </div>
 
-  <ul class="list-disc ml-8">
-    <li>Optimally pair up for the tasks at hand</li>
-    <li>Detect patterns, and prevent silos</li>
-    <li>Maximise context spread</li>
-  </ul>
+  <div class="my-10">
+    <h3 class="text-center text-2xl mb-3">
+      Facilitate pairing to most effectively leverage pair programming.
+    </h3>
+    <div class="flex flex-row">
+      <div class="w-3/5">
+        <img
+          src="/images/pair-dance-screenshot.jpg"
+          alt="Pair Dance shows all in-flight tasks and the assigned team members"
+          class="px-10"
+        />
+      </div>
 
-  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-5">
-    <.link href={~p"/auth/google"}>Login with Google</.link>
-  </button>
+      <div class="w-2/5 flex items-center">
+        <ul class="list-disc">
+          <li>Add and modify current tasks at hand</li>
+          <li>Simply drag and drop team members onto tasks</li>
+          <li>Mark people available and unavailable for pairing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="my-10">
+    <h3 class="text-center text-2xl mb-3">
+      Gain actionable insights to improve team collaboration and performance.
+    </h3>
+    <div class="flex flex-row">
+      <div class="w-2/5 flex items-center">
+        <ul class="list-disc">
+          <li>Prevent sticky pairs</li>
+          <li>Prevent task silos</li>
+          <li>Proactively pair up people that tend to not pair up</li>
+        </ul>
+      </div>
+      <div class="w-3/5 flex">
+        <img
+          src="/images/pair-insights-screenshot.jpg"
+          alt="Pair Dance shows all in-flight tasks and the assigned team members"
+          class="h-[300px]"
+        />
+      </div>
+    </div>
+  </div>
 <% end %>

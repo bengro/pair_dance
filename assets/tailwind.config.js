@@ -15,6 +15,9 @@ module.exports = {
         crown: "#fdb833ff",
       },
     },
+    height: {
+      "300px": "300px",
+    },
     minHeight: {
       "130px": "130px",
     },
