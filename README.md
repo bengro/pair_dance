@@ -84,6 +84,10 @@ mix archive.install hex phx_new
 - Associations between tables [tutorial](https://alchemist.camp/episodes/ecto-beginner-basic-associations)
 - Set up seeds, e.g. like in [this project](https://github.com/space-rocket/Elixir-Phoenix-Foreign-Key-Example)
 
+### CI insights
+
+[![CircleCI](https://dl.circleci.com/insights-snapshot/gh/TresAmigosLtd/pair_dance/main/build/badge.svg?window=30d)](https://app.circleci.com/insights/github/TresAmigosLtd/pair_dance/workflows/build/overview?branch=main&reporting-window=last-30-days&insights-snapshot=true)
+
 ### Learn more about Phoenix
 
 - Official website: https://www.phoenixframework.org/
