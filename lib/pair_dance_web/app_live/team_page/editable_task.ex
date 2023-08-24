@@ -6,16 +6,21 @@ defmodule PairDanceWeb.AppLive.TeamPage.EditableTask do
   alias PairDance.Domain.Team.Task
 
   @impl true
-  def update(assigns, socket) do
-    team = assigns.team
-    task = assigns.task
-    id = assigns.id
+  def mount(socket) do
+    {:ok, socket |> assign(:edit_mode, false)}
+  end
+
+  @impl true
+  def update(params, socket) do
+    team = params.team
+    task = params.task
+    id = params.id
 
     assigns =
       socket
       |> assign(:task, task)
       |> assign(:id, id)
-      |> assign(:edit_mode, false)
+      |> assign(:edit_mode, socket.assigns.edit_mode)
       |> assign(:team, team)
       |> assign(:edit_task_form, task_edit_form(task))
       |> assign(:edit_task_form_errors, %{name: []})
