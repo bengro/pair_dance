@@ -93,6 +93,3 @@ workflows:
       - prune_unused_cloud_run_revisions:
           requires:
             - deploy
-  build_ci:
-    jobs:
-      - build_app
