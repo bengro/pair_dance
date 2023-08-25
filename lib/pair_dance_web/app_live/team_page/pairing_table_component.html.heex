@@ -1,6 +1,6 @@
 <div class="flex flex-row gap-2" data-qa="pairing-table" id="pairing-table">
     <section class="flex grow flex-col gap-2">
-        <%= for {task, index} <- Enum.with_index(@current_tasks) do %>
+        <%= for {task, _index} <- Enum.with_index(@current_tasks) do %>
         <.live_component
         id={task.id}
         module={PairDanceWeb.AppLive.TeamPage.WorkTrackComponent}

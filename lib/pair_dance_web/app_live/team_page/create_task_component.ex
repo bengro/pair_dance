@@ -56,6 +56,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
     {:ok, assigns}
   end
 
+  @impl true
   def handle_event("save", %{"new_task_form" => %{"name" => task_name}}, socket) do
     changeset = Task.changeset(task_name)
     new_task_form = Phoenix.HTML.FormData.to_form(changeset, as: "new_task_form")
