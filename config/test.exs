@@ -48,3 +48,9 @@ config :ueberauth, Ueberauth,
   providers: [
     google: {PairDance.TestSupport.FakeGoogleAuth, []}
   ]
+
+# use fake jira service
+IO.puts("Use fake jira client")
+
+config :pair_dance,
+  jira_client: PairDance.Infrastructure.Jira.FakeJiraClient
