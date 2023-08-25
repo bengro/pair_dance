@@ -1,4 +1,4 @@
-defmodule PairDance.Infrastructure.WorkLog.EctoService do
+defmodule PairDance.Infrastructure.Insights.EctoService do
   alias PairDance.Infrastructure.Team.MemberEntity
   alias PairDance.Infrastructure.Team.AssignmentEntity
   alias PairDance.Infrastructure.Team.TaskEntity
@@ -7,7 +7,7 @@ defmodule PairDance.Infrastructure.WorkLog.EctoService do
   import Ecto.Query, warn: false
   import PairDance.Infrastructure.EntityConverters
 
-  @behaviour PairDance.Domain.WorkLog.Service
+  @behaviour PairDance.Domain.Insights.Service
 
   def get_assigned_tasks_by_user(user, team) do
     user_id = user.id

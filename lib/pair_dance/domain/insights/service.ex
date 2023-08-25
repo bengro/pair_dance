@@ -1,4 +1,4 @@
-defmodule PairDance.Domain.WorkLog.Service do
+defmodule PairDance.Domain.Insights.Service do
   alias PairDance.Domain.Team
   alias PairDance.Domain.User
   alias PairDance.Domain.Team.AssignedTask

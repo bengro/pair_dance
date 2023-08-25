@@ -1,4 +1,4 @@
-defmodule PairDance.Domain.WorkLog.Calendar.Week do
+defmodule PairDance.Domain.Insights.Calendar.Week do
   alias __MODULE__
 
   @enforce_keys [:start_date, :num_days, :task_ids]

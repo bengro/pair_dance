@@ -1,8 +1,8 @@
-defmodule PairDance.Domain.WorkLog.Calendar.CalendarTest do
+defmodule PairDance.Domain.Insights.Calendar.CalendarTest do
   use PairDance.DataCase
 
-  alias PairDance.Domain.WorkLog.Calendar
-  alias PairDance.Domain.WorkLog.Calendar.Week
+  alias PairDance.Domain.Insights.Calendar
+  alias PairDance.Domain.Insights.Calendar.Week
   alias PairDance.Domain.Team.Model.AssignedTask
   alias PairDance.Domain.Team.AssignedTask
   alias PairDance.Domain.Team.Task

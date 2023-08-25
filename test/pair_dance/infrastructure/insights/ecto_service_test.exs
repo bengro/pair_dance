@@ -1,8 +1,8 @@
-defmodule PairDance.Domain.WorkLog.ServiceTest do
+defmodule PairDance.Domain.Insights.ServiceTest do
   use PairDance.DataCase
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
-  alias PairDance.Infrastructure.WorkLog.EctoService, as: WorkLogService
+  alias PairDance.Infrastructure.Insights.EctoService, as: InsightService
 
   import PairDance.TeamsFixtures
 
@@ -17,7 +17,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("closed beta", "ana")
 
       {:ok, assigned_tasks} =
-        WorkLogService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
+        InsightService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
 
       task_names =
         assigned_tasks
@@ -36,7 +36,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> delete_assignment("fedramp", "ana")
 
       {:ok, assignments} =
-        WorkLogService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
+        InsightService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
 
       assert length(assignments) == 1
     end
@@ -49,7 +49,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
       team2 = create_team(%{member_names: ["ana"], task_names: []})
 
       {:ok, assignments} =
-        WorkLogService.get_assigned_tasks_by_user(Enum.at(team2.members, 0).user, team2)
+        InsightService.get_assigned_tasks_by_user(Enum.at(team2.members, 0).user, team2)
 
       assert length(assignments) == 0
     end
@@ -65,7 +65,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("fedramp", "ana")
 
       {:ok, assignments} =
-        WorkLogService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
+        InsightService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
 
       assert length(assignments) == 2
     end
@@ -81,7 +81,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
       TeamRepository.delete_task(team, Enum.at(team.tasks, 0))
 
       {:ok, assignments} =
-        WorkLogService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
+        InsightService.get_assigned_tasks_by_user(Enum.at(team.members, 0).user, team)
 
       assert length(assignments) == 1
     end
@@ -99,7 +99,7 @@ defmodule PairDance.Domain.WorkLog.ServiceTest do
         |> create_assignment("fedramp", "bob")
         |> create_assignment("UI", "bob")
 
-      {:ok, assignments} = WorkLogService.get_assigned_members_by_task(Enum.at(team.tasks, 0))
+      {:ok, assignments} = InsightService.get_assigned_members_by_task(Enum.at(team.tasks, 0))
 
       assert length(assignments) == 2
 

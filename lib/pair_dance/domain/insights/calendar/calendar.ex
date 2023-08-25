@@ -1,7 +1,7 @@
-defmodule PairDance.Domain.WorkLog.Calendar do
+defmodule PairDance.Domain.Insights.Calendar do
   alias __MODULE__
 
-  alias PairDance.Domain.WorkLog.Calendar.Week
+  alias PairDance.Domain.Insights.Calendar.Week
 
   @enforce_keys [:weeks]
   defstruct [:weeks]

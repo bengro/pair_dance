@@ -1,10 +1,10 @@
-defmodule PairDance.Domain.WorkLog.AssignedTaskSummaryTest do
+defmodule PairDance.Domain.Insights.AssignedTaskSummaryTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.Team.Task
   alias PairDance.Domain.Team.TimeRange
   alias PairDance.Domain.Team.AssignedTask
-  alias PairDance.Domain.WorkLog.AssignedTaskSummary
+  alias PairDance.Domain.Insights.AssignedTaskSummary
 
   test "lists every task" do
     task1 = a_task(1)

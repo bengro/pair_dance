@@ -1,4 +1,4 @@
-defmodule PairDance.Domain.WorkLog.AssignedTaskSummary do
+defmodule PairDance.Domain.Insights.AssignedTaskSummary do
   alias __MODULE__
 
   alias PairDance.Domain.Team.TimeRange
