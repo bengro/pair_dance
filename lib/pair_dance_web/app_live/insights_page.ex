@@ -5,7 +5,7 @@ defmodule PairDanceWeb.AppLive.InsightsPage do
   alias PairDance.Infrastructure.Insights.EctoService, as: WorkLogService
   alias PairDance.Domain.Insights.Calendar
 
-  import PairDanceWeb.InsightComponents
+  import PairDanceWeb.AppLive.InsightsPage.Components
 
   @impl true
   def mount(%{"slug" => slug}, session, socket) do
