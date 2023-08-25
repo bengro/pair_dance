@@ -4,6 +4,6 @@ defmodule PairDance.Infrastructure.Jira.JiraTicket do
 
   @type t() :: %__MODULE__{
           id: integer,
-          name: String.t(),
+          name: String.t()
         }
 end
