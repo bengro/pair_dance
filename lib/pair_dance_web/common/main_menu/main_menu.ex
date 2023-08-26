@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.MainMenu do
+defmodule PairDanceWeb.Common.MainMenu do
   use PairDanceWeb, :live_component
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository

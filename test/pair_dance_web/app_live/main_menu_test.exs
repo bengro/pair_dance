@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.MainMenuTest do
+defmodule PairDanceWeb.Common.MainMenuTest do
   use PairDanceWeb.ConnCase
 
   import Phoenix.LiveViewTest

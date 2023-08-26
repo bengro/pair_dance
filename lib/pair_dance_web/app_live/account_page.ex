@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.App.AccountPage do
+defmodule PairDanceWeb.AppLive.AccountPage do
   use PairDanceWeb, :live_view
 
   @impl true

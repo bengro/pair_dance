@@ -4,7 +4,7 @@
   </.link>
   <%= if @current_user do %>
     <div>
-      <.live_component module={PairDanceWeb.MainMenu} id="main_menu" current_user={@current_user} />
+      <.live_component module={PairDanceWeb.Common.MainMenu} id="main_menu" current_user={@current_user} />
     </div>
   <% end %>
 </header>

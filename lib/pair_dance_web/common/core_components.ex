@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.CoreComponents do
+defmodule PairDanceWeb.Common.CoreComponents do
   @moduledoc """
   Provides core UI components.
 

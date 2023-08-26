@@ -41,7 +41,7 @@ defmodule PairDanceWeb do
       use Phoenix.Controller,
         namespace: PairDanceWeb,
         formats: [:html, :json],
-        layouts: [html: PairDanceWeb.Layouts]
+        layouts: [html: PairDanceWeb.Common.Layouts]
 
       import Plug.Conn
       import PairDanceWeb.Gettext
@@ -53,7 +53,7 @@ defmodule PairDanceWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {PairDanceWeb.Layouts, :app}
+        layout: {PairDanceWeb.Common.Layouts, :app}
 
       unquote(html_helpers())
     end
@@ -85,7 +85,7 @@ defmodule PairDanceWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
-      import PairDanceWeb.CoreComponents
+      import PairDanceWeb.Common.CoreComponents
       import PairDanceWeb.Gettext
 
       # Shortcut for generating JS commands

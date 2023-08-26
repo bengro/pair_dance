@@ -40,7 +40,7 @@ defmodule PairDanceWeb.Router do
   end
 
   pipeline :app do
-    plug :put_root_layout, {PairDanceWeb.Layouts, :root}
+    plug :put_root_layout, {PairDanceWeb.Common.Layouts, :root}
   end
 
   pipeline :team do
