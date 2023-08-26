@@ -1,4 +1,4 @@
-defmodule PairDance.E2E.Tests do
+defmodule PairDanceWebTest do
   use PairDance.E2eCase
 
   setup_all do
