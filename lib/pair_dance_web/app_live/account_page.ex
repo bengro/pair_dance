@@ -1,6 +1,5 @@
-defmodule PairDanceWeb.AppLive.AccountPage do
+defmodule PairDanceWeb.App.AccountPage do
   use PairDanceWeb, :live_view
-  import PairDanceWeb.Auth.AuthHelpers
 
   @impl true
   def mount(_params, session, socket) do
@@ -12,5 +11,10 @@ defmodule PairDanceWeb.AppLive.AccountPage do
       |> assign(:current_user, user)
 
     {:ok, assigns}
+  end
+
+  defp assign_user(socket, session) do
+    user = session["current_user"]
+    Phoenix.Component.assign(socket, :user, user)
   end
 end
