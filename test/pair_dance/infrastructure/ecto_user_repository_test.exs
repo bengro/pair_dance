@@ -3,6 +3,9 @@ defmodule PairDance.Infrastructure.User.EctoRepositoryTest do
 
   alias PairDance.Domain.User
   alias PairDance.Infrastructure.User.EctoRepository, as: Repository
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
+
+  import PairDance.TeamsFixtures
 
   test "create a user" do
     {:ok, user} = Repository.create_from_email("bob@example.com")
@@ -65,5 +68,21 @@ defmodule PairDance.Infrastructure.User.EctoRepositoryTest do
     [%User{email: email}, %User{}] = Repository.find_all()
 
     assert String.starts_with?(email, "user")
+  end
+
+  test "last active team id can be set, and is null when team is deleted" do
+    team = create_team(%{member_names: ["ana"], task_names: ["my task"]})
+
+    {:ok, user} = Repository.create_from_email("user1@me.com")
+
+    {:ok, user_with_active_team} =
+      Repository.update(user, %{last_active_team_id: team.descriptor.id})
+
+    assert user_with_active_team.last_active_team_id == team.descriptor.id
+
+    TeamRepository.delete(team.descriptor.id)
+
+    user_with_active_team = Repository.find_by_id(user_with_active_team.id)
+    assert user_with_active_team.last_active_team_id == nil
   end
 end

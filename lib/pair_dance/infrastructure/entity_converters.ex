@@ -46,6 +46,7 @@ defmodule PairDance.Infrastructure.EntityConverters do
       approximate_name: Enum.at(String.split(entity.email, "@"), 0),
       avatar: entity.avatar,
       last_login: entity.last_login,
+      last_active_team_id: entity.last_active_team_id,
       initials:
         case entity.name do
           nil -> nil

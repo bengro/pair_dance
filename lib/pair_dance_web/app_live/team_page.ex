@@ -3,13 +3,15 @@ defmodule PairDanceWeb.AppLive.TeamPage do
 
   alias PairDance.Infrastructure.EventBus
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
+  alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
 
   @impl true
   def mount(%{"slug" => slug}, session, socket) do
     EventBus.subscribe()
 
-    user = session["current_user"]
     team = TeamRepository.find_by_slug?(slug)
+    session_user = session["current_user"]
+    user = UserRepository.find_by_id(session_user.id) |> mark_current_team_as_last_active(team)
 
     assigns =
       socket
@@ -26,15 +28,20 @@ defmodule PairDanceWeb.AppLive.TeamPage do
   end
 
   @impl true
-  @doc """
-  Handler receives broadcasts from various place where team state is updated. E.g. rotations changed, task added/deleted.
-  It then checks whether the event is relevant for the currently viewed team page. If so, it updates the team state.
-  """
   def handle_info(%{team: team}, socket) do
     if team.descriptor.id == socket.assigns.team.descriptor.id do
       {:noreply, assign(socket, :team, team)}
     else
       {:noreply, socket}
+    end
+  end
+
+  defp mark_current_team_as_last_active(user, team) do
+    if user.last_active_team_id != team.descriptor.id do
+      {:ok, user} = UserRepository.update(user, %{last_active_team_id: team.descriptor.id})
+      user
+    else
+      user
     end
   end
 end
