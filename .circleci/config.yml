@@ -77,7 +77,11 @@ jobs:
 workflows:
   build:
     jobs:
-      - build_app
+      - build_app:
+          filters:
+            branches:
+              only:
+                - main
       - build_image:
           requires:
             - build_app
@@ -93,3 +97,10 @@ workflows:
       - prune_unused_cloud_run_revisions:
           requires:
             - deploy
+  ci:
+    jobs:
+      - build_app:
+          filters:
+            branches:
+              ignore:
+                - main
