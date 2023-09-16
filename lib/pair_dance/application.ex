@@ -17,9 +17,10 @@ defmodule PairDance.Application do
       # Start Finch
       {Finch, name: PairDance.Finch},
       # Start the Endpoint (http/https)
-      PairDanceWeb.Endpoint
+      PairDanceWeb.Endpoint,
       # Start a worker by calling: PairDance.Worker.start_link(arg)
       # {PairDance.Worker, arg}
+      PairDance.Infrastructure.Encrypted.Vault
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

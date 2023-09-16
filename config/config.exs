@@ -10,6 +10,14 @@ import Config
 config :pair_dance,
   ecto_repos: [PairDance.Infrastructure.Repo]
 
+config :pair_dance, PairDance.Infrastructure.Encrypted.Vault,
+  json_library: Jason,
+  ciphers: [
+    default:
+      {Cloak.Ciphers.AES.GCM,
+       tag: "AES.GCM.V1", key: Base.decode64!("v4/ce6XFAFfNYSp/8Oi0wzV4McO6XUuDO1/hrtiNwYs=")}
+  ]
+
 # Configures the endpoint
 config :pair_dance, PairDanceWeb.Endpoint,
   url: [host: "localhost"],

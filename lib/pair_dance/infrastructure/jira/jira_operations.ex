@@ -1,8 +1,12 @@
 defmodule PairDance.Infrastructure.Jira.Operations do
-  @type token :: String.t()
-  @type host :: String.t()
+  @type integration_id :: String.t()
   @type board_id :: integer
-  @type jql_query :: String.t()
+  @type backlog_query :: String.t()
+  @type auth_code :: String.t()
 
-  @callback list_upcoming_tickets(token, host, board_id, jql_query) :: {:ok, [JiraTicket.t()]}
+  @callback connect(auth_code) :: {:ok, integration_id}
+
+  @callback configure(integration_id, board_id, backlog_query) :: :ok
+
+  @callback list_upcoming_tickets(integration_id) :: {:ok, [JiraTicket.t()]}
 end

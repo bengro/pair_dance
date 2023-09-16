@@ -1,8 +1,16 @@
 defmodule PairDance.Infrastructure.Jira.JiraService do
   alias PairDance.Infrastructure.Jira.Operations
 
-  def list_upcoming_tickets(token, host, board_id, jql_query) do
-    jira_client().list_upcoming_tickets(token, host, board_id, jql_query)
+  def connect(auth_code) do
+    jira_client().connect(auth_code)
+  end
+
+  def configure(integration_id, board_id, backlog_query) do
+    jira_client().configure(integration_id, board_id, backlog_query)
+  end
+
+  def list_upcoming_tickets(integration_id) do
+    jira_client().list_upcoming_tickets(integration_id)
   end
 
   @spec jira_client() :: Operations.t()

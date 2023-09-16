@@ -33,6 +33,8 @@ defmodule PairDance.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:cloak, "~> 1.1.2"},
+      {:cloak_ecto, "~> 1.2.0"},
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:ecto_soft_delete, "~> 2.0.2"},
       {:ecto_sql, "~> 3.10.1"},
