@@ -51,6 +51,7 @@ defmodule PairDanceWeb.Router do
     pipe_through :browser
 
     get "/", AuthController, :index
+    get "/jira", AuthController, :jira_callback
     get "/logout", AuthController, :delete
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback

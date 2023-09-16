@@ -58,6 +58,11 @@ defmodule PairDanceWeb.AuthController do
     end
   end
 
+  def jira_callback(conn, params) do
+    conn
+    |> redirect(to: "/#{params["state"]}/settings")
+  end
+
   # We need to define the request call back to enable E2E tests.
   if Mix.env() == :test do
     def request(conn, params) do

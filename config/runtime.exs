@@ -27,6 +27,9 @@ config :pair_dance, PairDanceWeb.Endpoint,
       System.get_env("LIVE_VIEW_SIGNING_SALT") || raise("LIVE_VIEW_SIGNING_SALT not set")
   ]
 
+# Jira integration
+config :pair_dance, jira_client_id: System.get_env("JIRA_CLIENT_ID")
+
 ## SSO
 config :ueberauth, Ueberauth.Strategy.Google.OAuth,
   client_id: {System, :get_env, ["GOOGLE_CLIENT_ID"]},
