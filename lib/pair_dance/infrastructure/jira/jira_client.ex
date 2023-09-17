@@ -26,7 +26,7 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
       IntegrationsRepository.find_by_id(integration_id)
 
     url =
-      "https://api.atlassian.com/ex/jira/7ff3b24b-06bd-4c29-bbc7-e1ff95ae5076/rest/agile/1.0/board/#{settings.board_id}/issue?jql=#{settings.backlog_query}"
+      "#{settings.host}/rest/agile/1.0/board/#{settings.board_id}/issue?jql=#{settings.backlog_query}"
 
     access_token = get_access_token(credentials.refresh_token)
 
@@ -86,7 +86,7 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
     Jason.decode!(response.body)["refresh_token"]
   end
 
-  defp get_host(refresh_token) do
+  defp get_host(_refresh_token) do
     "https://api.atlassian.com/ex/jira/7ff3b24b-06bd-4c29-bbc7-e1ff95ae5076/"
   end
 end
