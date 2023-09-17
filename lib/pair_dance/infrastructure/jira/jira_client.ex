@@ -19,15 +19,10 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
     %Integration{settings: settings, credentials: credentials} =
       IntegrationsRepository.find_by_id(integration_id)
 
-    IO.inspect(%{settings: settings, credentials: credentials})
-
     url =
       "https://api.atlassian.com/ex/jira/7ff3b24b-06bd-4c29-bbc7-e1ff95ae5076/rest/agile/1.0/board/#{settings.board_id}/issue?jql=#{settings.backlog_query}"
 
     access_token = get_access_token(credentials.refresh_token)
-
-    IO.puts("access token")
-    IO.puts(access_token)
 
     {:ok, response} =
       Finch.build(
@@ -39,9 +34,6 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
         ]
       )
       |> Finch.request(PairDance.Finch)
-
-    IO.puts("issues response")
-    IO.puts(response.body)
 
     Jason.decode!(response.body)["issues"]
   end
@@ -65,8 +57,6 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
         })
       )
       |> Finch.request(PairDance.Finch)
-
-    IO.inspect(response)
 
     Jason.decode!(response.body)["access_token"]
   end

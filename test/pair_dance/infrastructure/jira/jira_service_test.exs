@@ -4,8 +4,8 @@ defmodule PairDance.Infrastructure.Jira.JiraClientTest do
   alias PairDance.Infrastructure.Integrations.EctoRepository
 
   test "connect an integration" do
-    board_id = System.fetch_env!("CONTRACT_TEST_BOARD_ID")
-    backlog_query = System.fetch_env!("CONTRACT_TEST_BACKLOG_QUERY")
+    board_id = System.fetch_env!("CONTRACT_TEST_JIRA_BOARD_ID")
+    backlog_query = System.fetch_env!("CONTRACT_TEST_JIRA_BACKLOG_QUERY")
 
     {:ok, integration} =
       EctoRepository.create(%{
