@@ -1,5 +1,7 @@
 defmodule PairDance.Infrastructure.Integrations.EctoRepository do
   alias PairDance.Domain.Integration
+  alias PairDance.Domain.Integration.Settings
+  alias PairDance.Domain.Integration.Credentials
 
   alias PairDance.Infrastructure.Integrations.Entity
 
@@ -31,11 +33,15 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepository do
   end
 
   def find_by_id(id) do
-    entity = Repo.get(Entity, id)
+    %Entity{id: id, settings: settings} = Repo.get(Entity, id)
 
     %Integration{
-      id: entity.id,
-      settings: entity.settings
+      id: id,
+      settings: %Settings{
+        board_id: settings["board_id"],
+        backlog_query: settings["backlog_query"]
+      },
+      credentials: %Credentials{refresh_token: settings["refresh_token"]}
     }
   end
 end
