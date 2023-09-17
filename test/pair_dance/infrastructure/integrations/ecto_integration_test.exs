@@ -9,6 +9,18 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepositoryTest do
 
     assert %Integration{id: id} = integration
     assert id
-    assert integration.settings.refresh_token == "the token"
+    assert integration.settings["refresh_token"] == "the token"
+  end
+
+  test "configure the integration" do
+    {:ok, %Integration{id: id, settings: %{"refresh_token" => refresh_token}}} =
+      Repository.create(%{refresh_token: "the token"})
+
+    {:ok, integration} =
+      Repository.update_settings(id, %{board_id: 123, backlog_query: "jql query"})
+
+    assert integration.settings["board_id"] == 123
+    assert integration.settings["backlog_query"] == "jql query"
+    assert integration.settings["refresh_token"] == refresh_token
   end
 end
