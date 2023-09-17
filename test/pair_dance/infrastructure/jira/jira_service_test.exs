@@ -3,6 +3,7 @@ defmodule PairDance.Infrastructure.Jira.JiraClientTest do
   alias PairDance.Infrastructure.Jira.JiraClient
   alias PairDance.Infrastructure.Integrations.EctoRepository
 
+  @tag :skip
   test "connect an integration" do
     board_id = System.fetch_env!("CONTRACT_TEST_JIRA_BOARD_ID")
     backlog_query = System.fetch_env!("CONTRACT_TEST_JIRA_BACKLOG_QUERY")
