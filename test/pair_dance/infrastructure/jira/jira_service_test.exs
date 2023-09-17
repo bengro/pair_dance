@@ -1,17 +1,20 @@
-defmodule PairDance.Infrastructure.Jira.JiraServiceTest do
+defmodule PairDance.Infrastructure.Jira.JiraClientTest do
   use PairDance.DataCase
-  alias PairDance.Infrastructure.Jira.JiraService
+  alias PairDance.Infrastructure.Jira.JiraClient
+  alias PairDance.Infrastructure.Integrations.EctoRepository
 
   test "connect an integration" do
-    auth_code = "ey.ey.0"
-    board_id = 553
-    backlog_query = "project=10727%20AND%20status=%22In+Progress%22&fields=summary"
+    board_id = System.fetch_env!("CONTRACT_TEST_BOARD_ID")
+    backlog_query = System.fetch_env!("CONTRACT_TEST_BACKLOG_QUERY")
 
-    {:ok, integration_id} = JiraService.connect(auth_code)
+    {:ok, integration} =
+      EctoRepository.create(%{
+        refresh_token: System.fetch_env!("CONTRACT_TEST_JIRA_REFRESH_TOKEN"),
+        board_id: board_id,
+        backlog_query: backlog_query
+      })
 
-    :ok = JiraService.configure(integration_id, board_id, backlog_query)
-
-    tickets = JiraService.list_upcoming_tickets(integration_id)
+    tickets = JiraClient.list_upcoming_tickets(integration.id)
 
     assert length(tickets) > 0
   end
