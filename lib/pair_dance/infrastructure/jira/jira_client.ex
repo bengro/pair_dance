@@ -4,7 +4,13 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
 
   alias PairDance.Domain.Integration
 
-  def connect(settings) do
+  @token_endpoint "https://auth.atlassian.com/oauth/token"
+
+  def connect(auth_code) do
+    refresh_token = get_refresh_token(auth_code)
+    host = get_host(refresh_token)
+    settings = %{refresh_token: refresh_token, host: host}
+
     IntegrationsRepository.create(settings)
   end
 
@@ -39,12 +45,10 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
   end
 
   defp get_access_token(refresh_token) do
-    url = "https://auth.atlassian.com/oauth/token"
-
     {:ok, response} =
       Finch.build(
         :post,
-        url,
+        @token_endpoint,
         [
           {"Content-Type", "application/json"},
           {"Accept", "application/json"}
@@ -59,5 +63,30 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
       |> Finch.request(PairDance.Finch)
 
     Jason.decode!(response.body)["access_token"]
+  end
+
+  defp get_refresh_token(auth_code) do
+    {:ok, response} =
+      Finch.build(
+        :post,
+        @token_endpoint,
+        [
+          {"Content-Type", "application/json"},
+          {"Accept", "application/json"}
+        ],
+        Jason.encode!(%{
+          "grant_type" => "authorization_code",
+          "code" => auth_code,
+          "client_id" => Application.get_env(:pair_dance, :jira_client_id),
+          "client_secret" => Application.get_env(:pair_dance, :jira_client_secret)
+        })
+      )
+      |> Finch.request(PairDance.Finch)
+
+    Jason.decode!(response.body)["refresh_token"]
+  end
+
+  defp get_host(refresh_token) do
+    "https://api.atlassian.com/ex/jira/7ff3b24b-06bd-4c29-bbc7-e1ff95ae5076/"
   end
 end

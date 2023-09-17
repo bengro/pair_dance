@@ -5,6 +5,8 @@ defmodule PairDanceWeb.AuthController do
   require Logger
 
   alias Ueberauth.Auth
+  alias PairDance.Infrastructure.Jira.JiraClient
+  alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   @redirect_url "/"
 
@@ -59,8 +61,16 @@ defmodule PairDanceWeb.AuthController do
   end
 
   def jira_callback(conn, params) do
+    team_id = params["state"]
+    auth_code = params["code"]
+
+    team = TeamRepository.find(team_id)
+    {:ok, integration} = JiraClient.connect(auth_code)
+
+    # assign integration to team
+
     conn
-    |> redirect(to: "/#{params["state"]}/settings")
+    |> redirect(to: "/#{team.descriptor.slug}/settings")
   end
 
   # We need to define the request call back to enable E2E tests.

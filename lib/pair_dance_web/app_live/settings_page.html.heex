@@ -49,7 +49,7 @@
 <h2 class="text-lg mb-4 mt-8">Integrations</h2>
 
 <.button data-qa="jira-button">
-  <a href={"https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=#{@jira_client_id}&scope=read%3Aboard-scope%3Ajira-software%20read%3Aissue-details%3Ajira%20offline_access&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fauth%2Fjira&state=#{@team.descriptor.slug}&response_type=code&prompt=consent"}>
+  <a href={"https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=#{@jira_client_id}&scope=read%3Aboard-scope%3Ajira-software%20read%3Aissue-details%3Ajira%20offline_access&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fauth%2Fjira&state=#{@team.descriptor.id}&response_type=code&prompt=consent"}>
     Connect to Jira
   </a>
 </.button>
