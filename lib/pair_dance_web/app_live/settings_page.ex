@@ -3,6 +3,7 @@ defmodule PairDanceWeb.AppLive.SettingsPage do
 
   alias PairDance.Domain.Team.SlugService
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Integrations.EctoRepository, as: IntegrationRepository
   alias PairDance.Infrastructure.EventBus
 
   @types %{
@@ -15,6 +16,7 @@ defmodule PairDanceWeb.AppLive.SettingsPage do
 
     user = session["current_user"]
     team = TeamRepository.find_by_slug?(slug)
+    jira_integration = IntegrationRepository.find_by_team_id(team.descriptor.id)
 
     changeset =
       {%{}, @types}

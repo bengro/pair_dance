@@ -33,4 +33,18 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepositoryTest do
     assert integration.settings.backlog_query == "jql query"
     assert integration.credentials.refresh_token == "the token"
   end
+
+  test "find integration by team id", %{team_id: team_id} do
+    {:ok, created_integration} = Repository.create(team_id, %{refresh_token: "the token"})
+
+    retrieved_integration = Repository.find_by_team_id(team_id)
+
+    assert created_integration == retrieved_integration
+  end
+
+  test "does not throw if team_id non-existant" do
+    retrieved_integration = Repository.find_by_team_id(1)
+
+    assert retrieved_integration == nil
+  end
 end
