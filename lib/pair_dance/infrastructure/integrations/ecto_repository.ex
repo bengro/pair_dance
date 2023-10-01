@@ -8,10 +8,10 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepository do
   import Ecto.Query, warn: false
   alias PairDance.Infrastructure.Repo
 
-  def create(settings) do
+  def create(team_id, settings) do
     {:ok, entity} =
       %Entity{}
-      |> Entity.changeset(%{settings: settings})
+      |> Entity.changeset(%{team_id: team_id, settings: settings})
       |> Repo.insert()
 
     {:ok, find_by_id(entity.id)}
@@ -33,10 +33,11 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepository do
   end
 
   def find_by_id(id) do
-    %Entity{id: id, settings: settings} = Repo.get(Entity, id)
+    %Entity{id: id, team_id: team_id, settings: settings} = Repo.get(Entity, id)
 
     %Integration{
       id: id,
+      team_id: team_id,
       settings: %Settings{
         board_id: settings["board_id"],
         backlog_query: settings["backlog_query"]

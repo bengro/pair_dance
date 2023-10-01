@@ -65,9 +65,7 @@ defmodule PairDanceWeb.AuthController do
     auth_code = params["code"]
 
     team = TeamRepository.find(team_id)
-    {:ok, integration} = JiraClient.connect(auth_code)
-
-    # assign integration to team
+    {:ok, _integration} = JiraClient.connect(team.descriptor.id, auth_code)
 
     conn
     |> redirect(to: "/#{team.descriptor.slug}/settings")

@@ -5,6 +5,7 @@ defmodule PairDance.Infrastructure.Integrations.Entity do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "integrations" do
+    belongs_to(:team, PairDance.Infrastructure.TeamEntity)
     field :settings, PairDance.Infrastructure.Encrypted.Map
 
     timestamps()
@@ -13,6 +14,6 @@ defmodule PairDance.Infrastructure.Integrations.Entity do
   @doc false
   def changeset(integration, attrs) do
     integration
-    |> cast(attrs, [:settings])
+    |> cast(attrs, [:team_id, :settings])
   end
 end

@@ -6,14 +6,16 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
 
   @token_endpoint "https://auth.atlassian.com/oauth/token"
 
-  def connect(auth_code) do
+  # To be called as part of integration registration
+  def connect(team_id, auth_code) do
     refresh_token = get_refresh_token(auth_code)
     host = get_host(refresh_token)
     settings = %{refresh_token: refresh_token, host: host}
 
-    IntegrationsRepository.create(settings)
+    IntegrationsRepository.create(team_id, settings)
   end
 
+  # To be called, once user provides board_id and backlog_query via settings
   def configure(integration_id, board_id, backlog_query) do
     IntegrationsRepository.update_settings(integration_id, %{
       board_id: board_id,
@@ -21,6 +23,7 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
     })
   end
 
+  # To be called, once connected and configured.
   def list_upcoming_tickets(integration_id) do
     %Integration{settings: settings, credentials: credentials} =
       IntegrationsRepository.find_by_id(integration_id)

@@ -9,7 +9,7 @@ defmodule PairDance.Infrastructure.Jira.JiraClientTest do
     backlog_query = System.fetch_env!("CONTRACT_TEST_JIRA_BACKLOG_QUERY")
 
     {:ok, integration} =
-      EctoRepository.create(%{
+      EctoRepository.create(1, %{
         refresh_token: System.fetch_env!("CONTRACT_TEST_JIRA_REFRESH_TOKEN"),
         board_id: board_id,
         backlog_query: backlog_query

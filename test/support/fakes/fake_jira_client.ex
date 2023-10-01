@@ -1,11 +1,11 @@
 defmodule PairDance.Infrastructure.Jira.FakeJiraClient do
   @behaviour PairDance.Infrastructure.Jira.Operations
 
-  def connect(auth_code) do
+  def connect(_team_id, _auth_code) do
     {:ok, "integration-1"}
   end
 
-  def configure(integration_id, board_id, backlog_query) do
+  def configure(_integration_id, _board_id, _backlog_query) do
     :ok
   end
 

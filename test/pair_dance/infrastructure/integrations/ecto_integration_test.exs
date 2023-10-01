@@ -4,16 +4,27 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepositoryTest do
   alias PairDance.Infrastructure.Integrations.EctoRepository, as: Repository
   alias PairDance.Domain.Integration
 
-  test "create an integration" do
-    {:ok, integration} = Repository.create(%{refresh_token: "the token"})
+  import PairDance.TeamsFixtures
 
-    assert %Integration{id: id} = integration
+  defp setup_data(_) do
+    team = create_team(%{member_names: ["ana"], task_names: ["my task"]})
+    %{team_id: team.descriptor.id}
+  end
+
+  setup [:setup_data]
+
+  test "create an integration", %{team_id: team_id} do
+    IO.inspect(team_id)
+    {:ok, integration} = Repository.create(team_id, %{refresh_token: "the token"})
+
+    assert %Integration{id: id, team_id: team_id} = integration
     assert id
+    assert team_id
     assert integration.credentials.refresh_token == "the token"
   end
 
-  test "configure the integration" do
-    {:ok, %Integration{id: id}} = Repository.create(%{refresh_token: "the token"})
+  test "configure the integration", %{team_id: team_id} do
+    {:ok, %Integration{id: id}} = Repository.create(team_id, %{refresh_token: "the token"})
 
     {:ok, integration} =
       Repository.update_settings(id, %{board_id: 123, backlog_query: "jql query"})
