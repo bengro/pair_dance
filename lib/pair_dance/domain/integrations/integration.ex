@@ -12,6 +12,17 @@ defmodule PairDance.Domain.Integration do
           credentials: Credentials.t()
         }
 
+  def is_configured(integration) do
+    if integration != nil and
+         integration.settings != nil and
+         integration.settings.board_id != nil and
+         integration.settings.backlog_query != nil do
+      true
+    else
+      false
+    end
+  end
+
   def changeset(board_id, backlog_query) do
     types = %{
       board_id: :string,

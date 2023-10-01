@@ -33,15 +33,21 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
 
     case changeset.valid? do
       true ->
-        IntegrationRepository.update_settings(
-          integration.id,
-          %{
-            board_id: changeset.changes.board_id,
-            backlog_query: changeset.changes.backlog_query
-          }
-        )
+        {:ok, updated_integration} =
+          IntegrationRepository.update_settings(
+            integration.id,
+            %{
+              board_id: changeset.changes.board_id,
+              backlog_query: changeset.changes.backlog_query
+            }
+          )
 
-        {:noreply, socket}
+        assigns =
+          socket
+          |> assign(:jira_integration_form, jira_integration_form)
+          |> assign(:integration, updated_integration)
+
+        {:noreply, assigns}
 
       false ->
         errors =
@@ -57,6 +63,17 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
 
         {:noreply, assigns}
     end
+  end
+
+  def handle_event("disconnect", _value, socket) do
+    integration = socket.assigns.integration
+    IntegrationRepository.delete(integration)
+
+    socket =
+      socket
+      |> assign(:integration, nil)
+
+    {:noreply, socket}
   end
 
   defp jira_integration_form(board_id, backlog_query) do

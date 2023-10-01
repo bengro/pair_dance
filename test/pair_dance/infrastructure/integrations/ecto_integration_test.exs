@@ -22,6 +22,12 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepositoryTest do
     assert integration.credentials.refresh_token == "the token"
   end
 
+  test "delete an integration", %{team_id: team_id} do
+    {:ok, integration} = Repository.create(team_id, %{refresh_token: "the token"})
+
+    assert {:ok} = Repository.delete(integration)
+  end
+
   test "configure the integration", %{team_id: team_id} do
     {:ok, %Integration{id: id}} = Repository.create(team_id, %{refresh_token: "the token"})
 

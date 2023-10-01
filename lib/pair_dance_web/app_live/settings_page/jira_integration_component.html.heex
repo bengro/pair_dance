@@ -6,7 +6,27 @@
       </a>
     </.button>
   <% else %>
-    <p class="my-3"><Heroicons.check mini class="h-5 w-5 inline" /> Jira connected</p>
+    <div class="my-3">
+      <p>
+        <Heroicons.check mini class="h-5 w-5 inline" fill="green" />
+        Connected (<button
+          phx-click="disconnect"
+          phx-target={@myself}
+          class="underline"
+          data-qa="disconnect-jira-integration"
+        >disconnect</button>)
+      </p>
+
+      <p>
+        <%= if !Integration.is_configured(@integration) do %>
+          <Heroicons.x_mark mini class="h-5 w-5 inline" fill="red" />
+        <% else %>
+          <Heroicons.check mini class="h-5 w-5 inline" fill="green" />
+        <% end %>
+        Configured
+      </p>
+    </div>
+
     <.simple_form
       :let={f}
       phx-submit="save"

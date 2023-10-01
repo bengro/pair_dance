@@ -42,6 +42,11 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepository do
     convert_to_integration(entity)
   end
 
+  def delete(integration) do
+    {:ok, _entity} = Repo.delete(%Entity{id: integration.id})
+    {:ok}
+  end
+
   defp convert_to_integration(nil) do
     nil
   end

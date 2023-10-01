@@ -158,4 +158,24 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
     assert render(view) =~ "board-1"
     assert render(view) =~ "backlog-jql"
   end
+
+  test "can disconnect an integration", %{conn: conn, team: team, user: user} do
+    IntegrationRepository.create(team.descriptor.id, %{})
+
+    {:ok, view, _} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.descriptor.slug}/settings")
+
+    view
+    |> element("[data-qa=disconnect-jira-integration]")
+    |> render_click()
+
+    {:ok, view, _} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.descriptor.slug}/settings")
+
+    assert render(view) =~ "Connect to Jira"
+  end
 end
