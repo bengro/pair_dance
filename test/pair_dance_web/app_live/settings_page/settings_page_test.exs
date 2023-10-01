@@ -5,6 +5,7 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
   import PairDance.TeamsFixtures
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Integrations.EctoRepository, as: IntegrationRepository
   alias PairDance.Domain.Team.TeamService
 
   defp setup_data(_) do
@@ -118,5 +119,43 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
 
       assert redirect_opts.to == "/"
     end
+  end
+
+  describe "jira integration" do
+    test "invites users to add integration when not integrated", %{
+      conn: conn,
+      team: team,
+      user: user
+    } do
+      {:ok, view, _} =
+        conn
+        |> impersonate(user)
+        |> live(~p"/#{team.descriptor.slug}/settings")
+
+      assert render(view) =~ "Connect to Jira"
+    end
+  end
+
+  test "can be configured", %{conn: conn, team: team, user: user} do
+    IntegrationRepository.create(team.descriptor.id, %{})
+
+    {:ok, view, _} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.descriptor.slug}/settings")
+
+    view
+    |> form("#jira-integration-form",
+      jira_integration_form: %{backlog_query: "backlog-jql", board_id: "board-1"}
+    )
+    |> render_submit()
+
+    {:ok, view, _} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.descriptor.slug}/settings")
+
+    assert render(view) =~ "board-1"
+    assert render(view) =~ "backlog-jql"
   end
 end

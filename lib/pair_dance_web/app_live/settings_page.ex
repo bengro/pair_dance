@@ -32,7 +32,7 @@ defmodule PairDanceWeb.AppLive.SettingsPage do
       |> assign(:team_form_errors, %{name: []})
       |> assign(:current_user, user)
       |> assign(:page_title, "Settings")
-      |> assign(:jira_client_id, Application.get_env(:pair_dance, :jira_client_id))
+      |> assign(:jira_integration, jira_integration)
 
     {:ok, assigns}
   end

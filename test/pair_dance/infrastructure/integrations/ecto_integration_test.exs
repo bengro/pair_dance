@@ -14,7 +14,6 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepositoryTest do
   setup [:setup_data]
 
   test "create an integration", %{team_id: team_id} do
-    IO.inspect(team_id)
     {:ok, integration} = Repository.create(team_id, %{refresh_token: "the token"})
 
     assert %Integration{id: id, team_id: team_id} = integration

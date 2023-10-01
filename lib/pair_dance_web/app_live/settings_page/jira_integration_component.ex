@@ -1,0 +1,81 @@
+defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
+  use PairDanceWeb, :live_component
+
+  alias PairDance.Domain.Integration
+  alias PairDance.Infrastructure.Integrations.EctoRepository, as: IntegrationRepository
+
+  @impl true
+  def update(assigns, socket) do
+    team = assigns.team
+    integration = assigns.integration
+
+    socket =
+      socket
+      |> assign(:team, team)
+      |> assign(:integration, integration)
+      |> assign(:jira_client_id, Application.get_env(:pair_dance, :jira_client_id))
+      |> assign_integration_settings(integration == nil)
+
+    {:ok, socket}
+  end
+
+  @impl true
+  def handle_event(
+        "save",
+        %{
+          "jira_integration_form" => %{"backlog_query" => backlog_query, "board_id" => board_id}
+        },
+        socket
+      ) do
+    changeset = Integration.changeset(board_id, backlog_query)
+    jira_integration_form = jira_integration_form(board_id, backlog_query)
+    integration = socket.assigns.integration
+
+    case changeset.valid? do
+      true ->
+        IntegrationRepository.update_settings(
+          integration.id,
+          %{
+            board_id: changeset.changes.board_id,
+            backlog_query: changeset.changes.backlog_query
+          }
+        )
+
+        {:noreply, socket}
+
+      false ->
+        errors =
+          Map.merge(
+            %{board_id: [], backlog_query: []},
+            Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+          )
+
+        assigns =
+          socket
+          |> assign(:jira_integration_form, jira_integration_form)
+          |> assign(:jira_integration_form_errors, errors)
+
+        {:noreply, assigns}
+    end
+  end
+
+  defp jira_integration_form(board_id, backlog_query) do
+    Phoenix.HTML.FormData.to_form(Integration.changeset(board_id, backlog_query),
+      as: "jira_integration_form"
+    )
+  end
+
+  defp assign_integration_settings(socket, true), do: socket
+
+  defp assign_integration_settings(socket, false) do
+    socket
+    |> assign(
+      :jira_integration_form,
+      jira_integration_form(
+        socket.assigns.integration.settings.board_id,
+        socket.assigns.integration.settings.backlog_query
+      )
+    )
+    |> assign(:jira_integration_form_errors, %{board_id: [], backlog_query: []})
+  end
+end

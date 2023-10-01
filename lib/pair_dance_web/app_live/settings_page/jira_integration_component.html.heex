@@ -1,0 +1,39 @@
+<div>
+  <%= if @integration == nil do %>
+    <.button data-qa="jira-button">
+      <a href={"https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=#{@jira_client_id}&scope=read%3Aboard-scope%3Ajira-software%20read%3Aissue-details%3Ajira%20offline_access&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fauth%2Fjira&state=#{@team.descriptor.id}&response_type=code&prompt=consent"}>
+        Connect to Jira
+      </a>
+    </.button>
+  <% else %>
+    <p class="my-3"><Heroicons.check mini class="h-5 w-5 inline" /> Jira connected</p>
+    <.simple_form
+      :let={f}
+      phx-submit="save"
+      phx-target={@myself}
+      id="jira-integration-form"
+      for={@jira_integration_form}
+      as={:jira_integration_form}
+    >
+      <.input
+        field={{f, :board_id}}
+        type="text"
+        label="Board ID"
+        errors={@jira_integration_form_errors[:board_id]}
+        phx-target={@myself}
+      />
+      <.input
+        field={{f, :backlog_query}}
+        type="text"
+        label="Backlog JQL"
+        errors={@jira_integration_form_errors[:backlog_query]}
+        phx-target={@myself}
+      />
+      <:actions>
+        <.button phx-disable-with="Saving..." data-qa="jira-integration-form-submit">
+          Save
+        </.button>
+      </:actions>
+    </.simple_form>
+  <% end %>
+</div>
