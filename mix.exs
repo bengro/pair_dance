@@ -49,7 +49,7 @@ defmodule PairDance.MixProject do
       {:phoenix_html, "~> 3.3.1"},
       {:phoenix_live_dashboard, "~> 0.8.0"},
       {:phoenix_live_reload, "~> 1.4.1", only: :dev},
-      {:phoenix_live_view, "~> 0.19.2"},
+      {:phoenix_live_view, "~> 0.20.0"},
       {:plug_cowboy, "~> 2.6.1"},
       {:postgrex, ">= 0.0.0"},
       {:swoosh, "~> 1.11.1"},
