@@ -11,6 +11,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     {:ok, team} = TeamService.new_team("my team", user)
     task_fixture(team, "Refactor something amazing")
     task_fixture(team, "Implement FedRamp-compliant cache")
+    jira_integration_fixture(team)
 
     team = PairDance.Infrastructure.Team.EctoRepository.find(team.descriptor.id)
 
@@ -96,6 +97,12 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
       [first_task | _] = team.tasks
 
       assert html =~ first_task.name
+    end
+
+    test "shows tasks from jira", %{conn: conn, team: team, user: user} do
+      {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+
+      assert html =~ "Become FedRamp compliant"
     end
   end
 

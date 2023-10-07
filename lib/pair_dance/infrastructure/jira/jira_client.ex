@@ -85,9 +85,15 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
 
     payload = Jason.decode!(response.body)
 
-    Enum.map(payload["issues"], fn issue ->
-      %{title: issue["fields"]["summary"], id: issue["key"]}
-    end)
+    case response do
+      %{status: 200} ->
+        Enum.map(payload["issues"], fn issue ->
+          %{title: issue["fields"]["summary"], id: issue["key"]}
+        end)
+
+      _ ->
+        []
+    end
   end
 
   defp get_token_metadata(integration) do
@@ -170,6 +176,6 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
 
   defp has_token_expired(token_expiry_date) do
     time_in_seconds_now = DateTime.utc_now() |> DateTime.to_unix()
-    token_expiry_date >= time_in_seconds_now
+    token_expiry_date < time_in_seconds_now
   end
 end

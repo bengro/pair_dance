@@ -3,9 +3,11 @@ defmodule PairDance.TeamsFixtures do
   alias PairDance.Domain.Team
   alias PairDance.Domain.Team.Member
   alias PairDance.Domain.Team.Task
+  alias PairDance.Domain.Integration
 
   alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
+  alias PairDance.Infrastructure.Integrations.EctoRepository, as: IntegrationRepository
   alias PairDance.Domain.Team.InviteService
 
   @type email :: String.t()
@@ -67,5 +69,13 @@ defmodule PairDance.TeamsFixtures do
   def task_fixture(team, task_name \\ "logout is broken") do
     {:ok, updated_team} = TeamRepository.add_task(team, task_name)
     Enum.find(updated_team.tasks, fn t -> t.name == task_name end)
+  end
+
+  @spec jira_integration_fixture(Team.t()) :: Integration.t()
+  def jira_integration_fixture(team) do
+    {:ok, integration} =
+      IntegrationRepository.create(team.descriptor.id, %{refresh_token: "x", access_token: "x"})
+
+    integration
   end
 end

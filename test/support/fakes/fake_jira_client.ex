@@ -10,6 +10,10 @@ defmodule PairDance.Infrastructure.Jira.FakeJiraClient do
   end
 
   def list_upcoming_tickets(_integration) do
-    [%{}]
+    [%{title: "Become FedRamp compliant", id: "PD-1"}]
+  end
+
+  def list_upcoming_tickets(nil) do
+    []
   end
 end

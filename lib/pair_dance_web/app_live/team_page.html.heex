@@ -25,7 +25,13 @@
 />
 
 <.live_component
-  id={1}
+  id="jira-task-component"
+  module={PairDanceWeb.AppLive.TeamPage.JiraTaskComponent}
+  team={@team}
+/>
+
+<.live_component
+  id="create-task-component"
   module={PairDanceWeb.AppLive.TeamPage.CreateTaskComponent}
   team={@team}
   action={:new}

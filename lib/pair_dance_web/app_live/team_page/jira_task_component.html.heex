@@ -1,0 +1,18 @@
+<div>
+  <%= if @jira_tickets != [] do %>
+    <div class="my-4">
+      <h3>Next in Backlog:</h3>
+
+      <ul class="list-disc">
+        <%= for {task, _index} <- Enum.with_index(@jira_tickets) do %>
+          <li class="ml-6">
+            <span class="">
+              <%= task.title %>
+            </span>
+            (<%= task.id %>)
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>
