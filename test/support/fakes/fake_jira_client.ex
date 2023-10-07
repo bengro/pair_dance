@@ -9,7 +9,7 @@ defmodule PairDance.Infrastructure.Jira.FakeJiraClient do
     :ok
   end
 
-  def list_upcoming_tickets(_integration_id) do
+  def list_upcoming_tickets(_integration) do
     [%{}]
   end
 end

@@ -5,7 +5,7 @@ defmodule PairDanceWeb.AuthController do
   require Logger
 
   alias Ueberauth.Auth
-  alias PairDance.Infrastructure.Jira.JiraClient
+  alias PairDance.Infrastructure.Jira.JiraService
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
 
   @redirect_url "/"
@@ -65,7 +65,7 @@ defmodule PairDanceWeb.AuthController do
     auth_code = params["code"]
 
     team = TeamRepository.find(team_id)
-    {:ok, _integration} = JiraClient.connect(team.descriptor.id, auth_code)
+    {:ok, _integration} = JiraService.connect(team.descriptor.id, auth_code)
 
     conn
     |> redirect(to: "/#{team.descriptor.slug}/settings")

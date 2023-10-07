@@ -57,9 +57,15 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepository do
       team_id: entity.team_id,
       settings: %Settings{
         board_id: entity.settings["board_id"],
-        backlog_query: entity.settings["backlog_query"]
+        backlog_query: entity.settings["backlog_query"],
+        base_url: entity.settings["base_url"],
+        host: entity.settings["host"]
       },
-      credentials: %Credentials{refresh_token: entity.settings["refresh_token"]}
+      credentials: %Credentials{
+        refresh_token: entity.settings["refresh_token"],
+        access_token: entity.settings["access_token"],
+        access_token_expiry: entity.settings["access_token_expiry"]
+      }
     }
   end
 end

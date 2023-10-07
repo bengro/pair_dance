@@ -30,7 +30,8 @@ config :pair_dance, PairDanceWeb.Endpoint,
 # Jira integration
 config :pair_dance,
   jira_client_id: System.get_env("JIRA_CLIENT_ID"),
-  jira_client_secret: System.get_env("JIRA_CLIENT_SECRET")
+  jira_client_secret: System.get_env("JIRA_CLIENT_SECRET"),
+  jira_redirect_uri: System.get_env("JIRA_REDIRECT_URI")
 
 ## SSO
 config :ueberauth, Ueberauth.Strategy.Google.OAuth,

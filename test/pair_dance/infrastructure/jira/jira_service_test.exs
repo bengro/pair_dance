@@ -15,7 +15,7 @@ defmodule PairDance.Infrastructure.Jira.JiraClientTest do
         backlog_query: backlog_query
       })
 
-    tickets = JiraClient.list_upcoming_tickets(integration.id)
+    tickets = JiraClient.list_upcoming_tickets(integration)
 
     assert length(tickets) > 0
   end

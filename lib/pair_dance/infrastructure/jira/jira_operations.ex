@@ -1,5 +1,6 @@
 defmodule PairDance.Infrastructure.Jira.Operations do
   @type integration_id :: String.t()
+  @type integration :: PairDance.Domain.Integration.t()
   @type board_id :: integer
   @type backlog_query :: String.t()
   @type auth_code :: String.t()
@@ -9,5 +10,5 @@ defmodule PairDance.Infrastructure.Jira.Operations do
 
   @callback configure(integration_id, board_id, backlog_query) :: :ok
 
-  @callback list_upcoming_tickets(integration_id) :: {:ok, [JiraTicket.t()]}
+  @callback list_upcoming_tickets(integration) :: {:ok, [JiraTicket.t()]}
 end
