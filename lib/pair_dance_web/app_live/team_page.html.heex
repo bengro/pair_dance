@@ -24,15 +24,18 @@
   module={PairDanceWeb.AppLive.TeamPage.PairingTableComponent}
 />
 
-<.live_component
-  id="jira-task-component"
-  module={PairDanceWeb.AppLive.TeamPage.JiraTaskComponent}
-  team={@team}
-/>
-
-<.live_component
-  id="create-task-component"
-  module={PairDanceWeb.AppLive.TeamPage.CreateTaskComponent}
-  team={@team}
-  action={:new}
-/>
+<%= if @jira_integration != nil do %>
+  <.live_component
+    id="jira-task-component"
+    module={PairDanceWeb.AppLive.TeamPage.JiraTaskComponent}
+    team={@team}
+    integration={@jira_integration}
+  />
+<% else %>
+  <.live_component
+    id="create-task-component"
+    module={PairDanceWeb.AppLive.TeamPage.CreateTaskComponent}
+    team={@team}
+    action={:new}
+  />
+<% end %>

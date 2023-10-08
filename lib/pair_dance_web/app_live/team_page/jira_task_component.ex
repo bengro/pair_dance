@@ -8,8 +8,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.JiraTaskComponent do
   @impl true
   def update(assigns, socket) do
     team = assigns[:team]
-
-    jira_integration = IntegrationRepository.find_by_team_id(team.descriptor.id)
+    jira_integration = assigns[:integration]
 
     case jira_integration do
       nil ->

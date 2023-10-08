@@ -4,6 +4,7 @@ defmodule PairDanceWeb.AppLive.TeamPage do
   alias PairDance.Infrastructure.EventBus
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
   alias PairDance.Infrastructure.User.EctoRepository, as: UserRepository
+  alias PairDance.Infrastructure.Integrations.EctoRepository, as: IntegrationRepository
 
   @impl true
   def mount(%{"slug" => slug}, session, socket) do
@@ -12,19 +13,16 @@ defmodule PairDanceWeb.AppLive.TeamPage do
     team = TeamRepository.find_by_slug?(slug)
     session_user = session["current_user"]
     user = UserRepository.find_by_id(session_user.id) |> mark_current_team_as_last_active(team)
+    jira_integration = IntegrationRepository.find_by_team_id(team.descriptor.id)
 
     assigns =
       socket
       |> assign(:current_user, user)
       |> assign(:team, team)
+      |> assign(:jira_integration, jira_integration)
       |> assign(:page_title, "Team #{team.descriptor.name}")
 
     {:ok, assigns}
-  end
-
-  @impl true
-  def handle_event("create-task", %{}, socket) do
-    {:noreply, socket}
   end
 
   @impl true
