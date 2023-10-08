@@ -14,6 +14,10 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
       |> assign(:team, team)
       |> assign(:integration, integration)
       |> assign(:jira_client_id, Application.get_env(:pair_dance, :jira_client_id))
+      |> assign(
+        :jira_redirect_uri,
+        URI.encode(Application.get_env(:pair_dance, :jira_redirect_uri))
+      )
       |> assign_integration_settings(integration == nil)
 
     {:ok, socket}

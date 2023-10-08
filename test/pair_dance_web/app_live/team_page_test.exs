@@ -11,7 +11,6 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
     {:ok, team} = TeamService.new_team("my team", user)
     task_fixture(team, "Refactor something amazing")
     task_fixture(team, "Implement FedRamp-compliant cache")
-    jira_integration_fixture(team)
 
     team = PairDance.Infrastructure.Team.EctoRepository.find(team.descriptor.id)
 
@@ -42,80 +41,80 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
   end
 
   describe "tasks" do
-    describe "create task component" do
-      test "create a task", %{conn: conn, team: team, user: user} do
-        {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+    test "create a task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
-        view
-        |> form("#new-task-form", new_task_form: %{name: "my task name"})
-        |> render_submit()
+      view
+      |> form("#new-task-form", new_task_form: %{name: "my task name"})
+      |> render_submit()
 
-        assert render(view) =~ "my task name"
-      end
-
-      test "edit a task", %{conn: conn, team: team, user: user} do
-        [task | _] = team.tasks
-
-        {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
-
-        view
-        |> element("[data-qa=action-to-edit-task-#{task.id}]")
-        |> render_click()
-
-        view
-        |> form("#edit-task-form-#{task.id}", edit_task_form: %{name: "Much better named task"})
-        |> render_submit()
-
-        assert render(view) =~ "Much better named task"
-      end
-
-      test "cannot create an invalid task", %{conn: conn, team: team, user: user} do
-        {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
-
-        view
-        |> form("#new-task-form", new_task_form: %{name: "1"})
-        |> render_submit()
-
-        assert render(view) =~ "should be at least"
-      end
-
-      test "delete a task", %{conn: conn, team: team, user: user} do
-        {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
-        [task | _] = team.tasks
-
-        assert render(view) =~ task.name
-
-        view
-        |> element("[data-qa=delete-task-#{task.id}]")
-        |> render_click()
-
-        refute render(view) =~ task.name
-      end
-
-      test "lists all tasks", %{conn: conn, team: team, user: user} do
-        {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
-
-        [first_task | _] = team.tasks
-
-        assert html =~ first_task.name
-      end
+      assert render(view) =~ "my task name"
     end
 
-    describe "jira integration" do
-      test "create a task from jira", %{conn: conn, team: team, user: user} do
-        {:ok, view, _html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+    test "edit a task", %{conn: conn, team: team, user: user} do
+      [task | _] = team.tasks
 
-        view
-        |> element("[data-qa=jira-task-PD-1]")
-        |> render_click()
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
-        {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
-        {:ok, document} = Floki.parse_document(html)
+      view
+      |> element("[data-qa=action-to-edit-task-#{task.id}]")
+      |> render_click()
 
-        assert document
-               |> Floki.find("[data-qa=pairing-table]")
-               |> Floki.text() =~ "Become FedRamp compliant"
-      end
+      view
+      |> form("#edit-task-form-#{task.id}", edit_task_form: %{name: "Much better named task"})
+      |> render_submit()
+
+      assert render(view) =~ "Much better named task"
+    end
+
+    test "cannot create an invalid task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+
+      view
+      |> form("#new-task-form", new_task_form: %{name: "1"})
+      |> render_submit()
+
+      assert render(view) =~ "should be at least"
+    end
+
+    test "delete a task", %{conn: conn, team: team, user: user} do
+      {:ok, view, _} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+      [task | _] = team.tasks
+
+      assert render(view) =~ task.name
+
+      view
+      |> element("[data-qa=delete-task-#{task.id}]")
+      |> render_click()
+
+      refute render(view) =~ task.name
+    end
+
+    test "lists all tasks", %{conn: conn, team: team, user: user} do
+      {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+
+      [first_task | _] = team.tasks
+
+      assert html =~ first_task.name
+    end
+  end
+
+  describe "jira integration" do
+    test "create a task from jira", %{conn: conn, team: team, user: user} do
+      jira_integration_fixture(team)
+
+      {:ok, view, _html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+
+      view
+      |> element("[data-qa=jira-task-PD-1]")
+      |> render_click()
+
+      {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+      {:ok, document} = Floki.parse_document(html)
+
+      assert document
+             |> Floki.find("[data-qa=pairing-table]")
+             |> Floki.text() =~ "Become FedRamp compliant"
     end
   end
 
