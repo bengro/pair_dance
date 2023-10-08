@@ -16,12 +16,12 @@ resource "google_cloud_run_service" "run_service" {
         image = "eu.gcr.io/pair-dance-370619/pair_dance:latest"
 
         env {
-          name = "PHX_HOST"
+          name  = "PHX_HOST"
           value = "pair.dance"
         }
 
         env {
-          name = "POOL_SIZE"
+          name  = "POOL_SIZE"
           value = "5"
         }
 
@@ -83,6 +83,31 @@ resource "google_cloud_run_service" "run_service" {
               name = data.google_secret_manager_secret_version.secret_key_base.secret
             }
           }
+        }
+
+        env {
+          name = "JIRA_CLIENT_ID"
+          value_from {
+            secret_key_ref {
+              key  = data.google_secret_manager_secret_version.jira_client_id.version
+              name = data.google_secret_manager_secret_version.jira_client_id.secret
+            }
+          }
+        }
+
+        env {
+          name = "JIRA_CLIENT_SECRET"
+          value_from {
+            secret_key_ref {
+              key  = data.google_secret_manager_secret_version.jira_client_secret.version
+              name = data.google_secret_manager_secret_version.jira_client_secret.secret
+            }
+          }
+        }
+
+        env {
+          name  = "JIRA_REDIRECT_URI"
+          value = "https://pair.dance/auth/jira"
         }
       }
     }
@@ -147,6 +172,16 @@ data "google_secret_manager_secret_version" "secret_key_base" {
   version = "latest"
 }
 
+data "google_secret_manager_secret_version" "jira_client_id" {
+  secret  = "JIRA_CLIENT_ID"
+  version = "latest"
+}
+
+data "google_secret_manager_secret_version" "jira_client_secret" {
+  secret  = "JIRA_CLIENT_SECRET"
+  version = "latest"
+}
+
 output "service_url" {
   value = google_cloud_run_service.run_service.status[0].url
 }
@@ -159,11 +194,11 @@ resource "google_cloud_run_v2_job" "db_migration_job" {
   template {
     template {
       containers {
-        image = "eu.gcr.io/pair-dance-370619/pair_dance:latest"
+        image   = "eu.gcr.io/pair-dance-370619/pair_dance:latest"
         command = ["/app/bin/migrate"]
 
         env {
-          name = "POOL_SIZE"
+          name  = "POOL_SIZE"
           value = "1"
         }
 
@@ -171,8 +206,8 @@ resource "google_cloud_run_v2_job" "db_migration_job" {
           name = "LIVE_VIEW_SIGNING_SALT"
           value_source {
             secret_key_ref {
-              secret = data.google_secret_manager_secret_version.live_view_salt.secret
-              version  = data.google_secret_manager_secret_version.live_view_salt.version
+              secret  = data.google_secret_manager_secret_version.live_view_salt.secret
+              version = data.google_secret_manager_secret_version.live_view_salt.version
             }
           }
         }
@@ -181,8 +216,8 @@ resource "google_cloud_run_v2_job" "db_migration_job" {
           name = "DATABASE_URL"
           value_source {
             secret_key_ref {
-              secret = data.google_secret_manager_secret_version.database_url.secret
-              version  = data.google_secret_manager_secret_version.database_url.version
+              secret  = data.google_secret_manager_secret_version.database_url.secret
+              version = data.google_secret_manager_secret_version.database_url.version
             }
           }
         }
@@ -191,8 +226,8 @@ resource "google_cloud_run_v2_job" "db_migration_job" {
           name = "SECRET_KEY_BASE"
           value_source {
             secret_key_ref {
-              secret = data.google_secret_manager_secret_version.secret_key_base.secret
-              version  = data.google_secret_manager_secret_version.secret_key_base.version
+              secret  = data.google_secret_manager_secret_version.secret_key_base.secret
+              version = data.google_secret_manager_secret_version.secret_key_base.version
             }
           }
         }
