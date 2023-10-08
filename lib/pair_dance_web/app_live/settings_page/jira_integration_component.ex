@@ -7,18 +7,18 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
   @impl true
   def update(assigns, socket) do
     team = assigns.team
-    integration = assigns.integration
+    integration = IntegrationRepository.find_by_team_id(team.descriptor.id)
 
     socket =
       socket
       |> assign(:team, team)
-      |> assign(:integration, integration)
       |> assign(:jira_client_id, Application.get_env(:pair_dance, :jira_client_id))
       |> assign(
         :jira_redirect_uri,
         URI.encode(Application.get_env(:pair_dance, :jira_redirect_uri))
       )
-      |> assign_integration_settings(integration == nil)
+      |> assign(:integration, integration)
+      |> assign_integration_settings(integration)
 
     {:ok, socket}
   end
@@ -50,6 +50,7 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
           socket
           |> assign(:jira_integration_form, jira_integration_form)
           |> assign(:integration, updated_integration)
+          |> assign_integration_settings(integration)
 
         {:noreply, assigns}
 
@@ -86,9 +87,9 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
     )
   end
 
-  defp assign_integration_settings(socket, true), do: socket
+  defp assign_integration_settings(socket, nil), do: socket
 
-  defp assign_integration_settings(socket, false) do
+  defp assign_integration_settings(socket, %Integration{}) do
     socket
     |> assign(
       :jira_integration_form,
