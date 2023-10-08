@@ -1,7 +1,7 @@
 <div>
   <%= if @jira_tickets != [] do %>
     <div class="my-4">
-      <h3>Next in Backlog:</h3>
+      <h3 class="text-lg">Next in the backlog</h3>
 
       <ul class="list-disc">
         <%= for {task, _index} <- Enum.with_index(@jira_tickets) do %>
