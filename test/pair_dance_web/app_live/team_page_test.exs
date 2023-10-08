@@ -99,10 +99,19 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
       assert html =~ first_task.name
     end
 
-    test "shows tasks from jira", %{conn: conn, team: team, user: user} do
-      {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+    test "create a task from jira", %{conn: conn, team: team, user: user} do
+      {:ok, view, _html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
-      assert html =~ "Become FedRamp compliant"
+      view
+      |> element("[data-qa=jira-task-PD-1]")
+      |> render_click()
+
+      {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+      {:ok, document} = Floki.parse_document(html)
+
+      assert document
+             |> Floki.find("[data-qa=pairing-table]")
+             |> Floki.text() =~ "Become FedRamp compliant"
     end
   end
 

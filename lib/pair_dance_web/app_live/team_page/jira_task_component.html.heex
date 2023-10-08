@@ -5,7 +5,13 @@
 
       <ul class="list-disc">
         <%= for {task, _index} <- Enum.with_index(@jira_tickets) do %>
-          <li class="ml-6">
+          <li
+            class="ml-6"
+            data-qa={"jira-task-#{task.id}"}
+            phx-click="create_task"
+            phx-target={@myself}
+            phx-value-task_name={"#{task.title}"}
+          >
             <span class="">
               <%= task.title %>
             </span>
