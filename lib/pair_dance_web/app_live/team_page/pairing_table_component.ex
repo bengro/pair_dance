@@ -57,7 +57,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
 
     {:ok, updated_team} = TeamRepository.mark_member_available(team, member)
 
-    EventBus.broadcast(%{team: updated_team})
+    EventBus.broadcast(updated_team.descriptor.id, %{ team: updated_team })
 
     {:noreply, assign(socket, team: updated_team)}
   end
@@ -76,8 +76,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
 
     {:ok, updated_team} = TeamRepository.mark_member_unavailable(team, member)
 
-    EventBus.broadcast(%{team: updated_team})
-
+    EventBus.broadcast(updated_team.descriptor.id, %{ team: updated_team, })
     {:noreply, assign(socket, team: updated_team)}
   end
 

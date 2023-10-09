@@ -28,7 +28,7 @@
   <.live_component
     id="jira-task-component"
     module={PairDanceWeb.AppLive.TeamPage.JiraTaskComponent}
-    team={@team}
+    team_id={@team.descriptor.id}
     integration={@jira_integration}
   />
 <% else %>

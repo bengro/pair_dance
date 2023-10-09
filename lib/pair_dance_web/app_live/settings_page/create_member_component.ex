@@ -59,7 +59,7 @@ defmodule PairDanceWeb.AppLive.Settings.CreateMemberComponent do
       true ->
         team = InviteService.invite(socket.assigns.team, user["email"])
 
-        EventBus.broadcast(%{team: team})
+        EventBus.broadcast(team.descriptor.id, %{team: team})
 
         assigns =
           socket

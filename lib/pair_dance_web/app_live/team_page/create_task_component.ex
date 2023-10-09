@@ -64,7 +64,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.CreateTaskComponent do
     case changeset.valid? do
       true ->
         {:ok, team} = TeamRepository.add_task(socket.assigns.team, task_name)
-        EventBus.broadcast(%{team: team})
+        EventBus.broadcast(team.descriptor.id, %{team: team})
 
         {:noreply,
          socket

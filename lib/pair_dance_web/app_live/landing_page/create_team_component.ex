@@ -41,7 +41,7 @@ defmodule PairDanceWeb.AppLive.LandingPage.CreateTeamComponent do
     new_team = params["team"]["name"]
     current_user = socket.assigns.user
     {:ok, team} = Team.TeamService.new_team(new_team, current_user)
-    EventBus.broadcast(%{team: team})
+    EventBus.broadcast(team.descriptor.id, %{team: team})
     {:noreply, push_navigate(socket, to: "/" <> team.descriptor.slug)}
   end
 end

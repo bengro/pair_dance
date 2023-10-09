@@ -8,10 +8,11 @@ defmodule PairDanceWeb.AppLive.TeamPage do
 
   @impl true
   def mount(%{"slug" => slug}, session, socket) do
-    EventBus.subscribe()
-
     team = TeamRepository.find_by_slug?(slug)
     session_user = session["current_user"]
+
+    EventBus.subscribe(team.descriptor.id)
+
     user = UserRepository.find_by_id(session_user.id) |> mark_current_team_as_last_active(team)
     jira_integration = IntegrationRepository.find_by_team_id(team.descriptor.id)
 
@@ -26,11 +27,13 @@ defmodule PairDanceWeb.AppLive.TeamPage do
   end
 
   @impl true
-  def handle_info(%{team: team}, socket) do
-    if team.descriptor.id == socket.assigns.team.descriptor.id do
-      {:noreply, assign(socket, :team, team)}
-    else
-      {:noreply, socket}
+  def handle_info(payload, socket) do
+    case payload do
+      %{team: team, current_user: current_user} ->
+        {:noreply, assign(socket, :team, team)}
+
+      %{team: team} ->
+        {:noreply, assign(socket, :team, team)}
     end
   end
 

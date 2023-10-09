@@ -11,10 +11,10 @@ defmodule PairDanceWeb.AppLive.SettingsPage do
 
   @impl true
   def mount(%{"slug" => slug}, session, socket) do
-    EventBus.subscribe()
-
     user = session["current_user"]
     team = TeamRepository.find_by_slug?(slug)
+
+    EventBus.subscribe(team.descriptor.id)
 
     changeset =
       {%{}, @types}

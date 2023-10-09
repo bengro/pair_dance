@@ -66,7 +66,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.EditableTask do
           |> assign(:edit_task_form, task_edit_form(updated_task))
           |> assign(:edit_task_form_errors, %{name: []})
 
-        EventBus.broadcast(%{team: updated_team})
+        EventBus.broadcast(updated_team.descriptor.id, %{team: updated_team})
 
         {:noreply, assigns}
 
@@ -102,7 +102,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.EditableTask do
     task = Enum.find(team.tasks, fn task -> task.id == String.to_integer(task_id) end)
 
     {:ok, updated_team} = TeamRepository.delete_task(team, task)
-    EventBus.broadcast(%{team: updated_team})
+    EventBus.broadcast(updated_team.descriptor.id, %{team: updated_team})
 
     {:noreply,
      socket

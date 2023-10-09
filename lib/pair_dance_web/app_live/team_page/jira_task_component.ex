@@ -1,13 +1,13 @@
 defmodule PairDanceWeb.AppLive.TeamPage.JiraTaskComponent do
   use PairDanceWeb, :live_component
   alias PairDance.Infrastructure.Jira.JiraService
-  alias PairDance.Infrastructure.Integrations.EctoRepository, as: IntegrationRepository
-  alias PairDance.Infrastructure.EventBus
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
+  alias PairDance.Infrastructure.EventBus
+  alias PairDance.Domain.Team
 
   @impl true
   def update(assigns, socket) do
-    team = assigns[:team]
+    team_id = assigns[:team_id]
     jira_integration = assigns[:integration]
 
     case jira_integration do
@@ -15,7 +15,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.JiraTaskComponent do
         assigns =
           socket
           |> assign(:jira_tickets, [])
-          |> assign(:team, team)
+          |> assign(:team_id, team_id)
 
         {:ok, assigns}
 
@@ -25,7 +25,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.JiraTaskComponent do
         assigns =
           socket
           |> assign(:jira_tickets, jira_tickets)
-          |> assign(:team, team)
+          |> assign(:team_id, team_id)
 
         {:ok, assigns}
     end
@@ -33,9 +33,17 @@ defmodule PairDanceWeb.AppLive.TeamPage.JiraTaskComponent do
 
   @impl true
   def handle_event("create_task", %{"task_name" => task_name}, socket) do
-    {:ok, team} = TeamRepository.add_task(socket.assigns.team, task_name)
-    EventBus.broadcast(%{team: team})
+    team_id = socket.assigns.team_id
 
-    {:noreply, socket |> assign(:team, team)}
+    {:ok, team} =
+      TeamRepository.add_task(
+        # TODO: add_task should take just the team_id
+        %Team{members: [], tasks: [], assignments: [], descriptor: %{id: team_id}},
+        task_name
+      )
+
+    EventBus.broadcast(team_id, %{team: team})
+
+    {:noreply, socket}
   end
 end
