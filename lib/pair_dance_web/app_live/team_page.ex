@@ -27,14 +27,8 @@ defmodule PairDanceWeb.AppLive.TeamPage do
   end
 
   @impl true
-  def handle_info(payload, socket) do
-    case payload do
-      %{team: team, current_user: current_user} ->
-        {:noreply, assign(socket, :team, team)}
-
-      %{team: team} ->
-        {:noreply, assign(socket, :team, team)}
-    end
+  def handle_info(%{team: team}, socket) do
+    {:noreply, assign(socket, :team, team)}
   end
 
   defp mark_current_team_as_last_active(user, team) do

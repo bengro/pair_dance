@@ -106,7 +106,7 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
       {:ok, view, _html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
 
       view
-      |> element("[data-qa=jira-task-PD-1]")
+      |> element("[data-qa=jira-ticket-PD-1]")
       |> render_click()
 
       {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")

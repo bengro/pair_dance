@@ -4,15 +4,16 @@
       <h3 class="text-lg">Next in the backlog</h3>
 
       <ul class="list-disc">
-        <%= for {task, _index} <- Enum.with_index(@jira_tickets) do %>
+        <%= for {ticket, _index} <- Enum.with_index(@jira_tickets) do %>
           <li
             class="ml-6 cursor-pointer"
-            data-qa={"jira-task-#{task.id}"}
+            data-qa={"jira-ticket-#{ticket.id}"}
             phx-click="create_task"
             phx-target={@myself}
-            phx-value-task_name={"#{task.title}"}
+            phx-value-ticket_name={"#{ticket.title}"}
+            phx-value-ticket_id={"#{ticket.id}"}
           >
-            <span class="underline"><%= task.title %></span> (<%= task.id %>)
+            <span class="underline"><%= ticket.title %></span> (<%= ticket.id %>)
           </li>
         <% end %>
       </ul>

@@ -1,4 +1,4 @@
-defmodule PairDanceWeb.AppLive.TeamPage.JiraTaskComponent do
+defmodule PairDanceWeb.AppLive.TeamPage.JiraTicketComponent do
   use PairDanceWeb, :live_component
   alias PairDance.Infrastructure.Jira.JiraService
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
@@ -32,7 +32,11 @@ defmodule PairDanceWeb.AppLive.TeamPage.JiraTaskComponent do
   end
 
   @impl true
-  def handle_event("create_task", %{"task_name" => task_name}, socket) do
+  def handle_event(
+        "create_task",
+        %{"ticket_name" => task_name, "ticket_id" => _ticket_id},
+        socket
+      ) do
     team_id = socket.assigns.team_id
 
     {:ok, team} =
