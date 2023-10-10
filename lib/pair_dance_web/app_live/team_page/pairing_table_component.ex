@@ -27,6 +27,8 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
         %{
           id: task.id,
           name: task.name,
+          is_imported: task.is_imported,
+          external_id: task.external_id,
           assignees:
             Enum.filter(team.assignments, fn assignment -> assignment.task.id == task.id end)
             |> Enum.map(fn assignment -> assignment.member end)

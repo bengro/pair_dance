@@ -35,7 +35,12 @@ defmodule PairDance.Infrastructure.EntityConverters do
   end
 
   def to_task_descriptor(entity) do
-    %Task.Descriptor{id: entity.id, name: entity.name}
+    %Task.Descriptor{
+      id: entity.id,
+      name: entity.name,
+      is_imported: entity.external_id != nil,
+      external_id: entity.external_id
+    }
   end
 
   def to_user(entity) do

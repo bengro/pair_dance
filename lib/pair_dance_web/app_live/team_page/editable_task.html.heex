@@ -8,6 +8,9 @@
       class="cursor-pointer hover:underline hover:decoration-dashed"
     >
       <%= @task.name %>
+      <%= if @task.is_imported do %>
+        (<span class="uppercase"><%= @task.external_id %></span>)
+      <% end %>
     </p>
     <button
       phx-click="delete_task"

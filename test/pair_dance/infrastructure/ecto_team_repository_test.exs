@@ -149,6 +149,16 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
       assert updated_team == TeamRepository.find(team.descriptor.id)
     end
 
+    test "create a task with an external reference" do
+      {:ok, team} = TeamRepository.create("comet")
+
+      {:ok, updated_team} = TeamRepository.add_task(team, "login with google", "PD-1")
+
+      assert [%Task.Descriptor{name: name, external_id: external_id}] = updated_team.tasks
+      assert name == "login with google"
+      assert external_id == "PD-1"
+    end
+
     test "update task name" do
       {:ok, team} = TeamRepository.create("comet")
       {:ok, team_with_task} = TeamRepository.add_task(team, "login with google")

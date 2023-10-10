@@ -115,6 +115,10 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
       assert document
              |> Floki.find("[data-qa=pairing-table]")
              |> Floki.text() =~ "Become FedRamp compliant"
+
+      assert document
+             |> Floki.find("[data-qa=pairing-table]")
+             |> Floki.text() =~ "PD-1"
     end
   end
 

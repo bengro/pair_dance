@@ -34,7 +34,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.JiraTicketComponent do
   @impl true
   def handle_event(
         "create_task",
-        %{"ticket_name" => task_name, "ticket_id" => _ticket_id},
+        %{"ticket_name" => task_name, "ticket_id" => ticket_id},
         socket
       ) do
     team_id = socket.assigns.team_id
@@ -43,7 +43,8 @@ defmodule PairDanceWeb.AppLive.TeamPage.JiraTicketComponent do
       TeamRepository.add_task(
         # TODO: add_task should take just the team_id
         %Team{members: [], tasks: [], assignments: [], descriptor: %{id: team_id}},
-        task_name
+        task_name,
+        ticket_id
       )
 
     EventBus.broadcast(team_id, %{team: team})

@@ -7,6 +7,7 @@ defmodule PairDance.Domain.Team.Repository do
   @type member_id :: String.t()
   @type slug :: String.t()
   @type task_name :: String.t()
+  @type external_id :: String.t()
 
   @callback create(String.t()) :: {:ok, Team.t()}
 
@@ -25,6 +26,8 @@ defmodule PairDance.Domain.Team.Repository do
   @callback delete_member(Team.t(), Member.t()) :: {:ok, Team.t()}
 
   @callback add_task(Team.t(), task_name()) :: {:ok, Team.t()}
+
+  @callback add_task(Team.t(), task_name(), external_id()) :: {:ok, Team.t()}
 
   @callback update_task(Team.t(), Task.Descriptor.t()) :: {:ok, Team.t()}
 
