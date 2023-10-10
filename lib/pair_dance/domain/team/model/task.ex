@@ -18,6 +18,6 @@ defmodule PairDance.Domain.Team.Task do
     {%{name: ""}, types}
     |> Ecto.Changeset.cast(%{name: task_name}, [:name])
     |> Ecto.Changeset.validate_required(:name)
-    |> Ecto.Changeset.validate_length(:name, min: 5, max: 60)
+    |> Ecto.Changeset.validate_length(:name, min: 3, max: 60)
   end
 end
