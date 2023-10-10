@@ -3,7 +3,7 @@
   id={"task-#{@task.id}"}
   data-qa="workstream"
 >
-  <div class="w-96 text-center flex flex-col justify-center bg-gray-100">
+  <div class="w-1/2 text-center flex flex-col justify-center bg-gray-100">
     <.live_component
       id={"task-tile-#{@task.id}"}
       module={PairDanceWeb.AppLive.TeamPage.EditableTask}
@@ -15,7 +15,7 @@
     id={"#{@id}-assignments"}
     phx-hook="Reassign"
     data-task-id={@id}
-    class="flex flex-row flex-wrap w-full h-full h-min-height py-4"
+    class="flex flex-row flex-wrap w-1/2 h-full h-min-height py-4"
   >
     <div
       :for={member <- @task.assignees}
