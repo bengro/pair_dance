@@ -1,12 +1,18 @@
 <div>
   <%= if @jira_tickets != [] do %>
     <div class="my-4">
-      <h3 class="text-lg">Next in the backlog</h3>
+      <h3 class="text-lg flex flex-column align-items-center my-2">
+        <img
+          src="/images/jira-software-logo-jira-logo-hd-png.webp"
+          alt="Jira Software"
+          class="w-6 mr-2"
+        /> Next Up
+      </h3>
 
       <ul class="list-disc">
         <%= for {ticket, _index} <- Enum.with_index(@jira_tickets) do %>
           <li
-            class="ml-6 cursor-pointer"
+            class="ml-6 cursor-pointer pb-2"
             data-qa={"jira-ticket-#{ticket.id}"}
             phx-click="create_task"
             phx-target={@myself}
