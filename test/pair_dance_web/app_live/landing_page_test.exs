@@ -8,7 +8,7 @@ defmodule PairDanceWeb.AppLive.LandingPageTest do
     test "shows the external landing page", %{conn: conn} do
       {:ok, _, html} = conn |> live(~p"/")
 
-      assert html =~ "Sign up to Pair Dance"
+      assert html =~ "Start using Pair Dance"
     end
   end
 
