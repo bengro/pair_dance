@@ -5,13 +5,15 @@ defmodule PairDance.Domain.Insights.AssignedTaskSummaryTest do
   alias PairDance.Domain.Team.TimeRange
   alias PairDance.Domain.Team.AssignedTask
   alias PairDance.Domain.Insights.AssignedTaskSummary
+  alias PairDance.Domain.Team.Member
+  alias PairDance.Domain.User
 
   test "lists every task" do
     task1 = a_task(1)
     task2 = a_task(2)
 
     summary =
-      AssignedTaskSummary.build([
+      AssignedTaskSummary.build(a_member(), [
         an_assigned_task(task1),
         an_assigned_task(task2),
         an_assigned_task(task1)
@@ -20,9 +22,20 @@ defmodule PairDance.Domain.Insights.AssignedTaskSummaryTest do
     assert length(summary) == 2
   end
 
+  test "associates tasks with the user" do
+    member = a_member()
+
+    [task_summary] =
+      AssignedTaskSummary.build(member, [
+        an_assigned_task(a_task())
+      ])
+
+    assert task_summary.member == member
+  end
+
   test "includes task descriptors" do
     [%AssignedTaskSummary{task: task}] =
-      AssignedTaskSummary.build([an_assigned_task(a_task(1, "my task"))])
+      AssignedTaskSummary.build(a_member(), [an_assigned_task(a_task(1, "my task"))])
 
     assert task.name == "my task"
   end
@@ -40,7 +53,7 @@ defmodule PairDance.Domain.Insights.AssignedTaskSummaryTest do
     ]
 
     [%AssignedTaskSummary{time_ranges: time_ranges}] =
-      AssignedTaskSummary.build(unordered_assigned_tasks)
+      AssignedTaskSummary.build(a_member(), unordered_assigned_tasks)
 
     assert time_ranges == [tr1, tr2, tr3]
   end
@@ -56,7 +69,7 @@ defmodule PairDance.Domain.Insights.AssignedTaskSummaryTest do
     ]
 
     [%AssignedTaskSummary{time_range: time_range}] =
-      AssignedTaskSummary.build(unordered_assigned_tasks)
+      AssignedTaskSummary.build(a_member(), unordered_assigned_tasks)
 
     assert time_range.start == ~U[2020-01-01 00:00:00.00Z]
     assert time_range.end == ~U[2020-01-02 23:59:59.00Z]
@@ -78,7 +91,8 @@ defmodule PairDance.Domain.Insights.AssignedTaskSummaryTest do
     ]
 
     task_names =
-      AssignedTaskSummary.build(unordered_assigned_tasks) |> Enum.map(fn s -> s.task.name end)
+      AssignedTaskSummary.build(a_member(), unordered_assigned_tasks)
+      |> Enum.map(fn s -> s.task.name end)
 
     assert task_names == ["third", "second", "first"]
   end
@@ -101,6 +115,13 @@ defmodule PairDance.Domain.Insights.AssignedTaskSummaryTest do
     %AssignedTask{
       task: task,
       time_range: time_range
+    }
+  end
+
+  def a_member() do
+    %Member{
+      user: %User{id: "a-user", email: "my@email.com"},
+      role: :admin
     }
   end
 end

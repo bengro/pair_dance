@@ -1,4 +1,4 @@
-defmodule PairDance.Domain.Insights.ServiceTest do
+defmodule PairDance.Domain.Insights.RepoTest do
   use PairDance.DataCase
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
@@ -109,6 +109,30 @@ defmodule PairDance.Domain.Insights.ServiceTest do
       assert length(users_assigned_to_task) == 2
       assert Enum.member?(users_assigned_to_task, "ana")
       assert Enum.member?(users_assigned_to_task, "bob")
+    end
+  end
+
+  describe "get_assignments_by_team" do
+    test "returns all assignments of a team" do
+      create_team(%{
+        member_names: ["ana", "bob"],
+        task_names: ["fedramp", "UI"]
+      })
+      |> create_assignment("fedramp", "ana")
+
+      team =
+        create_team(%{
+          member_names: ["ana", "bob"],
+          task_names: ["fedramp", "UI"]
+        })
+        |> create_assignment("fedramp", "ana")
+        |> delete_assignment("fedramp", "ana")
+        |> create_assignment("fedramp", "bob")
+        |> create_assignment("UI", "bob")
+
+      {:ok, assignments} = InsightService.get_assignments_by_team(team)
+
+      assert length(assignments) == 3
     end
   end
 end

@@ -11,9 +11,10 @@ defmodule PairDanceWeb.AppLive.InsightsPage do
   def mount(%{"slug" => slug}, session, socket) do
     user = session["current_user"]
     team = TeamRepository.find_by_slug?(slug)
+    member = Enum.find(team.members, fn m -> m.user.id == user.id end)
 
     {:ok, assigned_tasks} = WorkLogService.get_assigned_tasks_by_user(user, team)
-    task_summary = PairDance.Domain.Insights.AssignedTaskSummary.build(assigned_tasks)
+    task_summary = PairDance.Domain.Insights.AssignedTaskSummary.build(member, assigned_tasks)
     calendar = Calendar.build(assigned_tasks)
 
     assigns =

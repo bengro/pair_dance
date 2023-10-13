@@ -2,24 +2,26 @@ defmodule PairDance.Domain.Insights.AssignedTaskSummary do
   alias __MODULE__
 
   alias PairDance.Domain.Team.TimeRange
+  alias PairDance.Domain.Team.Member
 
-  @enforce_keys [:task, :time_range, :time_ranges]
-  defstruct [:task, :time_range, :time_ranges]
+  @enforce_keys [:task, :member, :time_range, :time_ranges]
+  defstruct [:task, :member, :time_range, :time_ranges]
 
   @type t() :: %__MODULE__{
           task: Task.Descriptor.t(),
+          member: Member.t(),
           time_ranges: list(TimeRange.t())
         }
 
-  @spec build(list(AssignedTask.t())) :: list(AssignedTaskSummary.t())
-  def build(assignments) do
-    Enum.group_by(assignments, fn a -> a.task.id end, fn a -> a end)
-    |> Enum.map(fn {_, as} -> build_for_one_task(as) end)
+  @spec build(Member.t(), list(AssignedTask.t())) :: list(AssignedTaskSummary.t())
+  def build(member, all_assignments) do
+    Enum.group_by(all_assignments, fn a -> a.task.id end, fn a -> a end)
+    |> Enum.map(fn {_, task_assignments} -> build_for_one_task(task_assignments, member) end)
     |> Enum.sort(AssignedTaskSummary)
     |> Enum.reverse()
   end
 
-  defp build_for_one_task(assignments) do
+  defp build_for_one_task(assignments, member) do
     task = Enum.at(assignments, 0).task
 
     time_ranges =
@@ -28,7 +30,12 @@ defmodule PairDance.Domain.Insights.AssignedTaskSummary do
 
     time_range = TimeRange.merge(time_ranges)
 
-    %AssignedTaskSummary{task: task, time_range: time_range, time_ranges: time_ranges}
+    %AssignedTaskSummary{
+      task: task,
+      time_range: time_range,
+      time_ranges: time_ranges,
+      member: member
+    }
   end
 
   @spec compare(AssignedTaskSummary.t(), AssignedTaskSummary.t()) :: :lt | :eq | :gt
