@@ -43,10 +43,17 @@
         phx-target={@myself}
       />
       <.input
-        field={{f, :backlog_query}}
+        field={{f, :upcoming_tickets_jql}}
         type="text"
-        label="Backlog JQL"
-        errors={@jira_integration_form_errors[:backlog_query]}
+        label="JQL to list upcoming tickets"
+        errors={@jira_integration_form_errors[:upcoming_tickets_jql]}
+        phx-target={@myself}
+      />
+      <.input
+        field={{f, :inprogress_tickets_jql}}
+        type="text"
+        label="JQL to list in-progress tickets"
+        errors={@jira_integration_form_errors[:inprogress_tickets_jql]}
         phx-target={@myself}
       />
       <:actions>

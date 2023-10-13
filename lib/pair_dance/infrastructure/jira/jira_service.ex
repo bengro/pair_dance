@@ -5,8 +5,8 @@ defmodule PairDance.Infrastructure.Jira.JiraService do
     jira_client().connect(team_id, auth_code)
   end
 
-  def configure(integration_id, board_id, backlog_query) do
-    jira_client().configure(integration_id, board_id, backlog_query)
+  def configure(integration_id, board_id, upcoming_tickets_jql) do
+    jira_client().configure(integration_id, board_id, upcoming_tickets_jql)
   end
 
   def list_upcoming_tickets(integration) do

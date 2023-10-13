@@ -6,13 +6,13 @@ defmodule PairDance.Infrastructure.Jira.JiraClientTest do
   @tag :skip
   test "connect an integration" do
     board_id = System.fetch_env!("CONTRACT_TEST_JIRA_BOARD_ID")
-    backlog_query = System.fetch_env!("CONTRACT_TEST_JIRA_BACKLOG_QUERY")
+    upcoming_tickets_jql = System.fetch_env!("CONTRACT_TEST_JIRA_upcoming_tickets_jql")
 
     {:ok, integration} =
       EctoRepository.create(1, %{
         refresh_token: System.fetch_env!("CONTRACT_TEST_JIRA_REFRESH_TOKEN"),
         board_id: board_id,
-        backlog_query: backlog_query
+        upcoming_tickets_jql: upcoming_tickets_jql
       })
 
     tickets = JiraClient.list_upcoming_tickets(integration)

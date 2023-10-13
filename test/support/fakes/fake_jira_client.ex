@@ -5,7 +5,7 @@ defmodule PairDance.Infrastructure.Jira.FakeJiraClient do
     {:ok, "integration-1"}
   end
 
-  def configure(_integration_id, _board_id, _backlog_query) do
+  def configure(_integration_id, _board_id, _upcoming_tickets_jql) do
     :ok
   end
 

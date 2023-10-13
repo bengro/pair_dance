@@ -51,49 +51,37 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
   end
 
   @doc """
-  To be called, once user provides board_id and backlog_query via settings
+  To be called, once user provides board_id and upcoming_tickets_jql via settings
   """
-  def configure(integration_id, board_id, backlog_query) do
+  def configure(integration_id, board_id, upcoming_tickets_jql) do
     settings = %{
       board_id: board_id,
-      backlog_query: backlog_query
+      upcoming_tickets_jql: upcoming_tickets_jql
     }
 
     IntegrationsRepository.update_settings(integration_id, settings)
   end
 
-  @doc """
-  To be called, once the integration has been connected and configured.
-  """
   def list_upcoming_tickets(integration) do
     settings = integration.settings
 
     endpoint_url =
-      "#{settings.host}/rest/agile/1.0/board/#{settings.board_id}/issue?jql=#{URI.encode(settings.backlog_query)}&fields=summary"
+      "#{settings.host}/rest/agile/1.0/board/#{settings.board_id}/issue?jql=#{URI.encode(settings.upcoming_tickets_jql)}&fields=summary"
 
-    {:ok, response} =
-      Finch.build(
-        :get,
-        endpoint_url,
-        [
-          {"Authorization", "Bearer #{get_token(integration)}"},
-          {"Accept", "application/json"},
-          {"Content-Type", "application/json"}
-        ]
-      )
-      |> Finch.request(PairDance.Finch)
+    token = get_token(integration)
 
-    payload = Jason.decode!(response.body)
+    get_tickets(endpoint_url, token)
+  end
 
-    case response do
-      %{status: 200} ->
-        Enum.map(payload["issues"], fn issue ->
-          %{title: issue["fields"]["summary"], id: issue["key"]}
-        end)
+  def list_in_progress_tickets(integration) do
+    settings = integration.settings
 
-      _ ->
-        []
-    end
+    endpoint_url =
+      "#{settings.host}/rest/agile/1.0/board/#{settings.board_id}/issue?jql=#{URI.encode(settings.in_progress_query)}&fields=summary"
+
+    token = get_token(integration)
+
+    get_tickets(endpoint_url, token)
   end
 
   defp get_token_metadata(integration) do
@@ -177,5 +165,31 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
   defp has_token_expired(token_expiry_date) do
     time_in_seconds_now = DateTime.utc_now() |> DateTime.to_unix()
     token_expiry_date < time_in_seconds_now
+  end
+
+  defp get_tickets(endpoint, token) do
+    {:ok, response} =
+      Finch.build(
+        :get,
+        endpoint,
+        [
+          {"Authorization", "Bearer #{token}"},
+          {"Accept", "application/json"},
+          {"Content-Type", "application/json"}
+        ]
+      )
+      |> Finch.request(PairDance.Finch)
+
+    payload = Jason.decode!(response.body)
+
+    case response do
+      %{status: 200} ->
+        Enum.map(payload["issues"], fn issue ->
+          %{title: issue["fields"]["summary"], id: issue["key"]}
+        end)
+
+      _ ->
+        []
+    end
   end
 end

@@ -27,12 +27,19 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
   def handle_event(
         "save",
         %{
-          "jira_integration_form" => %{"backlog_query" => backlog_query, "board_id" => board_id}
+          "jira_integration_form" => %{
+            "upcoming_tickets_jql" => upcoming_tickets_jql,
+            "inprogress_tickets_jql" => inprogress_tickets_jql,
+            "board_id" => board_id
+          }
         },
         socket
       ) do
-    changeset = Integration.changeset(board_id, backlog_query)
-    jira_integration_form = jira_integration_form(board_id, backlog_query)
+    changeset = Integration.changeset(board_id, upcoming_tickets_jql, inprogress_tickets_jql)
+
+    jira_integration_form =
+      jira_integration_form(board_id, upcoming_tickets_jql, inprogress_tickets_jql)
+
     integration = socket.assigns.integration
 
     case changeset.valid? do
@@ -42,7 +49,8 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
             integration.id,
             %{
               board_id: changeset.changes.board_id,
-              backlog_query: changeset.changes.backlog_query
+              upcoming_tickets_jql: changeset.changes.upcoming_tickets_jql,
+              inprogress_tickets_jql: changeset.changes.inprogress_tickets_jql
             }
           )
 
@@ -57,7 +65,7 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
       false ->
         errors =
           Map.merge(
-            %{board_id: [], backlog_query: []},
+            %{board_id: [], upcoming_tickets_jql: [], inprogress_tickets_jql: []},
             Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
           )
 
@@ -81,8 +89,9 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
     {:noreply, socket}
   end
 
-  defp jira_integration_form(board_id, backlog_query) do
-    Phoenix.HTML.FormData.to_form(Integration.changeset(board_id, backlog_query),
+  defp jira_integration_form(board_id, upcoming_tickets_jql, inprogress_tickets_jql) do
+    Phoenix.HTML.FormData.to_form(
+      Integration.changeset(board_id, upcoming_tickets_jql, inprogress_tickets_jql),
       as: "jira_integration_form"
     )
   end
@@ -95,9 +104,14 @@ defmodule PairDanceWeb.AppLive.SettingsPage.JiraIntegrationComponent do
       :jira_integration_form,
       jira_integration_form(
         socket.assigns.integration.settings.board_id,
-        socket.assigns.integration.settings.backlog_query
+        socket.assigns.integration.settings.upcoming_tickets_jql,
+        socket.assigns.integration.settings.inprogress_tickets_jql
       )
     )
-    |> assign(:jira_integration_form_errors, %{board_id: [], backlog_query: []})
+    |> assign(:jira_integration_form_errors, %{
+      board_id: [],
+      upcoming_tickets_jql: [],
+      inprogress_tickets_jql: []
+    })
   end
 end

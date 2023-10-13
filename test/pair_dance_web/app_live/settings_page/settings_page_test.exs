@@ -146,7 +146,11 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
 
     view
     |> form("#jira-integration-form",
-      jira_integration_form: %{backlog_query: "backlog-jql", board_id: "board-1"}
+      jira_integration_form: %{
+        upcoming_tickets_jql: "backlog-jql",
+        inprogress_tickets_jql: "another-jql",
+        board_id: "board-1"
+      }
     )
     |> render_submit()
 

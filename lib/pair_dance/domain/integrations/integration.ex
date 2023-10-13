@@ -16,24 +16,38 @@ defmodule PairDance.Domain.Integration do
     if integration != nil and
          integration.settings != nil and
          integration.settings.board_id != nil and
-         integration.settings.backlog_query != nil do
+         integration.settings.upcoming_tickets_jql != nil and
+         integration.settings.inprogress_tickets_jql != nil do
       true
     else
       false
     end
   end
 
-  def changeset(board_id, backlog_query) do
+  def changeset(board_id, upcoming_tickets_jql, inprogress_tickets_jql) do
     types = %{
       board_id: :string,
-      backlog_query: :string
+      upcoming_tickets_jql: :string,
+      inprogress_tickets_jql: :string
     }
 
     {%{}, types}
-    |> Ecto.Changeset.cast(%{board_id: board_id, backlog_query: backlog_query}, [
+    |> Ecto.Changeset.cast(
+      %{
+        board_id: board_id,
+        upcoming_tickets_jql: upcoming_tickets_jql,
+        inprogress_tickets_jql: inprogress_tickets_jql
+      },
+      [
+        :board_id,
+        :upcoming_tickets_jql,
+        :inprogress_tickets_jql
+      ]
+    )
+    |> Ecto.Changeset.validate_required([
       :board_id,
-      :backlog_query
+      :upcoming_tickets_jql,
+      :inprogress_tickets_jql
     ])
-    |> Ecto.Changeset.validate_required([:board_id, :backlog_query])
   end
 end

@@ -57,7 +57,8 @@ defmodule PairDance.Infrastructure.Integrations.EctoRepository do
       team_id: entity.team_id,
       settings: %Settings{
         board_id: entity.settings["board_id"],
-        backlog_query: entity.settings["backlog_query"],
+        upcoming_tickets_jql: entity.settings["upcoming_tickets_jql"],
+        inprogress_tickets_jql: entity.settings["inprogress_tickets_jql"],
         base_url: entity.settings["base_url"],
         host: entity.settings["host"]
       },
