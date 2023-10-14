@@ -16,4 +16,8 @@ defmodule PairDance.Infrastructure.Jira.FakeJiraClient do
   def list_upcoming_tickets(nil) do
     []
   end
+
+  def list_in_progress_tickets(_integration) do
+    [%{title: "Add button to homepage", id: "PD-2"}]
+  end
 end

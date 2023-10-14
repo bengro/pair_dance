@@ -13,6 +13,10 @@ defmodule PairDance.Infrastructure.Jira.JiraService do
     jira_client().list_upcoming_tickets(integration)
   end
 
+  def list_in_progress_tickets(integration) do
+    jira_client().list_in_progress_tickets(integration)
+  end
+
   @spec jira_client() :: Operations.t()
   defp jira_client do
     Application.get_env(:pair_dance, :jira_client)

@@ -120,6 +120,18 @@ defmodule PairDanceWeb.AppLive.TeamPageTest do
              |> Floki.find("[data-qa=pairing-table]")
              |> Floki.text() =~ "PD-1"
     end
+
+    test "creates tasks which are in-progress", %{conn: conn, team: team, user: user} do
+      jira_integration_fixture(team)
+
+      {:ok, _view, html} = conn |> impersonate(user) |> live(~p"/#{team.descriptor.slug}")
+
+      {:ok, document} = Floki.parse_document(html)
+
+      assert document
+             |> Floki.find("[data-qa=pairing-table]")
+             |> Floki.text() =~ "Add button to homepage"
+    end
   end
 
   describe "assignments" do
