@@ -156,9 +156,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   end
 
   @impl Team.Repository
-  def get_tasks(team) do
-    id = team.descriptor.id
-
+  def get_tasks(team_id) do
     tasks_query =
       from t in TaskEntity,
         left_join: a in AssignmentEntity,
@@ -167,7 +165,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
         on: a.member_id == m.id,
         left_join: u in User.Entity,
         on: m.user_id == u.id,
-        where: t.team_id == ^id,
+        where: t.team_id == ^team_id,
         select: [a, t, m, u]
 
     tasks =

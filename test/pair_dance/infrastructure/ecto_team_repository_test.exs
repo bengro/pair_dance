@@ -180,7 +180,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
         |> create_assignment("task 1", "ana")
         |> create_assignment("task 1", "bob")
 
-      {:ok, tasks} = TeamRepository.get_tasks(team)
+      {:ok, tasks} = TeamRepository.get_tasks(team.descriptor.id)
 
       task_names =
         tasks
@@ -200,7 +200,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
         |> create_assignment("task", "ana")
         |> delete_assignment("task", "ana")
 
-      {:ok, [task]} = TeamRepository.get_tasks(team)
+      {:ok, [task]} = TeamRepository.get_tasks(team.descriptor.id)
 
       assert length(task.assigned_members) == 1
     end
@@ -212,7 +212,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
           task_names: ["task 1"]
         })
 
-      {:ok, [task]} = TeamRepository.get_tasks(team)
+      {:ok, [task]} = TeamRepository.get_tasks(team.descriptor.id)
 
       assert task.assigned_members == []
     end
@@ -226,7 +226,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
         |> create_assignment("task 1", "ana")
         |> create_assignment("task 1", "bob")
 
-      {:ok, [task]} = TeamRepository.get_tasks(team)
+      {:ok, [task]} = TeamRepository.get_tasks(team.descriptor.id)
 
       assert length(task.assigned_members) == 2
 
@@ -250,7 +250,7 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
       })
       |> create_assignment("task 2", "bob")
 
-      assert {:ok, []} = TeamRepository.get_tasks(team)
+      assert {:ok, []} = TeamRepository.get_tasks(team.descriptor.id)
     end
 
     test "delete a task with assignments" do

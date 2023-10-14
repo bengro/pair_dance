@@ -20,11 +20,16 @@ defmodule PairDanceWeb.AppLive.TeamPage.JiraTicketComponent do
         {:ok, assigns}
 
       _ ->
+        {:ok, tasks} = TeamRepository.get_tasks(team_id)
+
+        external_ids_of_tasks_in_flight =
+          Enum.map(tasks, fn task -> task.descriptor.external_id end)
+
         jira_tickets = JiraService.list_upcoming_tickets(jira_integration)
 
         assigns =
           socket
-          |> assign(:jira_tickets, jira_tickets)
+          |> assign(:jira_tickets, tickets_to_show(jira_tickets, external_ids_of_tasks_in_flight))
           |> assign(:team_id, team_id)
 
         {:ok, assigns}
@@ -49,6 +54,19 @@ defmodule PairDanceWeb.AppLive.TeamPage.JiraTicketComponent do
 
     EventBus.broadcast(team_id, %{team: team})
 
-    {:noreply, socket}
+    external_ids_of_tasks_in_flight = Enum.map(team.tasks, fn task -> task.external_id end)
+
+    {:noreply,
+     socket
+     |> assign(
+       :jira_tickets,
+       tickets_to_show(socket.assigns.jira_tickets, external_ids_of_tasks_in_flight)
+     )}
+  end
+
+  defp tickets_to_show(jira_tickets, tasks_by_external_id_in_flight) do
+    Enum.filter(jira_tickets, fn ticket ->
+      !Enum.member?(tasks_by_external_id_in_flight, ticket.id)
+    end)
   end
 end
