@@ -66,7 +66,7 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
     settings = integration.settings
 
     endpoint_url =
-      "#{settings.host}/rest/agile/1.0/board/#{settings.board_id}/issue?jql=#{URI.encode(settings.upcoming_tickets_jql)}&fields=summary"
+      "#{settings.host}/rest/agile/1.0/board/#{settings.board_id}/issue?jql=#{URI.encode(settings.upcoming_tickets_jql)}&fields=summary,issuetype"
 
     token = get_token(integration)
 
@@ -77,7 +77,7 @@ defmodule PairDance.Infrastructure.Jira.JiraClient do
     settings = integration.settings
 
     endpoint_url =
-      "#{settings.host}/rest/agile/1.0/board/#{settings.board_id}/issue?jql=#{URI.encode(settings.inprogress_tickets_jql)}&fields=summary"
+      "#{settings.host}/rest/agile/1.0/board/#{settings.board_id}/issue?jql=#{URI.encode(settings.inprogress_tickets_jql)}&fields=summary,issuetype"
 
     token = get_token(integration)
 
