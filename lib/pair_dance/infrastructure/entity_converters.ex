@@ -21,7 +21,8 @@ defmodule PairDance.Infrastructure.EntityConverters do
       id: entity.id,
       user: to_user(entity.user),
       role: :admin,
-      available: entity.available
+      available: entity.available,
+      active: entity.active
     }
   end
 
@@ -30,7 +31,8 @@ defmodule PairDance.Infrastructure.EntityConverters do
       id: member_entity.id,
       user: to_user(user_entity),
       role: :admin,
-      available: member_entity.available
+      available: member_entity.available,
+      active: member_entity.active
     }
   end
 

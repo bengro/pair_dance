@@ -4,6 +4,7 @@ defmodule PairDance.Infrastructure.Team.MemberEntity do
 
   schema "members" do
     field :available, :boolean
+    field :active, :boolean
 
     belongs_to :user, PairDance.Infrastructure.User.Entity,
       references: :id,
@@ -17,7 +18,7 @@ defmodule PairDance.Infrastructure.Team.MemberEntity do
   @doc false
   def changeset(member, attrs) do
     member
-    |> cast(attrs, [:user_id, :team_id, :available])
+    |> cast(attrs, [:user_id, :team_id, :available, :active])
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:team_id)
     |> validate_required([:user_id, :team_id])

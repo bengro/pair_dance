@@ -102,13 +102,15 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponentTest do
     available_member = %Member{
       user: %User{id: 1, email: "bob@gmail.com", approximate_name: "bob"},
       role: :admin,
-      available: true
+      available: true,
+      active: true
     }
 
     unavailable_member = %Member{
       user: %User{id: 2, email: "alice@gmail.com", approximate_name: "alice"},
       role: :admin,
-      available: false
+      available: false,
+      active: true
     }
 
     team = %Team{

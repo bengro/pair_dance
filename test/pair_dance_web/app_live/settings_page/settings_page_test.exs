@@ -62,6 +62,25 @@ defmodule PairDanceWeb.AppLive.SettingsPageTest do
       refute render(view) =~ "someone@world.com"
     end
 
+    test "deactivate and activate a team member", %{conn: conn, team: team, user: user} do
+      team_member = member_fixture(team, "someone@world.com")
+
+      {:ok, view, _} =
+        conn
+        |> impersonate(user)
+        |> live(~p"/#{team.descriptor.slug}/settings")
+
+      view
+      |> element("[data-qa=deactivate-member-#{team_member.id}]")
+      |> render_click()
+
+      view
+      |> element("[data-qa=activate-member-#{team_member.id}]")
+      |> render_click()
+
+      assert render(view) =~ "someone@world.com"
+    end
+
     test "shows that current user has never logged in", %{conn: conn, team: team, user: user} do
       {:ok, _, html} =
         conn

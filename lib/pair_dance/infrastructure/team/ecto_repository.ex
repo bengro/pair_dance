@@ -122,6 +122,35 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
   end
 
   @impl Team.Repository
+  def deactivate_member(team, member) do
+    unassign_member_from_all_tasks(team, member)
+
+    %MemberEntity{id: member.id}
+    |> MemberEntity.changeset(%{
+      user_id: member.user.id,
+      team_id: team.descriptor.id,
+      active: false,
+      available: false
+    })
+    |> Repo.update()
+
+    {:ok, find(team.descriptor.id)}
+  end
+
+  @impl Team.Repository
+  def activate_member(team, member) do
+    %MemberEntity{id: member.id}
+    |> MemberEntity.changeset(%{
+      user_id: member.user.id,
+      team_id: team.descriptor.id,
+      active: true
+    })
+    |> Repo.update()
+
+    {:ok, find(team.descriptor.id)}
+  end
+
+  @impl Team.Repository
   def add_task(team, task_name) do
     {:ok, _} =
       %TaskEntity{}
@@ -232,6 +261,21 @@ defmodule PairDance.Infrastructure.Team.EctoRepository do
         join: m in MemberEntity,
         on: to.member_id == m.id,
         where: to.team_id == ^team_id and m.user_id == ^user_id and to.task_id == ^task_id
+    )
+
+    {:ok, find(team.descriptor.id)}
+  end
+
+  @impl Team.Repository
+  def unassign_member_from_all_tasks(team, member) do
+    team_id = team.descriptor.id
+    user_id = member.user.id
+
+    Repo.soft_delete_all(
+      from to in AssignmentEntity,
+        join: m in MemberEntity,
+        on: to.member_id == m.id,
+        where: to.team_id == ^team_id and m.user_id == ^user_id
     )
 
     {:ok, find(team.descriptor.id)}

@@ -2,7 +2,7 @@ defmodule PairDance.Domain.Team.Member do
   alias PairDance.Domain.User
 
   @enforce_keys [:user, :role]
-  defstruct [:id, :user, :role, :available, :last_login]
+  defstruct [:id, :user, :role, :available, :last_login, :active]
 
   @type team_role :: :admin | :user
 
@@ -11,6 +11,7 @@ defmodule PairDance.Domain.Team.Member do
           user: User.t(),
           role: team_role(),
           available: boolean,
+          active: boolean,
           last_login: Phoenix.HTML.Safe.DateTime.t()
         }
 

@@ -35,6 +35,28 @@ defmodule PairDanceWeb.AppLive.SettingsPage do
   end
 
   @impl true
+  def handle_event("deactivate_member", params, socket) do
+    team = socket.assigns.team
+    member_id = String.to_integer(params["member_id"])
+    member_to_be_deactivated = Enum.find(team.members, fn member -> member.id == member_id end)
+
+    {:ok, updated_team} = TeamRepository.deactivate_member(team, member_to_be_deactivated)
+
+    {:noreply, assign(socket, :team, updated_team)}
+  end
+
+  @impl true
+  def handle_event("activate_member", params, socket) do
+    team = socket.assigns.team
+    member_id = String.to_integer(params["member_id"])
+    member_to_be_activated = Enum.find(team.members, fn member -> member.id == member_id end)
+
+    {:ok, updated_team} = TeamRepository.activate_member(team, member_to_be_activated)
+
+    {:noreply, assign(socket, :team, updated_team)}
+  end
+
+  @impl true
   def handle_event("delete_member", params, socket) do
     team = socket.assigns.team
     member_id = String.to_integer(params["member_id"])

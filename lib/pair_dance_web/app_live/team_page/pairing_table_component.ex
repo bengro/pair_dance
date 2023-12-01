@@ -19,7 +19,7 @@ defmodule PairDanceWeb.AppLive.TeamPage.PairingTableComponent do
 
     unavailable_members =
       Enum.filter(team.members, fn member ->
-        member.available == false
+        member.available == false and member.active == true
       end)
 
     current_tasks =

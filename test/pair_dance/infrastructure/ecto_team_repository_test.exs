@@ -130,6 +130,21 @@ defmodule PairDance.Infrastructure.Team.EctoRepositoryTest do
 
       assert length(updated_team.members) == 0
     end
+
+    test "deactivate and activate member" do
+      team = create_team(%{member_names: [], task_names: ["my task"]})
+      member = member_fixture(team, "bob@test.com")
+
+      {:ok, updated_team} = TeamRepository.deactivate_member(team, member)
+
+      [deactivated_member] = updated_team.members
+      assert deactivated_member.active == false
+
+      {:ok, updated_team} = TeamRepository.activate_member(team, member)
+
+      [activated_member] = updated_team.members
+      assert activated_member.active == true
+    end
   end
 
   describe "tasks" do
