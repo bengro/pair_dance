@@ -1,7 +1,7 @@
-defmodule PairDance.Domain.Insights.HeatmapTest do
+defmodule PairDance.Domain.Insights.ReportTest do
   use PairDance.DataCase
 
-  alias PairDance.Domain.Insights.Heatmap
+  alias PairDance.Domain.Insights.Report
   alias PairDance.Domain.Team.TimeRange
   alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team.Member
@@ -12,7 +12,7 @@ defmodule PairDance.Domain.Insights.HeatmapTest do
     task_id = :rand.uniform(100)
 
     heatmap =
-      Heatmap.calculate_heatmap([
+      Report.generate_report([
         create_assignment(%{
           task_name: "A wonderful task",
           task_id: task_id,
@@ -36,7 +36,7 @@ defmodule PairDance.Domain.Insights.HeatmapTest do
     task_id = :rand.uniform(100)
 
     heatmap =
-      Heatmap.calculate_heatmap([
+      Report.generate_report([
         create_assignment(%{
           task_name: "A wonderful task",
           task_id: task_id,
@@ -66,7 +66,7 @@ defmodule PairDance.Domain.Insights.HeatmapTest do
     task_id = :rand.uniform(100)
 
     heatmap =
-      Heatmap.calculate_heatmap([
+      Report.generate_report([
         create_assignment(%{
           task_name: "A wonderful task",
           task_id: task_id,

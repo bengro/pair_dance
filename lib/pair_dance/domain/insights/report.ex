@@ -1,5 +1,5 @@
-defmodule PairDance.Domain.Insights.Heatmap do
-  def calculate_heatmap(all_assignments) do
+defmodule PairDance.Domain.Insights.Report do
+  def generate_report(all_assignments) do
     all_tasks = all_assignments |> Enum.map(fn assignment -> assignment.task end) |> Enum.uniq()
 
     all_assignments
