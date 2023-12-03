@@ -8,10 +8,10 @@ defmodule PairDance.Domain.Insights.ReportTest do
   alias PairDance.Domain.Team.Task
   alias PairDance.Domain.User
 
-  test "computes member heatmap for single assignment" do
+  test "generate report with one activity and no pairing" do
     task_id = :rand.uniform(100)
 
-    heatmap =
+    report =
       Report.generate_report([
         create_assignment(%{
           task_name: "A wonderful task",
@@ -24,18 +24,16 @@ defmodule PairDance.Domain.Insights.ReportTest do
         })
       ])
 
-    assert length(heatmap) == 1
-
-    [interaction] = heatmap
-    assert interaction.task.name == "A wonderful task"
-    assert interaction.member_pairings == []
-    assert length(interaction.members) == 1
+    [activity] = report
+    assert activity.task.name == "A wonderful task"
+    assert activity.pairings == []
+    assert length(activity.involved_members) == 1
   end
 
-  test "computes member heatmap for two or more assignments" do
+  test "generate report for one activity with multiple pairings" do
     task_id = :rand.uniform(100)
 
-    heatmap =
+    report =
       Report.generate_report([
         create_assignment(%{
           task_name: "A wonderful task",
@@ -54,18 +52,18 @@ defmodule PairDance.Domain.Insights.ReportTest do
         })
       ])
 
-    assert length(heatmap) == 1
+    assert length(report) == 1
 
-    [interaction] = heatmap
-    assert interaction.task.name == "A wonderful task"
-    assert interaction.member_pairings == [{2, 1}]
-    assert length(interaction.members) == 2
+    [activity] = report
+    assert activity.task.name == "A wonderful task"
+    assert activity.pairings == [{2, 1}]
+    assert length(activity.involved_members) == 2
   end
 
-  test "computes member heatmap for two assignments not overlapping" do
+  test "generate report for one activity which people worked on at different times" do
     task_id = :rand.uniform(100)
 
-    heatmap =
+    report =
       Report.generate_report([
         create_assignment(%{
           task_name: "A wonderful task",
@@ -84,12 +82,12 @@ defmodule PairDance.Domain.Insights.ReportTest do
         })
       ])
 
-    assert length(heatmap) == 1
+    assert length(report) == 1
 
-    [interaction] = heatmap
-    assert interaction.task.name == "A wonderful task"
-    assert interaction.member_pairings == []
-    assert length(interaction.members) == 2
+    [activity] = report
+    assert activity.task.name == "A wonderful task"
+    assert activity.pairings == []
+    assert length(activity.involved_members) == 2
   end
 
   def create_assignment(%{

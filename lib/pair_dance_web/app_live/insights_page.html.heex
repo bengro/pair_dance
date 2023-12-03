@@ -14,7 +14,7 @@
     <%= for interaction <- @report do %>
       <li>
         <%= interaction.task.name %>
-        <%= for involved_member <- interaction.members do %>
+        <%= for involved_member <- interaction.involved_members do %>
           <%= involved_member.user.initials %>
         <% end %>
       </li>
