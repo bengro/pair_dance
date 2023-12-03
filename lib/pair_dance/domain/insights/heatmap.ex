@@ -1,8 +1,13 @@
 defmodule PairDance.Domain.Insights.Heatmap do
   def calculate_heatmap(all_assignments) do
+    all_tasks = all_assignments |> Enum.map(fn assignment -> assignment.task end) |> Enum.uniq()
+
     all_assignments
-    |> Enum.group_by(fn assignment -> assignment.task end)
-    |> Enum.map(fn {task, assignments} -> calculate(task, assignments) end)
+    |> Enum.group_by(fn assignment -> assignment.task.id end)
+    |> Enum.map(fn {task_id, assignments} ->
+      task = all_tasks |> Enum.find(fn x -> x.id == task_id end)
+      calculate(task, assignments)
+    end)
     |> Enum.flat_map(fn x -> x end)
   end
 

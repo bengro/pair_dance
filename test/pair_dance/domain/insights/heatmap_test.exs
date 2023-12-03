@@ -27,7 +27,7 @@ defmodule PairDance.Domain.Insights.HeatmapTest do
     assert length(heatmap) == 1
 
     [interaction] = heatmap
-    assert interaction.task.descriptor.name == "A wonderful task"
+    assert interaction.task.name == "A wonderful task"
     assert interaction.member_pairings == []
     assert length(interaction.members) == 1
   end
@@ -57,7 +57,7 @@ defmodule PairDance.Domain.Insights.HeatmapTest do
     assert length(heatmap) == 1
 
     [interaction] = heatmap
-    assert interaction.task.descriptor.name == "A wonderful task"
+    assert interaction.task.name == "A wonderful task"
     assert interaction.member_pairings == [{2, 1}]
     assert length(interaction.members) == 2
   end
@@ -87,7 +87,7 @@ defmodule PairDance.Domain.Insights.HeatmapTest do
     assert length(heatmap) == 1
 
     [interaction] = heatmap
-    assert interaction.task.descriptor.name == "A wonderful task"
+    assert interaction.task.name == "A wonderful task"
     assert interaction.member_pairings == []
     assert length(interaction.members) == 2
   end
@@ -104,10 +104,7 @@ defmodule PairDance.Domain.Insights.HeatmapTest do
         user: %User{id: user_id, email: "#{:rand.uniform(100)}@pair.dance"},
         role: :admin
       },
-      task: %Task{
-        descriptor: %Task.Descriptor{id: task_id, name: task_name},
-        assigned_members: []
-      },
+      task: %Task.Descriptor{id: task_id, name: task_name},
       time_range: time_range
     }
   end
