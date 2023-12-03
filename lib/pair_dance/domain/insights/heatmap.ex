@@ -8,34 +8,40 @@ defmodule PairDance.Domain.Insights.Heatmap do
       task = all_tasks |> Enum.find(fn x -> x.id == task_id end)
       calculate(task, assignments)
     end)
-    |> Enum.flat_map(fn x -> x end)
   end
 
   defp calculate(task, assignments) do
+    sorted_assignments = assignments |> Enum.sort_by(fn assignment -> assignment.time_range end)
+
     if length(assignments) == 1 do
-      [aggregate_findings(task, [], [Enum.at(assignments, 0).member])]
+      aggregate_findings(task, [], [Enum.at(assignments, 0).member])
     else
-      sorted_assignments = assignments |> Enum.sort_by(fn assignment -> assignment.time_range end)
+      findings =
+        sorted_assignments
+        |> Enum.with_index()
+        |> Enum.reduce(%{pairings: [], involved_members: []}, fn {t1, index}, acc ->
+          other_assignments = sublist(sorted_assignments, index)
 
-      sorted_assignments
-      |> Enum.slice(0, length(sorted_assignments) - 1)
-      |> Enum.with_index()
-      |> Enum.map(fn {t1, index} ->
-        other_assignments = sublist(sorted_assignments, index)
+          case length(other_assignments) do
+            0 ->
+              acc
 
-        case length(other_assignments) do
-          0 ->
-            nil
+            _ ->
+              pairings = extract_pairings(t1, other_assignments)
+              involved_members = extract_members(t1, other_assignments)
 
-          _ ->
-            aggregate_findings(
-              task,
-              extract_pairings(t1, other_assignments),
-              extract_members(t1, other_assignments)
-            )
-        end
-      end)
-      |> Enum.filter(fn x -> x != nil end)
+              %{
+                pairings: acc.pairings ++ pairings,
+                involved_members: (acc.involved_members ++ involved_members) |> Enum.uniq()
+              }
+          end
+        end)
+
+      aggregate_findings(
+        task,
+        findings.pairings,
+        findings.involved_members
+      )
     end
   end
 
