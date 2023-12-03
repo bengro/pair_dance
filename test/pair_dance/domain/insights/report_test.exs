@@ -2,6 +2,7 @@ defmodule PairDance.Domain.Insights.ReportTest do
   use PairDance.DataCase
 
   alias PairDance.Domain.Insights.Report
+  alias PairDance.Domain.Insights.Report.Pairing
   alias PairDance.Domain.Team.TimeRange
   alias PairDance.Domain.Team.Assignment
   alias PairDance.Domain.Team.Member
@@ -56,7 +57,7 @@ defmodule PairDance.Domain.Insights.ReportTest do
 
     [activity] = report
     assert activity.task.name == "A wonderful task"
-    assert activity.pairings == [{2, 1}]
+    assert [%Pairing{pair1: _, pair2: _, duration_days: 1}] = activity.pairings
     assert length(activity.involved_members) == 2
   end
 

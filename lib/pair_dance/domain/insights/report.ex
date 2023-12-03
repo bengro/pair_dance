@@ -1,5 +1,6 @@
 defmodule PairDance.Domain.Insights.Report do
   alias PairDance.Domain.Insights.Report.Activity
+  alias PairDance.Domain.Insights.Report.Pairing
 
   def generate_report(all_assignments) do
     all_tasks = all_assignments |> Enum.map(fn assignment -> assignment.task end) |> Enum.uniq()
@@ -58,8 +59,15 @@ defmodule PairDance.Domain.Insights.Report do
 
   defp extract_pairings(t1, assignments) do
     Enum.reduce(assignments, [], fn t2, acc ->
-      if is_overlap(t1, t2) do
-        [{t1.member.id, t2.member.id} | acc]
+      if is_overlap(t1.time_range, t2.time_range) do
+        [
+          %Pairing{
+            pair1: t1.member,
+            pair2: t2.member,
+            duration_days: calculate_overlap_days(t1.time_range, t2.time_range)
+          }
+          | acc
+        ]
       else
         acc
       end
@@ -86,21 +94,38 @@ defmodule PairDance.Domain.Insights.Report do
     }
   end
 
-  defp is_overlap(a1, a2) do
-    a1_start = DateTime.to_unix(a1.time_range.start)
+  defp is_overlap(t1, t2) do
+    intervals = normalize_intervals(t1, t2)
 
-    a1_end =
-      DateTime.to_unix(
-        if a1.time_range.end == nil, do: DateTime.utc_now(), else: a1.time_range.end
-      )
+    intervals.t1_start <= intervals.t2_end && intervals.t2_start <= intervals.t1_end
+  end
 
-    a2_start = DateTime.to_unix(a2.time_range.start)
+  defp calculate_overlap_days(t1, t2) do
+    intervals = normalize_intervals(t1, t2)
+    start_interval = max(intervals.t1_start, intervals.t2_start)
+    end_interval = min(intervals.t1_end, intervals.t2_end)
 
-    a2_end =
-      DateTime.to_unix(
-        if a2.time_range.end == nil, do: DateTime.utc_now(), else: a2.time_range.end
-      )
+    Decimal.from_float(
+      DateTime.diff(
+        DateTime.from_unix!(end_interval),
+        DateTime.from_unix!(start_interval)
+      ) / 3600 / 24
+    )
+    |> Decimal.round()
+    |> Decimal.to_integer()
+  end
 
-    a1_start <= a2_end && a2_start <= a1_end
+  defp normalize_intervals(t1, t2) do
+    t1_start = DateTime.to_unix(t1.start)
+    t2_start = DateTime.to_unix(t2.start)
+    t1_end = DateTime.to_unix(if t1.end == nil, do: DateTime.utc_now(), else: t1.end)
+    t2_end = DateTime.to_unix(if t2.end == nil, do: DateTime.utc_now(), else: t2.end)
+
+    %{
+      t1_start: t1_start,
+      t2_start: t2_start,
+      t1_end: t1_end,
+      t2_end: t2_end
+    }
   end
 end
