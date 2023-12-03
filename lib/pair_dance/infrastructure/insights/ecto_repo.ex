@@ -1,4 +1,4 @@
-defmodule PairDance.Infrastructure.Insights.EctoService do
+defmodule PairDance.Infrastructure.Insights.Repository do
   alias PairDance.Infrastructure.Team.MemberEntity
   alias PairDance.Infrastructure.Team.AssignmentEntity
   alias PairDance.Infrastructure.Team.TaskEntity
@@ -24,30 +24,11 @@ defmodule PairDance.Infrastructure.Insights.EctoService do
         where: m.user_id == ^user_id and a.team_id == ^team_id,
         select: [a, t]
 
-    assigned_tasks =
+    assignments_by_user =
       Repo.all(query, with_deleted: true)
       |> Enum.map(fn [a, t] -> to_assigned_task(a, t) end)
 
-    {:ok, assigned_tasks}
-  end
-
-  def get_assigned_members_by_task(task) do
-    task_id = task.id
-
-    query =
-      from a in AssignmentEntity,
-        join: m in MemberEntity,
-        on: m.id == a.member_id,
-        join: u in UserEntity,
-        on: u.id == m.user_id,
-        where: a.task_id == ^task_id,
-        select: [a, m, u]
-
-    assigned_members =
-      Repo.all(query, with_deleted: true)
-      |> Enum.map(fn [a, m, u] -> to_assigned_member(a, m, u) end)
-
-    {:ok, assigned_members}
+    {:ok, assignments_by_user}
   end
 
   def get_assignments_by_team(team) do

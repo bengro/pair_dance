@@ -2,7 +2,7 @@ defmodule PairDanceWeb.AppLive.InsightsPage do
   use PairDanceWeb, :live_view
 
   alias PairDance.Infrastructure.Team.EctoRepository, as: TeamRepository
-  alias PairDance.Infrastructure.Insights.EctoService, as: WorkLogService
+  alias PairDance.Infrastructure.Insights.Repository, as: WorkLogService
   alias PairDance.Domain.Insights.Calendar
 
   import PairDanceWeb.AppLive.InsightsPage.Components
@@ -11,18 +11,19 @@ defmodule PairDanceWeb.AppLive.InsightsPage do
   def mount(%{"slug" => slug}, session, socket) do
     user = session["current_user"]
     team = TeamRepository.find_by_slug?(slug)
-    member = Enum.find(team.members, fn m -> m.user.id == user.id end)
 
-    {:ok, assigned_tasks} = WorkLogService.get_assigned_tasks_by_user(user, team)
-    task_summary = PairDance.Domain.Insights.AssignedTaskSummary.build(member, assigned_tasks)
-    calendar = Calendar.build(assigned_tasks)
+    {:ok, tasks_member_was_involved} = WorkLogService.get_assigned_tasks_by_user(user, team)
+    calendar = Calendar.build(tasks_member_was_involved)
+
+    {:ok, all_assignments} = WorkLogService.get_assignments_by_team(team)
+    heatmap = PairDance.Domain.Insights.Heatmap.calculate_heatmap(all_assignments)
 
     assigns =
       socket
       |> assign(:current_user, user)
       |> assign(:team, team)
-      |> assign(:activities, task_summary)
       |> assign(:calendar, calendar)
+      |> assign(:heatmap, heatmap)
       |> assign(:page_title, "Insights")
 
     {:ok, assigns}

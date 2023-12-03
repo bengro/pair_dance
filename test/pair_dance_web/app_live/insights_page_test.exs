@@ -17,13 +17,13 @@ defmodule PairDanceWeb.AppLive.InsightsPageTest do
     %{user: user, conn: conn, team: team}
   end
 
-  test "shows recent tasks", %{conn: conn, user: user, team: team} do
+  test "shows team's recent assignments", %{conn: conn, user: user, team: team} do
     {:ok, _, html} =
       conn
       |> impersonate(user)
       |> live(~p"/#{team.descriptor.slug}/insights")
 
-    assert html =~ "Your activity"
+    assert html =~ "Team activity"
     assert html =~ Enum.at(team.tasks, 0).name
   end
 end

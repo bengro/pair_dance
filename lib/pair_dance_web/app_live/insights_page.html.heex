@@ -8,5 +8,20 @@
 </div>
 
 <h2 class="text-lg mb-4">Your activity on Team <%= @team.descriptor.name %></h2>
-
-<.calendar calendar={@calendar} activities={@activities} />
+<div class="flex flex-column">
+  <div class="w-50">
+    <h3 class=" mb-4">Team activity</h3>
+    <%= for interaction <- @heatmap do %>
+      <li>
+        <%= interaction.task.name %>
+        <%= for involved_member <- interaction.members do %>
+          <%= involved_member.user.initials %>
+        <% end %>
+      </li>
+    <% end %>
+  </div>
+  <div>
+    <h3 class=" mb-4">Your days pairing</h3>
+    <.calendar calendar={@calendar} />
+  </div>
+</div>
