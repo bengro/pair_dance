@@ -13,7 +13,7 @@ defmodule PairDance.Domain.Insights.Report do
         calculate(task, assignments)
       end)
 
-    activities
+    %{task_activities: activities}
   end
 
   defp calculate(task, assignments) do

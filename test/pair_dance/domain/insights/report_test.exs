@@ -25,7 +25,7 @@ defmodule PairDance.Domain.Insights.ReportTest do
         })
       ])
 
-    [activity] = report
+    [activity] = report.task_activities
     assert activity.task.name == "A wonderful task"
     assert activity.pairings == []
     assert length(activity.involved_members) == 1
@@ -53,9 +53,9 @@ defmodule PairDance.Domain.Insights.ReportTest do
         })
       ])
 
-    assert length(report) == 1
+    assert length(report.task_activities) == 1
 
-    [activity] = report
+    [activity] = report.task_activities
     assert activity.task.name == "A wonderful task"
     assert [%Pairing{pair1: _, pair2: _, duration_days: 1}] = activity.pairings
     assert length(activity.involved_members) == 2
@@ -83,9 +83,9 @@ defmodule PairDance.Domain.Insights.ReportTest do
         })
       ])
 
-    assert length(report) == 1
+    assert length(report.task_activities) == 1
 
-    [activity] = report
+    [activity] = report.task_activities
     assert activity.task.name == "A wonderful task"
     assert activity.pairings == []
     assert length(activity.involved_members) == 2
