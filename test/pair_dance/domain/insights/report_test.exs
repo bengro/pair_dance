@@ -91,6 +91,41 @@ defmodule PairDance.Domain.Insights.ReportTest do
     assert length(activity.involved_members) == 2
   end
 
+  test "generate report which shows who has paired with who how many times" do
+    task_id = :rand.uniform(100)
+
+    report =
+      Report.generate_report([
+        create_assignment(%{
+          task_name: "A wonderful task",
+          task_id: task_id,
+          user_id: 1,
+          time_range: %TimeRange{
+            start: ~U[2023-06-26 21:20:07.123Z],
+            end: ~U[2023-06-27 21:20:07.123Z]
+          }
+        }),
+        create_assignment(%{
+          task_name: "A wonderful task",
+          task_id: task_id,
+          user_id: 2,
+          time_range: %TimeRange{start: ~U[2023-06-26 21:20:07.123Z], end: nil}
+        }),
+        create_assignment(%{
+          task_name: "A wonderful task",
+          task_id: task_id,
+          user_id: 3,
+          time_range: %TimeRange{start: ~U[2023-06-27 21:20:08.123Z], end: nil}
+        })
+      ])
+
+    user_activities = report.user_activities
+
+    assert user_activities["1"] == [2]
+    assert user_activities["2"] == [1, 3]
+    assert user_activities["3"] == [2]
+  end
+
   def create_assignment(%{
         task_name: task_name,
         task_id: task_id,

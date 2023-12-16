@@ -10,7 +10,7 @@
 <div class="flex flex-column">
   <div class="flex-1 w-50">
     <h2 class=" mb-4">Team activity</h2>
-    <%= for activity <- @report do %>
+    <%= for activity <- @report.task_activities do %>
       <div class="pb-4">
         <p>
           <%= activity.task.name %>

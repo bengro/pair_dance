@@ -5,7 +5,7 @@ defmodule PairDance.Domain.Insights.Report do
   def generate_report(all_assignments) do
     all_tasks = all_assignments |> Enum.map(fn assignment -> assignment.task end) |> Enum.uniq()
 
-    activities =
+    task_activities =
       all_assignments
       |> Enum.group_by(fn assignment -> assignment.task.id end)
       |> Enum.map(fn {task_id, assignments} ->
@@ -13,7 +13,16 @@ defmodule PairDance.Domain.Insights.Report do
         calculate(task, assignments)
       end)
 
-    %{task_activities: activities}
+    #  returns a map of user_id => [user_id] of all pairings
+    user_activities =
+      Enum.flat_map(task_activities, fn activity -> activity.pairings end)
+      |> Enum.reduce(%{}, fn %Pairing{pair1: pair1, pair2: pair2}, acc ->
+        acc
+        |> Map.put("#{pair1.id}", Map.get(acc, "#{pair1.id}", []) ++ [pair2.id])
+        |> Map.put("#{pair2.id}", Map.get(acc, "#{pair2.id}", []) ++ [pair1.id])
+      end)
+
+    %{task_activities: task_activities, user_activities: user_activities}
   end
 
   defp calculate(task, assignments) do
