@@ -37,7 +37,7 @@ defmodule PairDance.MixProject do
       {:cloak_ecto, "~> 1.2.0"},
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:ecto_soft_delete, "~> 2.0.2"},
-      {:ecto_sql, "~> 3.10.1"},
+      {:ecto_sql, "~> 3.11.1"},
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
       {:finch, "~> 0.16"},
       {:floki, ">= 0.30.0", only: :test},
