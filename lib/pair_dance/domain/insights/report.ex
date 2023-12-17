@@ -3,46 +3,11 @@ defmodule PairDance.Domain.Insights.Report do
   alias PairDance.Domain.Insights.Report.Pairing
 
   def generate_report(all_assignments) do
-    all_tasks = all_assignments |> Enum.map(fn assignment -> assignment.task end) |> Enum.uniq()
-
-    task_activities =
-      all_assignments
-      |> Enum.group_by(fn assignment -> assignment.task.id end)
-      |> Enum.map(fn {task_id, assignments} ->
-        task = all_tasks |> Enum.find(fn x -> x.id == task_id end)
-        calculate(task, assignments)
-      end)
+    task_activities = generate_task_activity_report(all_assignments)
 
     all_pairings = Enum.flat_map(task_activities, fn activity -> activity.pairings end)
-
-    user_activities =
-      all_pairings
-      |> Enum.reduce(%{}, fn %Pairing{pair1: pair1, pair2: pair2}, acc ->
-        acc
-        |> Map.put("#{pair1.id}", Map.get(acc, "#{pair1.id}", []) ++ [pair2.id])
-        |> Map.put("#{pair2.id}", Map.get(acc, "#{pair2.id}", []) ++ [pair1.id])
-      end)
-
-    all_users =
-      all_pairings
-      |> Enum.flat_map(fn %Pairing{pair1: pair1, pair2: pair2} -> [pair1, pair2] end)
-      |> Enum.uniq()
-
-    pairing_most =
-      user_activities
-      |> Enum.map(fn {user_id, pairings} ->
-        member =
-          all_users
-          |> Enum.find(fn x ->
-            "#{x.id}" == "#{user_id}"
-          end)
-
-        %{
-          member: member,
-          count: pairings |> length()
-        }
-      end)
-      |> Enum.sort_by(fn x -> x.count end, :desc)
+    user_activities = generate_user_activity_report(all_pairings)
+    pairing_most = generate_pairing_report(user_activities, all_pairings)
 
     %{
       task_activities: task_activities,
@@ -51,7 +16,49 @@ defmodule PairDance.Domain.Insights.Report do
     }
   end
 
-  defp calculate(task, assignments) do
+  defp generate_task_activity_report(all_assignments) do
+    all_tasks = all_assignments |> Enum.map(fn assignment -> assignment.task end) |> Enum.uniq()
+
+    all_assignments
+    |> Enum.group_by(fn assignment -> assignment.task.id end)
+    |> Enum.map(fn {task_id, assignments} ->
+      task = all_tasks |> Enum.find(fn x -> x.id == task_id end)
+      calculate_activity(task, assignments)
+    end)
+  end
+
+  defp generate_user_activity_report(all_pairings) do
+    all_pairings
+    |> Enum.reduce(%{}, fn %Pairing{pair1: pair1, pair2: pair2}, acc ->
+      acc
+      |> Map.put("#{pair1.id}", Map.get(acc, "#{pair1.id}", []) ++ [pair2.id])
+      |> Map.put("#{pair2.id}", Map.get(acc, "#{pair2.id}", []) ++ [pair1.id])
+    end)
+  end
+
+  defp generate_pairing_report(user_activities, all_pairings) do
+    all_users =
+      all_pairings
+      |> Enum.flat_map(fn %Pairing{pair1: pair1, pair2: pair2} -> [pair1, pair2] end)
+      |> Enum.uniq()
+
+    user_activities
+    |> Enum.map(fn {user_id, pairings} ->
+      member =
+        all_users
+        |> Enum.find(fn x ->
+          "#{x.id}" == "#{user_id}"
+        end)
+
+      %{
+        member: member,
+        count: pairings |> length()
+      }
+    end)
+    |> Enum.sort_by(fn x -> x.count end, :desc)
+  end
+
+  defp calculate_activity(task, assignments) do
     sorted_assignments = assignments |> Enum.sort_by(fn assignment -> assignment.time_range end)
 
     if length(assignments) == 1 do
