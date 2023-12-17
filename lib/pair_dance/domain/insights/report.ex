@@ -13,16 +13,42 @@ defmodule PairDance.Domain.Insights.Report do
         calculate(task, assignments)
       end)
 
-    #  returns a map of user_id => [user_id] of all pairings
+    all_pairings = Enum.flat_map(task_activities, fn activity -> activity.pairings end)
+
     user_activities =
-      Enum.flat_map(task_activities, fn activity -> activity.pairings end)
+      all_pairings
       |> Enum.reduce(%{}, fn %Pairing{pair1: pair1, pair2: pair2}, acc ->
         acc
         |> Map.put("#{pair1.id}", Map.get(acc, "#{pair1.id}", []) ++ [pair2.id])
         |> Map.put("#{pair2.id}", Map.get(acc, "#{pair2.id}", []) ++ [pair1.id])
       end)
 
-    %{task_activities: task_activities, user_activities: user_activities}
+    all_users =
+      all_pairings
+      |> Enum.flat_map(fn %Pairing{pair1: pair1, pair2: pair2} -> [pair1, pair2] end)
+      |> Enum.uniq()
+
+    pairing_most =
+      user_activities
+      |> Enum.map(fn {user_id, pairings} ->
+        member =
+          all_users
+          |> Enum.find(fn x ->
+            "#{x.id}" == "#{user_id}"
+          end)
+
+        %{
+          member: member,
+          count: pairings |> length()
+        }
+      end)
+      |> Enum.sort_by(fn x -> x.count end, :desc)
+
+    %{
+      task_activities: task_activities,
+      user_activities: user_activities,
+      pairing_most: pairing_most
+    }
   end
 
   defp calculate(task, assignments) do

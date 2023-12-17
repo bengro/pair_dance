@@ -126,6 +126,47 @@ defmodule PairDance.Domain.Insights.ReportTest do
     assert user_activities["3"] == [2]
   end
 
+  test "generate report which shows who has paired most" do
+    task_id = :rand.uniform(100)
+
+    report =
+      Report.generate_report([
+        create_assignment(%{
+          task_name: "A wonderful task",
+          task_id: task_id,
+          user_id: 1,
+          time_range: %TimeRange{
+            start: ~U[2023-06-26 21:20:07.123Z],
+            end: ~U[2023-06-27 21:20:07.123Z]
+          }
+        }),
+        create_assignment(%{
+          task_name: "A wonderful task",
+          task_id: task_id,
+          user_id: 2,
+          time_range: %TimeRange{start: ~U[2023-06-26 21:20:07.123Z], end: nil}
+        }),
+        create_assignment(%{
+          task_name: "A wonderful task",
+          task_id: task_id,
+          user_id: 3,
+          time_range: %TimeRange{start: ~U[2023-06-27 21:20:08.123Z], end: nil}
+        })
+      ])
+
+    pairing_most = report.pairing_most
+
+    assert Enum.map(pairing_most, fn pairing_count -> pairing_count.member.id end) == [
+             2,
+             1,
+             3
+           ]
+
+    [member_most_pairing | _] = pairing_most
+    assert member_most_pairing.member.id == 2
+    assert member_most_pairing.count == 2
+  end
+
   def create_assignment(%{
         task_name: task_name,
         task_id: task_id,

@@ -7,9 +7,32 @@
   </p>
 </div>
 
-<div class="flex flex-column">
+<div>
+  <h2 class=" mb-4">Pairing</h2>
+  <ul>
+    <%= for {member_pairing_stats, index} <- Enum.with_index(@report.pairing_most) do %>
+      <li class="list-disc ml-4">
+        <%= if index == 0 do %>
+          🥇
+        <% end %>
+        <%= if index == 1 do %>
+          🥈
+        <% end %>
+        <%= if index == 2 do %>
+          🥉
+        <% end %>
+        <%= if index > 2 do %>
+          👏
+        <% end %>
+        <%= member_pairing_stats.member.user.name %> paired <%= member_pairing_stats.count %> times
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="flex flex-column mt-4">
   <div class="flex-1 w-50">
-    <h2 class=" mb-4">Team activity</h2>
+    <h2 class=" mb-4">Task activity</h2>
     <%= for activity <- @report.task_activities do %>
       <div class="pb-4">
         <p>
