@@ -9,7 +9,7 @@ defmodule PairDance.Domain.Insights.ReportTest do
   alias PairDance.Domain.Team.Task
   alias PairDance.Domain.User
 
-  test "generate report with one activity and no pairing" do
+  test "report to contain task activity with no pairing happening" do
     task_id = :rand.uniform(100)
 
     report =
@@ -31,7 +31,7 @@ defmodule PairDance.Domain.Insights.ReportTest do
     assert length(activity.involved_members) == 1
   end
 
-  test "generate report for one activity with multiple pairings" do
+  test "report to contain task activity with multiple pairings" do
     task_id = :rand.uniform(100)
 
     report =
@@ -61,7 +61,7 @@ defmodule PairDance.Domain.Insights.ReportTest do
     assert length(activity.involved_members) == 2
   end
 
-  test "generate report for one activity which people worked on at different times" do
+  test "report to contain activity with pairings happening during different intervals" do
     task_id = :rand.uniform(100)
 
     report =
@@ -91,7 +91,7 @@ defmodule PairDance.Domain.Insights.ReportTest do
     assert length(activity.involved_members) == 2
   end
 
-  test "generate report which shows who has paired with who how many times" do
+  test "report to contain pairing allocation" do
     task_id = :rand.uniform(100)
 
     report =
@@ -126,7 +126,7 @@ defmodule PairDance.Domain.Insights.ReportTest do
     assert user_activities["3"] == [2]
   end
 
-  test "generate report which shows who has paired most" do
+  test "report to contain who has paired most overall" do
     task_id = :rand.uniform(100)
 
     report =
