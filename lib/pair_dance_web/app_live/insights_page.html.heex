@@ -56,20 +56,11 @@
             </li>
           <% end %>
         </div>
-        <div>
-          <ol class="px-4">
-            <%= for pairing <- activity.pairings do %>
-              <li class="list-disc text-sm">
-                <%= pairing.pair1.user.initials %> paired with <%= pairing.pair2.user.initials %> for <%= pairing.duration_days %> days
-              </li>
-            <% end %>
-          </ol>
-        </div>
       </div>
     <% end %>
   </div>
   <div class="flex-1 w-50">
-    <h2 class=" mb-4">Your days pairing</h2>
+    <h2 class=" mb-4">Days pairing</h2>
     <.calendar calendar={@calendar} />
   </div>
 </div>
