@@ -5,14 +5,17 @@ defmodule PairDance.Domain.Insights.Report do
   def generate_report(all_assignments) do
     task_activities = generate_task_activity_report(all_assignments)
 
-    all_pairings = Enum.flat_map(task_activities, fn activity -> activity.pairings end)
+    all_pairings =
+      Enum.flat_map(task_activities, fn activity -> activity.pairings end)
+      |> Enum.filter(fn %Pairing{pair1: pair1, pair2: pair2} -> pair1.id != pair2.id end)
+
     user_activities = generate_user_activity_report(all_pairings)
-    pairing_most = generate_pairing_report(user_activities, all_pairings)
+    pairing_report = generate_pairing_report(user_activities, all_pairings)
 
     %{
       task_activities: task_activities,
       user_activities: user_activities,
-      pairing_most: pairing_most
+      pairing_heat_map: pairing_report
     }
   end
 
@@ -37,25 +40,33 @@ defmodule PairDance.Domain.Insights.Report do
   end
 
   defp generate_pairing_report(user_activities, all_pairings) do
-    all_users =
+    all_members =
       all_pairings
       |> Enum.flat_map(fn %Pairing{pair1: pair1, pair2: pair2} -> [pair1, pair2] end)
       |> Enum.uniq()
 
     user_activities
-    |> Enum.map(fn {user_id, pairings} ->
-      member =
-        all_users
-        |> Enum.find(fn x ->
-          "#{x.id}" == "#{user_id}"
+    |> Enum.map(fn {member_id, pairings} ->
+      member = look_up_member(all_members, member_id)
+
+      pairing_counts =
+        pairings
+        |> Enum.reduce(%{}, fn pair_member_id, acc ->
+          acc
+          |> Map.put("#{pair_member_id}", Map.get(acc, "#{pair_member_id}", 0) + 1)
         end)
 
       %{
         member: member,
-        count: pairings |> length()
+        total_pairing_count: pairings |> length(),
+        paired_with:
+          pairing_counts
+          |> Enum.map(fn {k, v} ->
+            %{member: look_up_member(all_members, k), count: v}
+          end)
       }
     end)
-    |> Enum.sort_by(fn x -> x.count end, :desc)
+    |> Enum.sort_by(fn x -> x.total_pairing_count end, :desc)
   end
 
   defp calculate_activity(task, assignments) do
@@ -169,5 +180,12 @@ defmodule PairDance.Domain.Insights.Report do
       t1_end: t1_end,
       t2_end: t2_end
     }
+  end
+
+  defp look_up_member(all_members, member_id) do
+    all_members
+    |> Enum.find(fn x ->
+      "#{x.id}" == "#{member_id}"
+    end)
   end
 end

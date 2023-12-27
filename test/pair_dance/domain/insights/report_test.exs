@@ -154,17 +154,62 @@ defmodule PairDance.Domain.Insights.ReportTest do
         })
       ])
 
-    pairing_most = report.pairing_most
+    pairing_heat_map = report.pairing_heat_map
 
-    assert Enum.map(pairing_most, fn pairing_count -> pairing_count.member.id end) == [
+    assert Enum.map(pairing_heat_map, fn pairing_count -> pairing_count.member.id end) == [
              2,
              1,
              3
            ]
 
-    [member_most_pairing | _] = pairing_most
+    [member_most_pairing | _] = pairing_heat_map
     assert member_most_pairing.member.id == 2
-    assert member_most_pairing.count == 2
+    assert member_most_pairing.total_pairing_count == 2
+  end
+
+  test "report to contain who paired with who the most" do
+    task_with_pairing = :rand.uniform(100)
+
+    report =
+      Report.generate_report([
+        create_assignment(%{
+          task_name: "A wonderful task",
+          task_id: task_with_pairing,
+          user_id: 1,
+          time_range: %TimeRange{
+            start: ~U[2023-06-26 21:20:07.123Z],
+            end: nil
+          }
+        }),
+        create_assignment(%{
+          task_name: "A wonderful task",
+          task_id: task_with_pairing,
+          user_id: 2,
+          time_range: %TimeRange{
+            start: ~U[2023-06-26 21:20:07.123Z],
+            end: ~U[2023-06-27 21:20:07.123Z]
+          }
+        }),
+        create_assignment(%{
+          task_name: "A wonderful task",
+          task_id: task_with_pairing,
+          user_id: 2,
+          time_range: %TimeRange{start: ~U[2023-06-27 21:20:07.123Z], end: nil}
+        }),
+        create_assignment(%{
+          task_name: "A wonderful task",
+          task_id: :rand.uniform(100),
+          user_id: 3,
+          time_range: %TimeRange{start: ~U[2023-06-27 21:20:07.123Z], end: nil}
+        })
+      ])
+
+    [stats_for_member | _] = report.pairing_heat_map
+
+    assert stats_for_member.member.id == 1
+
+    assert Enum.map(stats_for_member.paired_with, fn stats -> stats.member.id end) == [2]
+    assert Enum.map(stats_for_member.paired_with, fn stats -> stats.count end) == [2]
   end
 
   def create_assignment(%{

@@ -10,7 +10,7 @@
 <div>
   <h2 class=" mb-4">Pairing</h2>
   <ul>
-    <%= for {member_pairing_stats, index} <- Enum.with_index(@report.pairing_most) do %>
+    <%= for {pairing_stats, index} <- Enum.with_index(@report.pairing_heat_map) do %>
       <li class="list-disc ml-4">
         <%= if index == 0 do %>
           🥇
@@ -24,7 +24,7 @@
         <%= if index > 2 do %>
           👏
         <% end %>
-        <%= member_pairing_stats.member.user.name %> paired <%= member_pairing_stats.count %> times
+        <%= pairing_stats.member.user.name %> paired <%= pairing_stats.count %> times
       </li>
     <% end %>
   </ul>
