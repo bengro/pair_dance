@@ -65,6 +65,7 @@ defmodule PairDance.Domain.Insights.Report do
           |> Enum.map(fn {k, v} ->
             %{member: look_up_member(all_members, k), count: v}
           end)
+          |> Enum.sort_by(fn x -> x.count end, :desc)
       }
     end)
     |> Enum.sort_by(fn x -> x.total_pairing_count end, :desc)
