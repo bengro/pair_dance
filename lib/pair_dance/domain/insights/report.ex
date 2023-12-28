@@ -28,6 +28,7 @@ defmodule PairDance.Domain.Insights.Report do
       task = all_tasks |> Enum.find(fn x -> x.id == task_id end)
       calculate_activity(task, assignments)
     end)
+    |> Enum.sort_by(fn x -> x.task.id end, :desc)
   end
 
   defp generate_user_activity_report(all_pairings) do

@@ -7,60 +7,78 @@
   </p>
 </div>
 
-<div>
-  <h2 class=" mb-4">Pairing</h2>
-  <ul>
-    <%= for {pairing_stats, index} <- Enum.with_index(@report.pairing_heat_map) do %>
-      <li class="list-disc ml-4">
-        <%= if index == 0 do %>
-          🥇
-        <% end %>
-        <%= if index == 1 do %>
-          🥈
-        <% end %>
-        <%= if index == 2 do %>
-          🥉
-        <% end %>
-        <%= if index > 2 do %>
-          👏
-        <% end %>
-        <%= pairing_stats.member.user.name %> paired <%= pairing_stats.total_pairing_count %> times
-      </li>
+<div class="flex flex-column">
+  <div class="flex-1 mt-5">
+    <h2 class=" mb-5 font-bold">Who paired the most?</h2>
+    <ul>
+      <%= for {member_pairing_stats, index} <- Enum.with_index(@report.pairing_heat_map) do %>
+        <li class="list-disc ml-4">
+          <%= if index == 0 do %>
+            🥇
+          <% end %>
+          <%= if index == 1 do %>
+            🥈
+          <% end %>
+          <%= if index == 2 do %>
+            🥉
+          <% end %>
+          <%= if index > 2 do %>
+            👏
+          <% end %>
+          <%= member_pairing_stats.member.user.name %> paired <%= member_pairing_stats.total_pairing_count %> times
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="flex-1 mt-5">
+    <h2 class=" mb-4 font-bold">Who paired with who?</h2>
+    <%= for {member_pairing_stats, _index} <- Enum.with_index(@report.pairing_heat_map) do %>
+      <%= member_pairing_stats.member.user.name %>
+
+      <%= for {pairing_heat_map} <- member_pairing_stats.paired_with do %>
+        <li class="list-disc ml-4">
+          <%= pairing_heat_map.count %> x <%= pairing_heat_map.member.user.name %>
+        </li>
+      <% end %>
     <% end %>
-  </ul>
+  </div>
+
+  <div class="flex-1 mt-5">
+    <h2 class="font-bold mb-5">When have you paired?</h2>
+    <.calendar calendar={@calendar} />
+  </div>
 </div>
 
 <div class="flex flex-column mt-4">
   <div class="flex-1 w-50">
-    <h2 class=" mb-4">Task activity</h2>
-    <%= for activity <- @report.task_activities do %>
-      <div class="pb-4">
-        <p>
-          <%= activity.task.name %>
-        </p>
-        <div>
-          <%= for member <- activity.involved_members do %>
-            <li class="inline-block">
-              <div
-                data-qa="member-avatar"
-                data-user-id={member.user.id}
-                class="w-[40px] h-[40px] relative cursor-pointer overflow-hidden text-xs"
-              >
-                <img
-                  alt=""
-                  src={member.user.avatar || "/images/avatar.jpeg"}
-                  referrerpolicy="no-referrer"
-                  class="rounded-full"
-                />
-              </div>
-            </li>
-          <% end %>
+    <h2 class=" mb-5 font-bold">Who has context on what?</h2>
+    <div class="flex flex-column flex-wrap">
+      <%= for activity <- @report.task_activities do %>
+        <div class="pb-4 mr-5 w-[250px]">
+          <p>
+            <%= activity.task.name %>
+          </p>
+          <div>
+            <%= for member <- activity.involved_members do %>
+              <li class="inline-block">
+                <div
+                  data-qa="member-avatar"
+                  data-user-id={member.user.id}
+                  class="w-[40px] h-[40px] relative cursor-pointer overflow-hidden text-xs"
+                >
+                  <img
+                    alt=""
+                    src={member.user.avatar || "/images/avatar.jpeg"}
+                    referrerpolicy="no-referrer"
+                    class="rounded-full"
+                  />
+                </div>
+              </li>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
-  </div>
-  <div class="flex-1 w-50">
-    <h2 class=" mb-4">Days pairing</h2>
-    <.calendar calendar={@calendar} />
+      <% end %>
+    </div>
   </div>
 </div>

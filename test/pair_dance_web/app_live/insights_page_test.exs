@@ -23,8 +23,25 @@ defmodule PairDanceWeb.AppLive.InsightsPageTest do
       |> impersonate(user)
       |> live(~p"/#{team.descriptor.slug}/insights")
 
-    assert html =~ "Pairing"
-    assert html =~ user.name
+    assert html =~ "Who paired the most"
+  end
+
+  test "shows people pairing with other people", %{conn: conn, user: user, team: team} do
+    {:ok, _, html} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.descriptor.slug}/insights")
+
+    assert html =~ "Who paired with who"
+  end
+
+  test "shows personal pairing calendar", %{conn: conn, user: user, team: team} do
+    {:ok, _, html} =
+      conn
+      |> impersonate(user)
+      |> live(~p"/#{team.descriptor.slug}/insights")
+
+    assert html =~ "When have you paired"
   end
 
   test "shows team's recent task assignments", %{conn: conn, user: user, team: team} do
@@ -33,7 +50,7 @@ defmodule PairDanceWeb.AppLive.InsightsPageTest do
       |> impersonate(user)
       |> live(~p"/#{team.descriptor.slug}/insights")
 
-    assert html =~ "Task activity"
+    assert html =~ "Who has context on what"
     assert html =~ Enum.at(team.tasks, 0).name
   end
 end
