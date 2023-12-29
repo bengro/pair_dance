@@ -13,18 +13,20 @@
     Long gone, are the days where you spend valuable time debating who to pair up with.
     Prevent sticky pairs, context silos, and make pairing up as easy as it can be!
   </p>
-  <div class="text-center my-10">
+  <div class="text-center my-[50px]">
     <h3 class="text-2xl mb-3">Sign up for Pair Dance, for free.</h3>
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-5">
       <.link href={~p"/auth/google"}>Login with Google</.link>
     </button>
   </div>
 
-  <div class="my-10">
+  <div class="my-[50px]">
     <h3 class="text-center text-2xl mb-3">
-      Facilitate Pair Programming like a pro
+      Facilitate Pair Programming
     </h3>
-    <div class="flex flex-row">
+    <p class="text-center">Allocating pairs in the morning is as easy as pie.</p>
+
+    <div class="flex flex-row mt-4">
       <div class="w-3/5">
         <img
           src="/images/pair-dance-screenshot.jpg"
@@ -43,12 +45,13 @@
     </div>
   </div>
 
-  <div class="my-10">
+  <div class="my-[100px]">
     <h3 class="text-center text-2xl mb-3">
       Pair.Dance <Heroicons.heart mini class="h-5 w-5 inline" /> Jira
     </h3>
+    <p class="text-center">Synchronise the backlog with Pair.dance</p>
 
-    <div class="flex flex-row">
+    <div class="flex flex-row  mt-4">
       <div class="w-3/5 flex items-center">
         <img
           src="/images/pair-dance-jira-integration.png"
@@ -66,21 +69,37 @@
     </div>
   </div>
 
-  <div class="my-10">
+  <div class="my-[100px]">
     <h3 class="text-center text-2xl mb-3">
-      Gain Actionable Insights
+      Make pairing work
     </h3>
-    <div class="flex flex-row">
+    <p class="text-center">Encourage more pairing, and get visibility on how well it's going.</p>
+
+    <div class="flex flex-row mt-4">
       <div class="w-2/5 flex items-center">
         <ul class="list-disc">
-          <li>Reveals who pairs the most</li>
-          <li>Suggests who should pair more</li>
-          <li>Keeps track of how much pairing happens</li>
-          <li></li>
+          <li>Encourage more pairing</li>
+          <li>Suggests who could pair more and less often</li>
+          <li>Visualise who has context on what</li>
         </ul>
       </div>
-      <div class="w-3/5 flex items-center">
-        Coming soon!
+      <div class="w-3/5 flex flex-column flex-wrap items-center">
+        <img src="/images/insights_context_map.png" alt="Context Map" class="w-[650px] m-auto" />
+        <img
+          src="/images/insights_pairing_heatmap.png"
+          alt="Pairing Heatmap"
+          class="h-[250px] m-auto"
+        />
+        <img
+          src="/images/insights_pairing_scoreboard.png"
+          alt="Context Map"
+          class="h-[250px] m-auto"
+        />
+        <img
+          src="/images/insights_pairing_overview.png"
+          alt="Pairing tracker"
+          class="w-[250px] m-auto"
+        />
       </div>
     </div>
   </div>
