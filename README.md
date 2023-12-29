@@ -17,9 +17,6 @@ A tool to elevate pair programming by making pair rotations smooth and effective
 
 ### Business rules
 
-The Pair Dance is when the pair rotations are decided. The rotatiosn should be optimising for spreading context and not
-sticking too long.
-
 #### Teams
 
 - All users can create unlimited number of teams.
@@ -32,21 +29,18 @@ sticking too long.
 
 ## Feature ideas
 
-- Obtain tasks from Ticket management system like Jira
-- Allocations could happen off-platform on Slack
+- Allocations could happen on Slack
 - Insights into pairing patterns can surface Retro conversations
-- Tuple API to get actual allocations
-- Google Calendar is taken into account to signal "pairability" of an individual on a given day
-- Their personal choice is taken into account where possible
-- Knowledge is optimally shared among the team members
+- Use Tuple API to get actual allocations
+- Use Google Calendar API to prevent pairing allocations which are unrealistic due to overlapping calendars
 
 ## Development
 
 Initial setup:
 
-- Assumes you have a pre M1 Mac and brew
+- Assumes you have a pre M(1,2.3) Mac and brew
 
-> ⚠️ Setup does not support M1s. Contributions welcome!
+> ⚠️ Setup does not support MM(1,2.3)s. Contributions welcome!
 
 ```
 ./setup
