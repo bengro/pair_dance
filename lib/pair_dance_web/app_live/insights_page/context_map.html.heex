@@ -1,0 +1,28 @@
+<h2 class=" mb-5 font-bold">Who has context on what?</h2>
+    <div class="flex flex-column flex-wrap">
+      <%= for activity <- @task_activities do %>
+        <div class="pb-4 mr-5 w-[250px]">
+          <p>
+            <%= activity.task.name %>
+          </p>
+          <div>
+            <%= for member <- activity.involved_members do %>
+              <li class="inline-block">
+                <div
+                  data-qa="member-avatar"
+                  data-user-id={member.user.id}
+                  class="w-[40px] h-[40px] relative cursor-pointer overflow-hidden text-xs"
+                >
+                  <img
+                    alt=""
+                    src={member.user.avatar || "/images/avatar.jpeg"}
+                    referrerpolicy="no-referrer"
+                    class="rounded-full"
+                  />
+                </div>
+              </li>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>

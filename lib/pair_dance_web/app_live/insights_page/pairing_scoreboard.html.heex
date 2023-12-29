@@ -1,0 +1,20 @@
+<h2 class=" mb-5 font-bold">Who paired the most?</h2>
+    <ul>
+      <%= for {member_pairing_stats, index} <- Enum.with_index(@pairing_counts) do %>
+        <li class="list-disc ml-4">
+          <%= if index == 0 do %>
+            🥇
+          <% end %>
+          <%= if index == 1 do %>
+            🥈
+          <% end %>
+          <%= if index == 2 do %>
+            🥉
+          <% end %>
+          <%= if index > 2 do %>
+            👏
+          <% end %>
+          <%= member_pairing_stats.member.user.name %> paired <%= member_pairing_stats.total_pairing_count %> times
+        </li>
+      <% end %>
+    </ul>

@@ -1,0 +1,20 @@
+<h2 class=" mb-4 font-bold">Who paired with who?</h2>
+<%= for {member_pairing_stats, _index} <- Enum.with_index(@heatmap) do %>
+  <li class="list-disc">
+    <%= member_pairing_stats.member.user.name %>
+
+    <ul>
+      <%= for {pairing_heat_map, index} <- Enum.with_index(member_pairing_stats.paired_with) do %>
+        <li class="list-disc ml-8">
+          <%= if index == 0 do %>
+            ❤️
+          <% end %>
+          <%= if index + 1 == length(member_pairing_stats.paired_with) do %>
+            🤔
+          <% end %>
+          <%= pairing_heat_map.count %> x <%= pairing_heat_map.member.user.name %>
+        </li>
+      <% end %>
+    </ul>
+  </li>
+<% end %>
