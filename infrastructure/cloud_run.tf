@@ -11,9 +11,24 @@ resource "google_cloud_run_service" "run_service" {
   autogenerate_revision_name = true
 
   template {
+    metadata {
+      annotations = {
+        "autoscaling.knative.dev/maxScale"     = "1"
+        "run.googleapis.com/startup-cpu-boost" = true
+      }
+    }
+
     spec {
+      container_concurrency = 80
       containers {
         image = "eu.gcr.io/pair-dance-370619/pair_dance:latest"
+
+        resources {
+          limits = {
+            cpu    = "1000m"
+            memory = "512Mi"
+          }
+        }
 
         env {
           name  = "PHX_HOST"
